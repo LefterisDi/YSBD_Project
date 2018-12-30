@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 				BF_PrintError("Error allocating block");
 				break;
 			}
-			//right
+
 			blkCnt = BF_GetBlockCounter(bfs[i]);
 			printf("File %d has %d blocks\n", bfs[i], blkCnt);
 
