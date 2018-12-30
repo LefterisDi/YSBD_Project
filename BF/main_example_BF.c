@@ -29,8 +29,6 @@ int main(int argc, char** argv)
 			exit(EXIT_FAILURE);
 		}
 
-		// test
-
 		if ((bfs[i] = BF_OpenFile(filename)) < 0) {
 			BF_PrintError("Error opening file");
 			break;
