@@ -20,7 +20,7 @@
 #define BFE_BLOCKFIXED              -15
 #define BFE_BLOCKUNFIXED            -16
 #define BFE_EOF                     -17
-#define BFE_FILEHASFIXEDBLOCKS     -18
+#define BFE_FILEHASFIXEDBLOCKS      -18
 #define BFE_BLOCKFREE               -19
 #define BFE_BLOCKINBUF              -20
 #define BFE_BLOCKNOTINBUF           -21
