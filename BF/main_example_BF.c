@@ -17,7 +17,6 @@ int main(int argc, char** argv)
 	int blkCnt;
 
 	BF_Init();
-	
 
 	strcpy(filename, FILENAME);
 
