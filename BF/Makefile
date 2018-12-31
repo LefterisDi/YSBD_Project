@@ -1,5 +1,5 @@
 # Creating Executables
-main : main_example_BF.c
+main :
 	gcc main_example_BF.c BF_64.a -no-pie -o ./main_example/main
 
 # ------------------------------------------------- #
