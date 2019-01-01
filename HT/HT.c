@@ -5,7 +5,7 @@
 #include "HT.h"
 #include "../BF/BF.h"
 
-int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLength, int buckets)
+int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
     int file;
     void* block;
