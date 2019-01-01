@@ -3,6 +3,13 @@
 #ifndef __HT__
 #define __HT__
 
+typedef struct{
+    int id;
+    char name[15];
+    char surname[20];
+    char address[40];
+} Record;
+
 typedef struct {
     int      fileDesc;    /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block           */
     char     attrType;    /* ο τύπος του πεδίου που είναι κλειδί για το συγκεκριμένο αρχείο, 'c' ή'i' */
