@@ -6,6 +6,7 @@
 int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLength, int buckets)
 {
     int file;
+    void* block;
 
 	if (BF_CreateFile(fileName) < 0) {
 		BF_PrintError("Error creating file");
@@ -19,6 +20,19 @@ int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLen
 
     if (BF_AllocateBlock(file) < 0) {
 		BF_PrintError("Error allocating block");
+		return -1;
+	}
+
+    if (BF_ReadBlock(file , 0 , &block) < 0) {
+		BF_PrintError("Error getting block");
+		return -1;
+	}
+
+    //copy content to the block
+    //strncpy((char *)block, (char*)&j, sizeof(int));
+
+    if (BF_WriteBlock(file , 0) < 0){
+		BF_PrintError("Error writing block back");
 		return -1;
 	}
 }
