@@ -5,8 +5,8 @@
 #include "BF.h"
 
 #define FILENAME   "file"
-#define MAX_FILES  100
-#define MAX_BLOCKS 500
+#define MAX_FILES  2
+#define MAX_BLOCKS 10
 
 int main(int argc, char** argv)
 {
