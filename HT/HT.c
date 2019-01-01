@@ -58,7 +58,7 @@ int HT_CloseIndex(HT_info* header_info)
 
 int HT_InsertEntry(HT_info header_info, Record record)
 {
-    // I'm gonna change everything you write
+
 }
 
 int HT_DeleteEntry(HT_info header_info, void* value)
