@@ -129,7 +129,8 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.numBuckets = buckets;
 
     block->fileDesc   = fileDesc;
-    block->attrName   = attrName;
+    block->attrName   = malloc(sizeof(attrName));
+    strcpy(block->attrName,attrName);
     block->attrLength = attrLength;
     block->attrType   = attrType;
     block->numBuckets = buckets;
@@ -146,21 +147,37 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		BlockInit(fileDesc/*,i*/);
 	}
 
-	if (BF_CloseFile(fileDesc) < 0) {
-		BF_PrintError("Error closing file");
-		return -1;
-	}
-
     return 0;
 }
 
 HT_info* HT_OpenIndex(char* fileName)
 {
+    HT_info* block;
+    int fileDesc;
 
+    if ((fileDesc = BF_OpenFile(fileName)) < 0) {
+		BF_PrintError("Error opening file");
+		return NULL;
+	}
+
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+		BF_PrintError("Error getting block");
+		return NULL;
+	}
+
+    return block;
 }
 
 int HT_CloseIndex(HT_info* header_info)
 {
+    int temp = header_info->fileDesc;
+    free(header_info->attrName);
+    // free(header_info);
+    // if (BF_CloseFile(temp) < 0) {
+	// 	BF_PrintError("Error closing file");
+	// 	return -1;
+	// }
+    return 0;
 
 }
 
