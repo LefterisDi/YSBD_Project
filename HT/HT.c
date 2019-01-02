@@ -98,50 +98,55 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
-    int     file;
-    void*   block;
-    HT_info info;
+    int      fileDesc;
+    HT_info* block;
+    // HT_info info;
 
 	if (BF_CreateFile(fileName) < 0) {
 		BF_PrintError("Error creating file");
 		return -1;
 	}
 
-    if ((file = BF_OpenFile(fileName)) < 0) {
+    if ((fileDesc = BF_OpenFile(fileName)) < 0) {
 		BF_PrintError("Error opening file");
 		return -1;
 	}
 
-    if (BF_AllocateBlock(file) < 0) {
+    if (BF_AllocateBlock(fileDesc) < 0) {
 		BF_PrintError("Error allocating block");
 		return -1;
 	}
 
-    if (BF_ReadBlock(file , 0 , &block) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-    info.fileDesc   = file;
-    info.attrName   = attrName;
-    info.attrLength = attrLength;
-    info.attrType   = attrType;
-    info.numBuckets = buckets;
+    // info.fileDesc   = file;
+    // info.attrName   = attrName;
+    // info.attrLength = attrLength;
+    // info.attrType   = attrType;
+    // info.numBuckets = buckets;
 
+    block->fileDesc   = fileDesc;
+    block->attrName   = attrName;
+    block->attrLength = attrLength;
+    block->attrType   = attrType;
+    block->numBuckets = buckets;
 
     //copy content to the block
-	memcpy(block, &info, sizeof(HT_info));
+	// memcpy(block, &info, sizeof(HT_info));
 
-    if (BF_WriteBlock(file , 0) < 0){
+    if (BF_WriteBlock(fileDesc , BF_GetBlockCounter(fileDesc) - 1) < 0) {
 		BF_PrintError("Error writing block back");
 		return -1;
 	}
 
-	for (int i = 1; i <= buckets ; i++) {
-		BlockInit(file/*,i*/);
+	for (int i = 1 ; i <= buckets ; i++) {
+		BlockInit(fileDesc/*,i*/);
 	}
 
-	if (BF_CloseFile(file) < 0) {
+	if (BF_CloseFile(fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
 	}
