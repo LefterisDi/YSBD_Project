@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,3 +10,4 @@ int main(void){
     BF_Init();
     HT_CreateIndex("file1" , 'c' , "character" , 10 , 1);
 }
+
