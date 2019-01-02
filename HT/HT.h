@@ -5,23 +5,17 @@
 
 #include <stdbool.h>
 
-typedef struct block {
-    int           blockID;
-    struct block* nextBlock;
-} Block;
-
-typedef struct {
-    bool   inUse;
-    bool   deleted;
-    Block* firstBlock;
-} Bucket;
-
 typedef struct {
     int  id;
     char name[15];
     char surname[20];
     char address[40];
 } Record;
+
+typedef struct block {
+    int     nextBlock;
+    Record* rec;
+} Block;
 
 typedef struct {
     int      fileDesc;    /* File ID at block level                                         */
