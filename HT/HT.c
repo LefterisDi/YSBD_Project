@@ -13,8 +13,8 @@ int HashFunc(const int id, const int mask)
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
-    int file;
-    void* block;
+    int     file;
+    void*   block;
     HT_info info;
 
 	if (BF_CreateFile(fileName) < 0) {
@@ -37,10 +37,10 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
-    info.fileDesc = file;
-    info.attrName = attrName;
+    info.fileDesc   = file;
+    info.attrName   = attrName;
     info.attrLength = attrLength;
-    info.attrType = attrType;
+    info.attrType   = attrType;
     info.numBuckets = buckets;
 
 
