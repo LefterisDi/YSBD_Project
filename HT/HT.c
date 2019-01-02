@@ -91,6 +91,8 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     }
 
     free(initialBlock);
+
+    return blockID;
 }
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
@@ -185,14 +187,30 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     if (i == entries)
     {
-        BlockAdd(header_info.fileDesc,blockID,&block);
+        // Record* rec;
 
-        block->rec[0] = (Record *)malloc(sizeof(Record));
+        block->nextBlock = BlockInit(header_info.fileDesc);
 
-        block->rec[0]->id = record.id;
-        strcpy(block->rec[0]->name    , record.name);
-        strcpy(block->rec[0]->surname , record.surname);
-        strcpy(block->rec[0]->address , record.address);
+        if (BF_ReadBlock(header_info.fileDesc , block->nextBlock , (void **)&block) < 0) {
+    		BF_PrintError("Error getting block");
+    		return -1;
+    	}
+
+        // BlockAdd(header_info.fileDesc,blockID,&block);
+
+        // rec = (Record *)malloc(sizeof(Record));
+        // block->rec[0] = (Record *)malloc(sizeof(Record));
+
+        memcpy(block->rec[0], &record, sizeof(Record));
+
+        // rec->id = record.id;
+        // strcpy(rec->name    , record.name);
+        // strcpy(rec->surname , record.surname);
+        // strcpy(rec->address , record.address);
+        // block->rec[0]->id = record.id;
+        // strcpy(block->rec[0]->name    , record.name);
+        // strcpy(block->rec[0]->surname , record.surname);
+        // strcpy(block->rec[0]->address , record.address);
 
         if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
 			BF_PrintError("Error writing block back");
