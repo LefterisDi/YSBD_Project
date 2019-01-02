@@ -52,6 +52,35 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
+	for (int i = 1; i <= buckets ; i++){
+		if (BF_AllocateBlock(file) < 0) {
+			BF_PrintError("Error allocating block");
+			return -1;
+		}
+
+		if (BF_ReadBlock(file , 1 , &block) < 0) {
+			BF_PrintError("Error getting block");
+			return -1;
+		}
+
+
+		//do shit
+
+
+		//copy content to the block
+		//memcpy(block, &info, sizeof(HT_info));
+
+		if (BF_WriteBlock(file , i) < 0){
+			BF_PrintError("Error writing block back");
+			return -1;
+		}
+	}
+
+	if (BF_CloseFile(file) < 0) {
+		BF_PrintError("Error closing file");
+		return -1;
+	}
+
     return 0;
 }
 
