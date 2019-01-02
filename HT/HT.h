@@ -14,7 +14,7 @@ typedef struct {
 
 typedef struct block {
     int     nextBlock;
-    Record* rec;
+    Record** rec;
 } Block;
 
 typedef struct {
