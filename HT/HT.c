@@ -137,7 +137,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     //copy content to the block
 	// memcpy(block, &info, sizeof(HT_info));
 
-    if (BF_WriteBlock(fileDesc , BF_GetBlockCounter(fileDesc) - 1) < 0) {
+    if (BF_WriteBlock(fileDesc , 0 /*BF_GetBlockCounter(fileDesc) - 1*/) < 0) {
 		BF_PrintError("Error writing block back");
 		return -1;
 	}
