@@ -40,7 +40,7 @@ int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLen
 
 
     //copy content to the block
-	strncpy((char *)block, (char*)&info, sizeof(HT_info));
+	memcpy(block, &info, sizeof(HT_info));
 
     if (BF_WriteBlock(file , 0) < 0){
 		BF_PrintError("Error writing block back");
