@@ -183,9 +183,8 @@ int HT_CloseIndex(HT_info* header_info)
 
 int HT_InsertEntry(HT_info header_info, Record record)
 {
-    int    bucket = HashFunc(record.id, header_info.numBuckets);
-    int    blockID = bucket;
     Block* block;
+    int    blockID = HashFunc(record.id, header_info.numBuckets);
 
     while(1)
     {
@@ -194,7 +193,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
             return -1;
         }
 
-        if (block->nextBlock == -1)
+        if (block->nextBlock != -1)
             blockID = block->nextBlock;
         else
             break;
