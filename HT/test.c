@@ -3,7 +3,9 @@
 #include <string.h>
 
 #include "HT.h"
+#include "../BF/BF.h"
 
 int main(void){
-    printf("hhh\n");
+    BF_Init();
+    HT_CreateIndex("file1" , 'c' , "character" , 10 , 1);
 }

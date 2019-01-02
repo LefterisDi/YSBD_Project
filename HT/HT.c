@@ -1,6 +1,7 @@
 /* File: Ht.c */
 
 #include <string.h>
+#include <stdio.h>
 
 #include "HT.h"
 #include "../BF/BF.h"
@@ -9,7 +10,7 @@ int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLen
 {
     int file;
     void* block;
-    HT_info* info;
+    HT_info info;
 
 	if (BF_CreateFile(fileName) < 0) {
 		BF_PrintError("Error creating file");
@@ -31,19 +32,22 @@ int HT_CreateIndex(char* fileName, char  attrType, char* attrName, int   attrLen
 		return -1;
 	}
 
-    info ->fileDesc = file;
-    info ->attrName = attrName;
-    info ->attrLength = attrLength;
-    info ->attrType = attrType;
-    info ->numBuckets = buckets;
+    info.fileDesc = file;
+    info.attrName = attrName;
+    info.attrLength = attrLength;
+    info.attrType = attrType;
+    info.numBuckets = buckets;
+
 
     //copy content to the block
-    strncpy((char *)block, (char *)&info , sizeof(HT_info));
+	strncpy((char *)block, (char*)&info, sizeof(HT_info));
 
     if (BF_WriteBlock(file , 0) < 0){
 		BF_PrintError("Error writing block back");
 		return -1;
 	}
+
+    return 0;
 }
 
 HT_info* HT_OpenIndex(char* fileName)
