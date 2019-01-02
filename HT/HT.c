@@ -22,15 +22,15 @@ int BlockAdd(const int fileDesc, const int blockID, Block** block)
     (*block)->nextBlock = BF_GetBlockCounter(fileDesc) - 1;
 
     /*
-     * We write to the disk the changes of the current
-     * block before we move to the next one.
+     * We write the changes of the current block to
+     *  the disk before we move to the next one.
      */
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }
 
-    if (BF_ReadBlock(fileDesc , (*block)->nextBlock , (void **)&block) < 0) {
+    if (BF_ReadBlock(fileDesc , (*block)->nextBlock , (void **)block) < 0) {
         BF_PrintError("Error getting block");
         return -1;
     }
@@ -51,39 +51,43 @@ int BlockAdd(const int fileDesc, const int blockID, Block** block)
 
 int BlockInit(const int fileDesc, const int blockID)
 {
-	Block** initialBlock;
+	Block* initialBlock;
 	void* blockp;
 
-	initialBlock = (Block**)malloc(sizeof(Block*));
-	*initialBlock = (Block*)malloc(sizeof(Block));
+	initialBlock = (Block*)malloc(sizeof(Block));
 
     if (BF_AllocateBlock(fileDesc) < 0) {
         BF_PrintError("Error allocating block");
+        free(initialBlock);
         return -1;
     }
 
 	if (BF_ReadBlock(fileDesc , blockID , &blockp) < 0) {
 		BF_PrintError("Error getting block");
+        free(initialBlock);
 		return -1;
 	}
 
-    (*initialBlock)->nextBlock = -1;
+    initialBlock->nextBlock = -1;
 
 	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
-    (*initialBlock)->rec = (Record **)malloc(entries * sizeof(Record *));
+    initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
 
 	for (int i = 0; i < entries; i++)
     {
-        (*initialBlock)->rec[i] = NULL;
+        initialBlock->rec[i] = NULL;
     }
 
-	memcpy(blockp , *initialBlock , sizeof(Block));
+	memcpy(blockp , initialBlock , sizeof(Block));
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
+        free(initialBlock);
         return -1;
     }
+
+    free(initialBlock);
 }
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
@@ -178,7 +182,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     if (i == entries)
     {
-        BlockInit(header_info.fileDesc,blockID,&block);
+        BlockAdd(header_info.fileDesc,blockID,&block);
 
         block->rec[0] = (Record *)malloc(sizeof(Record));
 
