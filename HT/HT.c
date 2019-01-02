@@ -12,42 +12,42 @@ int HashFunc(const int id, const int mask)
     return id % mask;
 }
 
-int BlockAdd(const int fileDesc, const int blockID, Block** block)
-{
-    // if (BF_AllocateBlock(fileDesc) < 0) {
-    //     BF_PrintError("Error allocating block");
-    //     return -1;
-    // }
-
-    (*block)->nextBlock = BF_GetBlockCounter(fileDesc)/* - 1*/;
-
-    /*
-     * We write the changes of the current block to
-     *  the disk before we move to the next one.
-     */
-    if (BF_WriteBlock(fileDesc , blockID) < 0) {
-        BF_PrintError("Error writing block back");
-        return -1;
-    }
-
-    if (BF_ReadBlock(fileDesc , (*block)->nextBlock , (void **)block) < 0) {
-        BF_PrintError("Error getting block");
-        return -1;
-    }
-
-    (*block)->nextBlock = -1;
-
-    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-
-    (*block)->rec = (Record **)malloc(entries * sizeof(Record *));
-
-    int i;
-    for (i = 0; i < entries; i++)
-    {
-        // (*block)->rec[i] = (Record *)malloc(sizeof(Record));
-        (*block)->rec[i] = NULL;
-    }
-}
+// int BlockAdd(const int fileDesc, const int blockID, Block** block)
+// {
+//     // if (BF_AllocateBlock(fileDesc) < 0) {
+//     //     BF_PrintError("Error allocating block");
+//     //     return -1;
+//     // }
+//
+//     (*block)->nextBlock = BF_GetBlockCounter(fileDesc)/* - 1*/;
+//
+//     /*
+//      * We write the changes of the current block to
+//      *  the disk before we move to the next one.
+//      */
+//     if (BF_WriteBlock(fileDesc , blockID) < 0) {
+//         BF_PrintError("Error writing block back");
+//         return -1;
+//     }
+//
+//     if (BF_ReadBlock(fileDesc , (*block)->nextBlock , (void **)block) < 0) {
+//         BF_PrintError("Error getting block");
+//         return -1;
+//     }
+//
+//     (*block)->nextBlock = -1;
+//
+//     int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+//
+//     (*block)->rec = (Record **)malloc(entries * sizeof(Record *));
+//
+//     int i;
+//     for (i = 0; i < entries; i++)
+//     {
+//         // (*block)->rec[i] = (Record *)malloc(sizeof(Record));
+//         (*block)->rec[i] = NULL;
+//     }
+// }
 
 int BlockInit(const int fileDesc/*, const int blockID*/)
 {
@@ -195,54 +195,44 @@ int HT_InsertEntry(HT_info header_info, Record record)
     {
         // Record* rec;
 
-        block->nextBlock = BlockInit(header_info.fileDesc);
-        blockID = block->nextBlock;
-
-        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
-    		BF_PrintError("Error getting block");
-    		return -1;
-    	}
-
-        // BlockAdd(header_info.fileDesc,blockID,&block);
-
-        // rec = (Record *)malloc(sizeof(Record));
-        // block->rec[0] = (Record *)malloc(sizeof(Record));
-
-        memcpy(block->rec[0], &record, sizeof(Record));
-
-        // rec->id = record.id;
-        // strcpy(rec->name    , record.name);
-        // strcpy(rec->surname , record.surname);
-        // strcpy(rec->address , record.address);
-        // block->rec[0]->id = record.id;
-        // strcpy(block->rec[0]->name    , record.name);
-        // strcpy(block->rec[0]->surname , record.surname);
-        // strcpy(block->rec[0]->address , record.address);
-
-        if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
-			BF_PrintError("Error writing block back");
-			return -1;
-		}
-
-        return blockID;
+        blockID = BlockInit(header_info.fileDesc);
+        block->nextBlock = blockID;
     }
-
-    block->nextBlock = BlockInit(header_info.fileDesc);
-    blockID = block->nextBlock;
 
     if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
         BF_PrintError("Error getting block");
         return -1;
     }
 
-    memcpy(block->rec[i], &record, sizeof(Record));
+    block->rec[i % entries]->id = record.id;
+    strcpy(block->rec[i % entries]->name    , record.name);
+    strcpy(block->rec[i % entries]->surname , record.surname);
+    strcpy(block->rec[i % entries]->address , record.address);
 
-    if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
+    // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
+    if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }
 
     return blockID;
+
+    // // block->nextBlock = BlockInit(header_info.fileDesc);
+    // // blockID = block->nextBlock;
+    //
+    // if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+    //     BF_PrintError("Error getting block");
+    //     return -1;
+    // }
+    //
+    // memcpy(block->rec[i], &record, sizeof(Record));
+    //
+    // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
+    //     BF_PrintError("Error writing block back");
+    //     return -1;
+    // }
+    //
+    // return blockID;
 }
 
 int HT_DeleteEntry(HT_info header_info, void* value)
