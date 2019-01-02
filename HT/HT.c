@@ -5,6 +5,11 @@
 #include "HT.h"
 #include "../BF/BF.h"
 
+int HashFunc(const int id, const int mask)
+{
+    return id % mask;
+}
+
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
     int file;

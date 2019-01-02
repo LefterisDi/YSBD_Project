@@ -3,38 +3,51 @@
 #ifndef __HT__
 #define __HT__
 
-typedef struct{
-    int id;
+#include <stdbool.h>
+
+typedef struct block {
+    int           blockID;
+    struct block* nextBlock;
+} Block;
+
+typedef struct {
+    bool   inUse;
+    bool   deleted;
+    Block* firstBlock;
+} Bucket;
+
+typedef struct {
+    int  id;
     char name[15];
     char surname[20];
     char address[40];
 } Record;
 
 typedef struct {
-    int      fileDesc;    /* αναγνωριστικός αριθμός ανοίγματος αρχείου από το επίπεδο block           */
-    char     attrType;    /* ο τύπος του πεδίου που είναι κλειδί για το συγκεκριμένο αρχείο, 'c' ή'i' */
-    char*    attrName;    /* το όνομα του πεδίου που είναι κλειδί για το συγκεκριμένο αρχείο          */
-    int      attrLength;  /* το μέγεθος του πεδίου που είναι κλειδί για το συγκεκριμένο αρχείο        */
-    long int numBuckets;  /* το πλήθος των “κάδων” του αρχείου κατακερματισμού                        */
+    int      fileDesc;    /* File ID at block level                                         */
+    char     attrType;    /* Type of field that is the Key for the current file: 'c' or 'i' */
+    char*    attrName;    /* Name of field that is the Key for the current file             */
+    int      attrLength;  /* Size of field that is the Key for the current file             */
+    long int numBuckets;  /* Number of "buckets" of the hashing file                        */
 } HT_info;
 
-int HT_CreateIndex( char* fileName,   /* όνομα αρχείου                   */
-                    char  attrType,   /* τύπος πεδίου-κλειδιού: 'c', 'i' */
-                    char* attrName,   /* όνομα πεδίου-κλειδιού           */
-                    int   attrLength, /* μήκος πεδίου-κλειδιού           */
-                    int   buckets     /* αριθμός κάδων κατακερματισμού   */ );
+int HT_CreateIndex( char* fileName,   /* File name                */
+                    char  attrType,   /* Key-field Type: 'c', 'i' */
+                    char* attrName,   /* Key-field Name           */
+                    int   attrLength, /* Key-field Length         */
+                    int   buckets     /* Number of buckets        */ );
 
 HT_info* HT_OpenIndex( char* fileName );
 
 int HT_CloseIndex( HT_info* header_info );
 
-int HT_InsertEntry( HT_info header_info, /* επικεφαλίδα του αρχείου*/
-                    Record  record       /* δομή που προσδιορίζει την εγγραφή */ );
+int HT_InsertEntry( HT_info header_info, /* File header       */
+                    Record  record       /* Record definition */ );
 
-int HT_DeleteEntry( HT_info header_info, /* επικεφαλίδα του αρχείου*/
-                    void*   value        /* τιμή του πεδίου-κλειδιού προς διαγραφή */ );
+int HT_DeleteEntry( HT_info header_info, /* File header                      */
+                    void*   value        /* Value of Key-field to be deleted */ );
 
-int HT_GetAllEntries( HT_info header_info, /* επικεφαλίδα του αρχείου */
-                      void*   value        /* τιμή του πεδίου-κλειδιού προς αναζήτηση */ );
+int HT_GetAllEntries( HT_info header_info, /* File header                       */
+                      void*   value        /* Value of Key-field to be searched */ );
 
 #endif // __HT__
