@@ -14,12 +14,12 @@ int HashFunc(const int id, const int mask)
 
 int BlockAdd(const int fileDesc, const int blockID, Block** block)
 {
-    if (BF_AllocateBlock(fileDesc) < 0) {
-        BF_PrintError("Error allocating block");
-        return -1;
-    }
+    // if (BF_AllocateBlock(fileDesc) < 0) {
+    //     BF_PrintError("Error allocating block");
+    //     return -1;
+    // }
 
-    (*block)->nextBlock = BF_GetBlockCounter(fileDesc) - 1;
+    (*block)->nextBlock = BF_GetBlockCounter(fileDesc)/* - 1*/;
 
     /*
      * We write the changes of the current block to
@@ -49,10 +49,11 @@ int BlockAdd(const int fileDesc, const int blockID, Block** block)
     }
 }
 
-int BlockInit(const int fileDesc, const int blockID)
+int BlockInit(const int fileDesc/*, const int blockID*/)
 {
 	Block* initialBlock;
 	void* blockp;
+    int blockID;
 
 	initialBlock = (Block*)malloc(sizeof(Block));
 
@@ -61,6 +62,8 @@ int BlockInit(const int fileDesc, const int blockID)
         free(initialBlock);
         return -1;
     }
+
+    blockID = BF_GetBlockCounter(fileDesc) - 1;
 
 	if (BF_ReadBlock(fileDesc , blockID , &blockp) < 0) {
 		BF_PrintError("Error getting block");
@@ -131,8 +134,8 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
-	for (int i = 1; i <= buckets ; i++){
-		BlockInit(file,i);
+	for (int i = 1; i <= buckets ; i++) {
+		BlockInit(file/*,i*/);
 	}
 
 	if (BF_CloseFile(file) < 0) {
