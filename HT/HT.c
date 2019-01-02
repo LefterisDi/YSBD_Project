@@ -156,6 +156,11 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
 HT_info* HT_OpenIndex(char* fileName)
 {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+		BF_PrintError("Error getting block");
+		return -1;
+	}
+    
 
 }
 
