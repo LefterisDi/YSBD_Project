@@ -264,7 +264,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             return -1;
         }
 
-        
+
 
         blockID = block->nextBlock;
     }
