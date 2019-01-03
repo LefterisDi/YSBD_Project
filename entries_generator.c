@@ -10,7 +10,12 @@ int main(int argc, char const *argv[])
 {
     FILE* gen_fp;
 
-    int entries = atoi(argv[1]);
+    int entries;
+
+    if (argc < 2)
+        entries = rand() % 1000;
+    else
+        entries = atoi(argv[1]);
 
     gen_fp = fopen("entries.txt", "w");
     if (gen_fp == NULL)
