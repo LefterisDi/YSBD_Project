@@ -277,14 +277,14 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // }
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 15\n");
-    printf("I : %d" , i);
+    printf("I : %d\n" , i);
     if (i == entries)
     {
         // Record* rec;
         printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
         blockID = BlockInit(header_info.fileDesc);
-        printf("D: %d", BF_GetBlockCounter(header_info.fileDesc));
+        printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc));
         block->nextBlock = blockID;
     }
 
