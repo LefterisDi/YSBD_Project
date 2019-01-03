@@ -6,10 +6,11 @@
 #include "HT.h"
 #include "../BF/BF.h"
 
-int main(void){
-
+int main(void)
+{
     HT_info* info;
     Record rec , rec2 , rec3 , rec4 , rec5 , rec6 , rec7;
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
     rec.id = 1;
     strcpy(rec.name , "Mitsos");
@@ -46,19 +47,21 @@ int main(void){
     strcpy(rec7.surname , "Alitiz");
     strcpy(rec7.address , "House of your mother");
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'c' , "character" , 10 , 3);
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
     info = HT_OpenIndex("file1");
-    printf("%d\n",BF_GetBlockCounter(info->fileDesc));
-    printf("%d\n" , HT_InsertEntry(*info,rec));
-    printf("%d\n" , HT_InsertEntry(*info,rec2));
-    printf("%d\n" , HT_InsertEntry(*info,rec3));
-    printf("%d\n" , HT_InsertEntry(*info,rec4));
-    printf("%d\n" , HT_InsertEntry(*info,rec5));
-    printf("%d\n" , HT_InsertEntry(*info,rec6));
-    printf("%d\n" , HT_InsertEntry(*info,rec7));
+    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
+    printf("INSERTED 1 = %d\n" , HT_InsertEntry(*info,rec));
+    printf("INSERTED 2 = %d\n" , HT_InsertEntry(*info,rec2));
+    printf("INSERTED 3 = %d\n" , HT_InsertEntry(*info,rec3));
+    printf("INSERTED 4 = %d\n" , HT_InsertEntry(*info,rec4));
+    printf("INSERTED 5 = %d\n" , HT_InsertEntry(*info,rec5));
+    printf("INSERTED 6 = %d\n" , HT_InsertEntry(*info,rec6));
+    printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
 
-    printf("%d\n",BF_GetBlockCounter(info->fileDesc));
-    
+    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
+
 }
-

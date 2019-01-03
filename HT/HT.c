@@ -82,6 +82,8 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
+    printf("BLOCKID FROM BLOCKINIT = %d\n",blockID);
+
 	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
         // free(initialBlock);
@@ -144,8 +146,9 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.numBuckets = buckets;
 
     block->fileDesc   = fileDesc;
-    block->attrName   = (char *)malloc(sizeof(attrName));
-    strcpy(block->attrName,attrName);
+    block->attrName   = attrName;
+    // block->attrName   = (char *)malloc(sizeof(attrName));
+    // strcpy(block->attrName,attrName);
     block->attrLength = attrLength;
     block->attrType   = attrType;
     block->numBuckets = buckets;
@@ -201,7 +204,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets);
-    printf("%d\n",entries);
+    printf("ENTRIES = %d\n",entries);
+    printf("BLOCKID = %d\n",blockID);
     int    i;
     bool   entryExists = true;
 
@@ -246,6 +250,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         {
             printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
             blockID = block->nextBlock;
+            printf("BLOCKID = %d\n",blockID);
         }
         else
         {
@@ -253,6 +258,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
             break;
         }
     } // while
+    printf("BLOCKID = %d\n",blockID);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 14\n");
     // while(1)
@@ -286,6 +292,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         blockID = BlockInit(header_info.fileDesc);
         printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc));
         block->nextBlock = blockID;
+        printf("BLOCKID = %d\n",blockID);
     }
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
@@ -312,6 +319,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         BF_PrintError("Error writing block back");
         return -1;
     }
+    printf("BLOCKID = %d\n",blockID);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
 
     return blockID;
