@@ -5,11 +5,28 @@
 #include <stdlib.h>
 
 #include "HT.h"
+// #include "HashFuncs.h"
 #include "../BF/BF.h"
 
 int HashFunc(const int id, const int mask)
 {
     return id % mask;
+}
+
+int strtoi(const char* str)
+{
+    int i;
+    int len = strlen(str);
+
+    int key = 0;
+
+    for(i = 0; i < len; i++)
+    {
+        key = (key << 5) | (key >> 27);
+        key += (unsigned int) str[i];
+    }
+
+    return key;
 }
 
 // int BlockAdd(const int fileDesc, const int blockID, Block** block)
@@ -72,6 +89,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 	}
 
     // initialBlock->nextBlock = -1;
+    block->nextBlock = -1;
 
 	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
@@ -92,7 +110,6 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     }
 
     // free(initialBlock);
-
     return blockID;
 }
 
@@ -260,8 +277,21 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 {
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-    int    blockID = HashFunc(*(int *)value , header_info.numBuckets);
+    int    blockID;
+    int    pkey;
 
+    switch (header_info.attrType)
+    {
+        case 'c':
+            pkey = strtoi((char *)value);
+        break;
+
+        case 'i':
+            pkey = *(int *)value;
+        break;
+    }
+
+    blockID = HashFunc(pkey , header_info.numBuckets);
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -272,7 +302,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
         for (int i = 0 ; i < entries ; i++)
         {
-            if (block->rec[i]->id == *(int *)value)
+            if (block->rec[i]->id == pkey)
             {
                 Block* currBlock   = block;
                 int    currBlockID = block->nextBlock;

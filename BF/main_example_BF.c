@@ -21,8 +21,13 @@
 int main(int argc, char** argv)
 {
 	Block tmpblock;
+	void* id = malloc(sizeof(int));
+	char* type = "int *";
+	*(int *)id = 4;
+	printf("ID = %d\n", *(int *)id);
 	int entries = sizeof(*(tmpblock.rec)) / sizeof(Record);
 	printf("SIZE = %d\n",entries);
+	free(id);
 	return 0;
 	int bfs [MAX_FILES];
 	int i, j;
