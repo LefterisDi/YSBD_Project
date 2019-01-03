@@ -97,9 +97,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     block->rec = (Record **)malloc(entries * sizeof(Record *));
 
     for (int i = 0 ; i < entries ; i++)
-    {
         block->rec[i] = NULL;
-    }
 
 	// memcpy(block , initialBlock , sizeof(Block));
 
@@ -340,9 +338,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                         {
                             entryIndex = 0;
                             break;
-                        }
-                    }
-                }
+                        } // if - else
+                    } // while
+                } // if
 
                 int j;
                 for (j = entryIndex ; j < entries ; j++)
@@ -402,7 +400,49 @@ int HT_DeleteEntry(HT_info header_info, void* value)
     return -1;  /* As soon as we reach this point, means that the requested entry doesn't exist in the Table */
 }
 
-int HT_GetAllEntries( HT_info header_info, void* value)
+int HT_GetAllEntries(HT_info header_info, void* value)
 {
+    Block* block;
+    int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    numOfBlocks = 0;
+    int    blockID;
+    int    pkey;
 
+    switch (header_info.attrType)
+    {
+        case 'c':
+            pkey = strtoi((char *)value);
+        break;
+
+        case 'i':
+            pkey = *(int *)value;
+        break;
+    }
+
+    blockID = HashFunc(pkey , header_info.numBuckets);
+
+    while(blockID != -1)
+    {
+        numOfBlocks++;
+
+        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
+
+        for (int i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i]->id == pkey)
+            {
+                printf("     ID: %d\n", block->rec[i]->id);
+                printf("   Name: %s\n", block->rec[i]->name);
+                printf("Surname: %s\n", block->rec[i]->surname);
+                printf("Address: %s\n", block->rec[i]->address);
+            } // if
+        } // for
+
+        blockID = block->nextBlock;
+    } // for
+
+    return numOfBlocks;
 }
