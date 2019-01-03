@@ -172,11 +172,11 @@ int HT_CloseIndex(HT_info* header_info)
 {
     int temp = header_info->fileDesc;
     free(header_info->attrName);
+    if (BF_CloseFile(temp) < 0) {
+		BF_PrintError("Error closing file");
+		return -1;
+	}
     // free(header_info);
-    // if (BF_CloseFile(temp) < 0) {
-	// 	BF_PrintError("Error closing file");
-	// 	return -1;
-	// }
     return 0;
 
 }
