@@ -201,7 +201,6 @@ int HT_InsertEntry(HT_info header_info, Record record)
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets);
-    printf("%d\n",entries);
     int    i;
     bool   entryExists = true;
 
@@ -262,7 +261,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     //         break;
     // }
 
-    printf("I : %d" , i);
+    printf("I : %d\n" , i);
     if (i == entries)
     {
         // Record* rec;
