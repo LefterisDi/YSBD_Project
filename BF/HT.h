@@ -13,7 +13,7 @@ typedef struct {
 } Record;
 
 typedef struct block {
-    int      nextBlock;
+    int     nextBlock;
     Record** rec;
 } Block;
 

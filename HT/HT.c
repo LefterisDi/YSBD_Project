@@ -5,11 +5,28 @@
 #include <stdlib.h>
 
 #include "HT.h"
+// #include "HashFuncs.h"
 #include "../BF/BF.h"
 
 int HashFunc(const int id, const int mask)
 {
     return id % mask;
+}
+
+int strtoi(const char* str)
+{
+    int i;
+    int len = strlen(str);
+
+    int key = 0;
+
+    for(i = 0; i < len; i++)
+    {
+        key = (key << 5) | (key >> 27);
+        key += (unsigned int) str[i];
+    }
+
+    return key;
 }
 
 // int BlockAdd(const int fileDesc, const int blockID, Block** block)
@@ -72,16 +89,15 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 	}
 
     // initialBlock->nextBlock = -1;
+    block->nextBlock = -1;
 
 	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
     // initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
     block->rec = (Record **)malloc(entries * sizeof(Record *));
 
-    for (int i = 0; i < entries; i++)
-    {
+    for (int i = 0 ; i < entries ; i++)
         block->rec[i] = NULL;
-    }
 
 	// memcpy(block , initialBlock , sizeof(Block));
 
@@ -92,7 +108,6 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     }
 
     // free(initialBlock);
-
     return blockID;
 }
 
@@ -129,7 +144,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.numBuckets = buckets;
 
     block->fileDesc   = fileDesc;
-    block->attrName   = malloc(sizeof(attrName));
+    block->attrName   = (char *)malloc(sizeof(attrName));
     strcpy(block->attrName,attrName);
     block->attrLength = attrLength;
     block->attrType   = attrType;
@@ -184,7 +199,10 @@ int HT_CloseIndex(HT_info* header_info)
 int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets);
+    int    i;
+    bool   entryExists = true;
 
     while(1)
     {
@@ -193,19 +211,49 @@ int HT_InsertEntry(HT_info header_info, Record record)
             return -1;
         }
 
+        for (i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i] == NULL)
+            {
+                entryExists = false;
+                break;
+            }
+
+            if (block->rec[i]->id == record.id)
+            {
+                return -1;
+            } // if
+        } // for
+
+        if (!entryExists)
+            break;
+
         if (block->nextBlock != -1)
             blockID = block->nextBlock;
         else
             break;
-    }
+    } // while
 
-    int i;
-    int entries = sizeof(*(block->rec)) / sizeof(Record);
-    for (i = 0; i < entries; i++)
-    {
-        if (block->rec[i] == NULL)
-            break;
-    }
+    // while(1)
+    // {
+    //     if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+    //         BF_PrintError("Error getting block");
+    //         return -1;
+    //     }
+    //
+    //     if (block->nextBlock != -1)
+    //         blockID = block->nextBlock;
+    //     else
+    //         break;
+    // }
+    //
+    // int i;
+    // // int entries = sizeof(*(block->rec)) / sizeof(Record);
+    // for (i = 0 ; i < entries ; i++)
+    // {
+    //     if (block->rec[i] == NULL)
+    //         break;
+    // }
 
     if (i == entries)
     {
@@ -220,10 +268,14 @@ int HT_InsertEntry(HT_info header_info, Record record)
         return -1;
     }
 
-    block->rec[i % entries]->id = record.id;
-    strcpy(block->rec[i % entries]->name    , record.name);
-    strcpy(block->rec[i % entries]->surname , record.surname);
-    strcpy(block->rec[i % entries]->address , record.address);
+    int index = i % entries;
+
+    block->rec[index] = (Record *)malloc(sizeof(Record));
+
+    block->rec[index]->id = record.id;
+    strcpy(block->rec[index]->name    , record.name);
+    strcpy(block->rec[index]->surname , record.surname);
+    strcpy(block->rec[index]->address , record.address);
 
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
     if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
@@ -253,10 +305,182 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
 int HT_DeleteEntry(HT_info header_info, void* value)
 {
+    Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    blockID;
+    int    pkey;
 
+    switch (header_info.attrType)
+    {
+        case 'c':
+            pkey = strtoi((char *)value);
+        break;
+
+        case 'i':
+            pkey = *(int *)value;
+        break;
+    }
+
+    blockID = HashFunc(pkey , header_info.numBuckets);
+
+    for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
+    {
+        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
+
+        for (int i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i] == NULL)
+                return -1;
+
+            if (block->rec[i]->id == pkey)
+            {
+                Block* currBlock   = block;
+                int    currBlockID = block->nextBlock;
+                int    prevBlockID = blockID;
+                int    entryIndex  = i + 1;
+                // int    currBlockID = blockID;
+
+                free(block->rec[i]);
+                block->rec[i] = NULL;
+
+                // if (block->nextBlock == -1 && blockIndex != 0)
+                // {
+                //
+                // }
+
+                /*
+                 * We first check if there is only one block, which we
+                 * shouldn't delete and then, we search for the last block.
+                 */
+                if (currBlockID != -1)
+                {
+                    while(1)
+                    {
+                        if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
+                            BF_PrintError("Error getting block");
+                            return -1;
+                        }
+
+                        if (currBlock->nextBlock != -1)
+                        {
+                            prevBlockID = currBlockID;
+                            currBlockID = currBlock->nextBlock;
+                        }
+                        else
+                        {
+                            entryIndex = 0;
+                            break;
+                        } // if - else
+                    } // while
+                } // if
+
+                int j;
+                for (j = entryIndex ; j < entries ; j++)
+                    if (currBlock->rec[j] == NULL)
+                        break;
+
+                block->rec[i] = currBlock->rec[j-1];
+
+                // if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+                //     BF_PrintError("Error writing block back");
+                //     return -1;
+                // }
+
+                currBlock->rec[j-1] = NULL;
+
+                /*
+                 * If moved entry was the only one in the block, means that
+                 * it is now empty and should be removed only if it is not
+                 * the first block.
+                 */
+                if (j == 1 && blockIndex != 0)
+                {
+                    if (prevBlockID == blockID)
+                        block->nextBlock = -1;
+                    else
+                    {
+                        Block* tmpBlock;
+
+                        if (BF_ReadBlock(header_info.fileDesc , prevBlockID , (void **)&tmpBlock) < 0) {
+                            BF_PrintError("Error getting block");
+                            return -1;
+                        }
+
+                        tmpBlock->nextBlock = -1;
+
+                        if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
+                            BF_PrintError("Error writing block back");
+                            return -1;
+                        }
+                    }
+                    free(currBlock->rec);
+                }
+
+                if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+                    BF_PrintError("Error writing block back");
+                    return -1;
+                }
+
+                return 0;
+
+            } // if
+        } // for
+
+        blockID = block->nextBlock;
+    } // for
+
+    return -1;  /* As soon as we reach this point, means that the requested entry doesn't exist in the Table */
 }
 
-int HT_GetAllEntries( HT_info header_info, void* value)
+int HT_GetAllEntries(HT_info header_info, void* value)
 {
+    Block* block;
+    int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    numOfBlocks = 0;
+    int    blockID;
+    int    pkey;
 
+    switch (header_info.attrType)
+    {
+        case 'c':
+            pkey = strtoi((char *)value);
+        break;
+
+        case 'i':
+            pkey = *(int *)value;
+        break;
+    }
+
+    blockID = HashFunc(pkey , header_info.numBuckets);
+
+    while(blockID != -1)
+    {
+        numOfBlocks++;
+
+        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
+
+        for (int i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i] != NULL)
+                return -1;
+
+            if (block->rec[i]->id == pkey)
+            {
+                printf("     ID: %d\n", block->rec[i]->id);
+                printf("   Name: %s\n", block->rec[i]->name);
+                printf("Surname: %s\n", block->rec[i]->surname);
+                printf("Address: %s\n", block->rec[i]->address);
+            } // if
+        } // for
+
+        blockID = block->nextBlock;
+    } // while
+
+    return numOfBlocks;
 }
