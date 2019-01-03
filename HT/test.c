@@ -61,6 +61,7 @@ int main(void)
     printf("INSERTED 5 = %d\n" , HT_InsertEntry(*info,rec5));
     printf("INSERTED 6 = %d\n" , HT_InsertEntry(*info,rec6));
     printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
+    printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
 
     printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
 
