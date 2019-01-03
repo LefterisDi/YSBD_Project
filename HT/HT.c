@@ -205,36 +205,56 @@ int HT_InsertEntry(HT_info header_info, Record record)
     int    i;
     bool   entryExists = true;
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
     {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
             BF_PrintError("Error getting block");
             return -1;
         }
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
         for (i = 0 ; i < entries ; i++)
         {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
             if (block->rec[i] == NULL)
             {
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
                 entryExists = false;
                 break;
             }
 
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
             if (block->rec[i]->id == record.id)
             {
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
                 return -1;
             } // if
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
         } // for
 
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
         if (!entryExists)
+        {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
             break;
+        }
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
 
         if (block->nextBlock != -1)
+        {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
             blockID = block->nextBlock;
+        }
         else
+        {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 13\n");
             break;
+        }
     } // while
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 14\n");
     // while(1)
     // {
     //     if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
@@ -256,35 +276,43 @@ int HT_InsertEntry(HT_info header_info, Record record)
     //         break;
     // }
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 15\n");
     printf("I : %d" , i);
     if (i == entries)
     {
         // Record* rec;
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
         blockID = BlockInit(header_info.fileDesc);
         printf("D: %d", BF_GetBlockCounter(header_info.fileDesc));
         block->nextBlock = blockID;
     }
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
     if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 18\n");
         BF_PrintError("Error getting block");
         return -1;
     }
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 19\n");
 
     int index = i % entries;
 
     block->rec[index] = (Record *)malloc(sizeof(Record));
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 20\n");
 
     block->rec[index]->id = record.id;
     strcpy(block->rec[index]->name    , record.name);
     strcpy(block->rec[index]->surname , record.surname);
     strcpy(block->rec[index]->address , record.address);
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 21\n");
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
     if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
 
     return blockID;
 
