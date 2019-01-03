@@ -199,7 +199,10 @@ int HT_CloseIndex(HT_info* header_info)
 int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets);
+    int    i;
+    bool   entryExists = true;
 
     while(1)
     {
@@ -208,20 +211,49 @@ int HT_InsertEntry(HT_info header_info, Record record)
             return -1;
         }
 
+        for (i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i] == NULL)
+            {
+                entryExists = false;
+                break;
+            }
+
+            if (block->rec[i]->id == record.id)
+            {
+                return -1;
+            } // if
+        } // for
+
+        if (!entryExists)
+            break;
+
         if (block->nextBlock != -1)
             blockID = block->nextBlock;
         else
             break;
-    }
+    } // while
 
-    int i;
-    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-    // int entries = sizeof(*(block->rec)) / sizeof(Record);
-    for (i = 0 ; i < entries ; i++)
-    {
-        if (block->rec[i] == NULL)
-            break;
-    }
+    // while(1)
+    // {
+    //     if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+    //         BF_PrintError("Error getting block");
+    //         return -1;
+    //     }
+    //
+    //     if (block->nextBlock != -1)
+    //         blockID = block->nextBlock;
+    //     else
+    //         break;
+    // }
+    //
+    // int i;
+    // // int entries = sizeof(*(block->rec)) / sizeof(Record);
+    // for (i = 0 ; i < entries ; i++)
+    // {
+    //     if (block->rec[i] == NULL)
+    //         break;
+    // }
 
     if (i == entries)
     {
@@ -300,6 +332,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
         for (int i = 0 ; i < entries ; i++)
         {
+            if (block->rec[i] == NULL)
+                return -1;
+
             if (block->rec[i]->id == pkey)
             {
                 Block* currBlock   = block;
@@ -432,6 +467,9 @@ int HT_GetAllEntries(HT_info header_info, void* value)
 
         for (int i = 0 ; i < entries ; i++)
         {
+            if (block->rec[i] != NULL)
+                return -1;
+
             if (block->rec[i]->id == pkey)
             {
                 printf("     ID: %d\n", block->rec[i]->id);
@@ -442,7 +480,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         } // for
 
         blockID = block->nextBlock;
-    } // for
+    } // while
 
     return numOfBlocks;
 }
