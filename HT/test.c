@@ -16,32 +16,32 @@ int main(void){
     strcpy(rec.surname , "Alitiz");
     strcpy(rec.address , "House of your mother");
 
-    rec2.id = 2;
+    rec2.id = 4;
     strcpy(rec2.name , "Mitsos");
     strcpy(rec2.surname , "Alitiz");
     strcpy(rec2.address , "House of your mother");
 
-    rec3.id = 3;
+    rec3.id = 7;
     strcpy(rec3.name , "Mitsos");
     strcpy(rec3.surname , "Alitiz");
     strcpy(rec3.address , "House of your mother");
 
-    rec4.id = 4;
+    rec4.id = 10;
     strcpy(rec4.name , "Mitsos");
     strcpy(rec4.surname , "Alitiz");
     strcpy(rec4.address , "House of your mother");
 
-    rec5.id = 5;
+    rec5.id = 13;
     strcpy(rec5.name , "Mitsos");
     strcpy(rec5.surname , "Alitiz");
     strcpy(rec5.address , "House of your mother");
 
-    rec6.id = 6;
+    rec6.id = 16;
     strcpy(rec6.name , "Mitsos");
     strcpy(rec6.surname , "Alitiz");
     strcpy(rec6.address , "House of your mother");
 
-    rec7.id = 7;
+    rec7.id = 19;
     strcpy(rec7.name , "Mitsos");
     strcpy(rec7.surname , "Alitiz");
     strcpy(rec7.address , "House of your mother");
