@@ -8,7 +8,7 @@ typedef struct {
     int blockId; /*The block to which the record was inserted in the primary index*/
 } SecondaryRecord;
 
-typedef struct block {
+typedef struct secondaryBlock {
     int               nextBlock;
     SecondaryRecord** rec;
 } SecondaryBlock;
@@ -24,7 +24,8 @@ typedef struct {
 int SHT_CreateSecondaryIndex( char* sfileName,   /* File name                */
                      char* attrName,   /* Key-field Name           */
                      int   attrLength, /* Key-field Length         */
-                     int   buckets     /* Number of buckets        */ );
+                     int   buckets,     /* Number of buckets        */ 
+                     char* primaryFileName /*Primary index name*/);
 
 SHT_info* SHT_OpenSecondaryIndex( char* sfileName );
 
@@ -33,7 +34,7 @@ int SHT_CloseSecondaryIndex( SHT_info* header_info );
 int SHT_SecondaryInsertEntry( SHT_info header_info, /* File header       */
                               SecondaryRecord  record       /* Record definition */ );
 
-int HT_GetAllEntries( SHT_info header_info_sht, /* Secondary File header  */
+int SHT_GetAllEntries( SHT_info header_info_sht, /* Secondary File header  */
                       HT_info header_info_ht ,    /* Primary File header */
                       void* value /* Value of Key-field to be searched */ );
 
