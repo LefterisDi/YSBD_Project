@@ -188,15 +188,14 @@ HT_info* HT_OpenIndex(char* fileName)
 
 int HT_CloseIndex(HT_info* header_info)
 {
-    int temp = header_info->fileDesc;
-    free(header_info->attrName);
-    if (BF_CloseFile(temp) < 0) {
+    // int temp = header_info->fileDesc;
+    // free(header_info->attrName);
+    if (BF_CloseFile(header_info->fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
 	}
     // free(header_info);
     return 0;
-
 }
 
 int HT_InsertEntry(HT_info header_info, Record record)

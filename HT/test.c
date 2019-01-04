@@ -63,6 +63,14 @@ int main(void)
     printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
     printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
 
-    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
+    printf("DELETE 1 = %d\n" , HT_DeleteEntry(*info,&rec.id));
+    printf("DELETE 2 = %d\n" , HT_DeleteEntry(*info,&rec2.id));
+    printf("DELETE 3 = %d\n" , HT_DeleteEntry(*info,&rec3.id));
+    printf("DELETE 4 = %d\n" , HT_DeleteEntry(*info,&rec4.id));
+    printf("DELETE 5 = %d\n" , HT_DeleteEntry(*info,&rec5.id));
+    printf("DELETE 6 = %d\n" , HT_DeleteEntry(*info,&rec6.id));
+    printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
 
+    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
+    printf("CLOSING INDEX = %d\n", HT_CloseIndex(info));
 }
