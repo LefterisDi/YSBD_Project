@@ -53,7 +53,7 @@ int main(void)
     HT_CreateIndex("file1" , 'c' , "character" , 10 , 3);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
     info = HT_OpenIndex("file1");
-    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
+    printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));
     printf("INSERTED 1 = %d\n" , HT_InsertEntry(*info,rec));
     printf("INSERTED 2 = %d\n" , HT_InsertEntry(*info,rec2));
     printf("INSERTED 3 = %d\n" , HT_InsertEntry(*info,rec3));
@@ -71,6 +71,6 @@ int main(void)
     printf("DELETE 6 = %d\n" , HT_DeleteEntry(*info,&rec6.id));
     printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
 
-    printf("BLOCK COUNTER = %d\n",BF_GetBlockCounter(info->fileDesc));
-    printf("CLOSING INDEX = %d\n", HT_CloseIndex(info));
+    printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));
+    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 }
