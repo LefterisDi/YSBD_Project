@@ -5,6 +5,7 @@
 
 #include "HT.h"
 #include "../BF/BF.h"
+#include "../SHT/SHT.h"
 
 int main(void)
 {

@@ -8,7 +8,7 @@
 #include "../HT/HT.h"
 
 
-int BlockInit(const int fileDesc)
+int SHTBlockInit(const int fileDesc)
 {
 	SecondaryBlock* block;
     int blockID;
@@ -27,9 +27,9 @@ int BlockInit(const int fileDesc)
 
     block->nextBlock = -1;
 
-	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(SecondaryRecord);
 
-    block->rec = (Record **)malloc(entries * sizeof(Record *));
+    block->rec = (SecondaryRecord **)malloc(entries * sizeof(SecondaryRecord *));
 
     for (int i = 0 ; i < entries ; i++)
         block->rec[i] = NULL;
@@ -80,7 +80,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 	}
 
     for (int i = 1 ; i <= buckets ; i++) {
-		BlockInit(fileDesc);
+		SHTBlockInit(fileDesc);
 	}
 
     if (BF_CloseFile(fileDesc) < 0) {
