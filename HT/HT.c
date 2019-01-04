@@ -211,6 +211,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets) + 1;
     printf("ENTRIES = %d\n",entries);
+    printf("REC ID = %d\n", record.id);
     printf("BLOCKID = %d\n",blockID);
     int    i;
     bool   entryExists = true;
@@ -353,36 +354,48 @@ int BlockDelete(HT_info* header_info)
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     for (int i = 0; i < header_info->numBuckets; i++)
     {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         int blockID = i + 1;
 
         while (blockID != -1)
         {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
             if (BF_ReadBlock(header_info->fileDesc , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (block->rec[i] == NULL)
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
+                if (block->rec[j] == NULL)
                     break;
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
 
-                free(block->rec[i]);
+                free(block->rec[j]);
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
             } // for
 
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
             free(block->rec);
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
 
             if (BF_WriteBlock(header_info->fileDesc , blockID) < 0) {
                 BF_PrintError("Error writing block back");
                 return -1;
             }
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
             blockID = block->nextBlock;
         } // while
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
     return 0;
 }
 
@@ -532,16 +545,23 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         case 'c':
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
             pkey = strtoi((char *)value);
+            printf("GIVEN ID STR = %s\n", (char *)value);
         break;
 
         case 'i':
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
             pkey = *(int *)value;
+            printf("GIVEN ID INT = %d\n", *(int *)value);
+        break;
+
+        default:
+            printf("ATRR TYPE = %c\n", header_info.attrType);
         break;
     }
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
+    printf("PKEY = %d\n", pkey);
     printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
 

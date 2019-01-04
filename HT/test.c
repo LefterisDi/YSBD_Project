@@ -12,6 +12,77 @@ int main(void)
     Record rec , rec2 , rec3 , rec4 , rec5 , rec6 , rec7;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
+    FILE* gen_fp;
+    gen_fp = fopen("entries.txt","r");
+    if (gen_fp == NULL) {
+        perror("Cannot open file");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
+    BF_Init();
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
+    HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
+    info = HT_OpenIndex("file1");
+
+    char* line = NULL;
+    int cntr = 0;
+
+    while (1)
+    {
+        char* token = NULL;
+        size_t len = 0;
+
+        fscanf(gen_fp, "{%d",&rec.id);
+
+        if(getline(&line, &len, gen_fp) == -1) {
+            break;
+        }
+
+        // printf("LINE = %s\n",line);
+
+        strtok(line,"\"");
+        token = strtok(NULL,"\"");
+        // printf("TOKEN = %s\n",token);
+        strcpy(rec.name, token);
+
+        strtok(NULL,"\"");
+        token = strtok(NULL,"\"");
+        // printf("TOKEN = %s\n",token);
+        strcpy(rec.surname, token);
+
+        strtok(NULL,"\"");
+        token = strtok(NULL,"\"");
+        // printf("TOKEN = %s\n",token);
+        strcpy(rec.address, token);
+
+        printf("ID = %d\n",rec.id);
+        printf("NAME = %s\n",rec.name);
+        printf("SURNAME = %s\n",rec.surname);
+        printf("ADDRESS = %s\n",rec.address);
+
+        cntr++;
+        printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
+        printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
+
+
+
+        // return 0;
+        if (feof(gen_fp))
+            break;
+            
+        free(line);
+        line = NULL;
+    }
+    fclose(gen_fp);
+
+
+    printf("BLOCK DELETE = %d\n", BlockDelete(info));
+    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+
+    return 0;
+
     rec.id = 3;
     strcpy(rec.name , "Mitsos");
     strcpy(rec.surname , "Alitiz");
@@ -50,7 +121,7 @@ int main(void)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'c' , "character" , 10 , 3);
+    HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
     info = HT_OpenIndex("file1");
     printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));
