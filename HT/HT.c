@@ -204,7 +204,7 @@ int HT_CloseIndex(HT_info* header_info)
     // free(header_info);
     return 0;
 }
-
+#include <unistd.h>
 int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
@@ -215,6 +215,9 @@ int HT_InsertEntry(HT_info header_info, Record record)
     printf("BLOCKID = %d\n",blockID);
     int    i;
     bool   entryExists = true;
+
+    printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
+    usleep(500000);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
@@ -298,6 +301,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
         blockID = BlockInit(header_info.fileDesc);
         printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc));
+        // sleep(1);
         block->nextBlock = blockID;
         printf("BLOCKID = %d\n",blockID);
     }
