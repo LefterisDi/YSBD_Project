@@ -203,7 +203,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-    int    blockID = HashFunc(record.id, header_info.numBuckets);
+    int    blockID = HashFunc(record.id, header_info.numBuckets) + 1;
     printf("ENTRIES = %d\n",entries);
     printf("BLOCKID = %d\n",blockID);
     int    i;
@@ -360,7 +360,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         break;
     }
 
-    blockID = HashFunc(pkey , header_info.numBuckets);
+    blockID = HashFunc(pkey , header_info.numBuckets) + 1;
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -493,7 +493,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         break;
     }
 
-    blockID = HashFunc(pkey , header_info.numBuckets);
+    blockID = HashFunc(pkey , header_info.numBuckets) + 1;
 
     while(blockID != -1)
     {

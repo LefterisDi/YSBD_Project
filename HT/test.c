@@ -12,7 +12,7 @@ int main(void)
     Record rec , rec2 , rec3 , rec4 , rec5 , rec6 , rec7;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
-    rec.id = 1;
+    rec.id = 3;
     strcpy(rec.name , "Mitsos");
     strcpy(rec.surname , "Alitiz");
     strcpy(rec.address , "House of your mother");
