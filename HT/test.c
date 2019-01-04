@@ -10,6 +10,7 @@
 int main(void)
 {
     HT_info* info;
+    SHT_info* sinfo;
     Record rec , rec2 , rec3 , rec4 , rec5 , rec6 , rec7;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
@@ -52,6 +53,7 @@ int main(void)
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'c' , "character" , 10 , 3);
+    SHT_CreateSecondaryIndex("file" , "character" , 10 , 3 , "file1");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
     info = HT_OpenIndex("file1");
     printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));

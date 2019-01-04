@@ -24,7 +24,8 @@ typedef struct {
 int SHT_CreateSecondaryIndex( char* sfileName,   /* File name                */
                      char* attrName,   /* Key-field Name           */
                      int   attrLength, /* Key-field Length         */
-                     int   buckets     /* Number of buckets        */ );
+                     int   buckets,     /* Number of buckets        */ 
+                     char* primaryFileName /*Primary index name*/);
 
 SHT_info* SHT_OpenSecondaryIndex( char* sfileName );
 

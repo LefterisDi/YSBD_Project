@@ -43,7 +43,7 @@ int SHTBlockInit(const int fileDesc)
     return blockID;
 }
 
-int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength , int buckets){
+int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength , int buckets , char* primaryFileName){
 
     int      fileDesc;
     SHT_info* block;
@@ -72,6 +72,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     block->attrName   = attrName;
     block->attrLength = attrLength;
     block->numBuckets = buckets;
+    block->fileName = primaryFileName;
 
 
     if (BF_WriteBlock(fileDesc , 0 ) < 0) {
