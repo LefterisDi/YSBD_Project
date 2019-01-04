@@ -66,6 +66,14 @@ int main(void)
 
         cntr++;
         printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
+
+        printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
+        printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
+        printf("INFO FROM MAIN: AttrName = %s\n", info->attrName);
+        printf("INFO FROM MAIN: AttrLen  = %d\n", info->attrLength);
+        printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
+        printf("REC ID FROM MAIN = %d\n", rec.id);
+
         printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
 

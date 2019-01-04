@@ -217,7 +217,12 @@ int HT_InsertEntry(HT_info header_info, Record record)
     bool   entryExists = true;
 
     printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
-    usleep(500000);
+    printf("INFO FROM INSERT ENTRIES 1: FileDesc = %d\n", header_info.fileDesc);
+    printf("INFO FROM INSERT ENTRIES 1: AttrType = %c\n", header_info.attrType);
+    printf("INFO FROM INSERT ENTRIES 1: AttrName = %s\n", header_info.attrName);
+    printf("INFO FROM INSERT ENTRIES 1: AttrLen  = %d\n", header_info.attrLength);
+    printf("INFO FROM INSERT ENTRIES 1: Buckets  = %ld\n", header_info.numBuckets);
+    // usleep(150000);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
@@ -332,6 +337,12 @@ int HT_InsertEntry(HT_info header_info, Record record)
     }
     printf("BLOCKID = %d\n",blockID);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
+
+    printf("INFO FROM INSERT ENTRIES 2: FileDesc = %d\n", header_info.fileDesc);
+    printf("INFO FROM INSERT ENTRIES 2: AttrType = %c\n", header_info.attrType);
+    printf("INFO FROM INSERT ENTRIES 2: AttrName = %s\n", header_info.attrName);
+    printf("INFO FROM INSERT ENTRIES 2: AttrLen  = %d\n", header_info.attrLength);
+    printf("INFO FROM INSERT ENTRIES 2: Buckets  = %ld\n", header_info.numBuckets);
 
     return blockID;
 
@@ -564,6 +575,11 @@ int HT_GetAllEntries(HT_info header_info, void* value)
     }
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
+    printf("INFO FROM GET ALL ENTRIES: FileDesc = %d\n", header_info.fileDesc);
+    printf("INFO FROM GET ALL ENTRIES: AttrType = %c\n", header_info.attrType);
+    printf("INFO FROM GET ALL ENTRIES: AttrName = %s\n", header_info.attrName);
+    printf("INFO FROM GET ALL ENTRIES: AttrLen  = %d\n", header_info.attrLength);
+    printf("INFO FROM GET ALL ENTRIES: Buckets  = %ld\n", header_info.numBuckets);
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
     printf("PKEY = %d\n", pkey);
     printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
