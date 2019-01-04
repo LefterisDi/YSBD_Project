@@ -515,7 +515,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         for (int i = 0 ; i < entries ; i++)
         {
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-            if (block->rec[i] != NULL)
+            if (block->rec[i] == NULL)
                 return -1;
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
