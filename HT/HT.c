@@ -1,5 +1,6 @@
 /* File: Ht.c */
 
+#include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -112,6 +113,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     // free(initialBlock);
     return blockID;
 }
+
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
@@ -339,6 +341,44 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // }
     //
     // return blockID;
+}
+
+int BlockDelete(HT_info* header_info)
+{
+    Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+
+    for (int i = 0; i < header_info->numBuckets; i++)
+    {
+        int blockID = i + 1;
+
+        while (blockID != -1)
+        {
+            if (BF_ReadBlock(header_info->fileDesc , blockID , (void **)&block) < 0) {
+                BF_PrintError("Error getting block");
+                return -1;
+            }
+
+            for (int j = 0 ; j < entries ; j++)
+            {
+                if (block->rec[i] == NULL)
+                    break;
+
+                free(block->rec[i]);
+            } // for
+
+            free(block->rec);
+
+            if (BF_WriteBlock(header_info->fileDesc , blockID) < 0) {
+                BF_PrintError("Error writing block back");
+                return -1;
+            }
+
+            blockID = block->nextBlock;
+        } // while
+    } // for
+
+    return 0;
 }
 
 int HT_DeleteEntry(HT_info header_info, void* value)

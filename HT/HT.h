@@ -42,4 +42,6 @@ int HT_DeleteEntry( HT_info header_info, /* File header                      */
 int HT_GetAllEntries( HT_info header_info, /* File header                       */
                       void*   value        /* Value of Key-field to be searched */ );
 
+int BlockDelete(HT_info* header_info);
+
 #endif // __HT__
