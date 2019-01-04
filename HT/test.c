@@ -92,9 +92,10 @@ int main(void)
     printf("ENTRY 7: %d\n", HT_GetAllEntries(*info, &rec7.id));
     printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
     printf("ENTRY 7: %d\n", HT_GetAllEntries(*info, &rec7.id));
-    
+
     printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
 
     printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));
+    printf("BLOCK DELETE = %d\n", BlockDelete(info));
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 }
