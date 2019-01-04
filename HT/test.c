@@ -63,12 +63,36 @@ int main(void)
     printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
     printf("INSERTED 7 = %d\n" , HT_InsertEntry(*info,rec7));
 
+    printf("\n-------------------------------------------------------------------------------\n\n");
+
+    printf("ENTRY 1: %d\n", HT_GetAllEntries(*info, &rec.id));
     printf("DELETE 1 = %d\n" , HT_DeleteEntry(*info,&rec.id));
+    printf("ENTRY 1: %d\n", HT_GetAllEntries(*info, &rec.id));
+
+    printf("ENTRY 2: %d\n", HT_GetAllEntries(*info, &rec2.id));
     printf("DELETE 2 = %d\n" , HT_DeleteEntry(*info,&rec2.id));
+    printf("ENTRY 2: %d\n", HT_GetAllEntries(*info, &rec2.id));
+
+    printf("ENTRY 3: %d\n", HT_GetAllEntries(*info, &rec3.id));
     printf("DELETE 3 = %d\n" , HT_DeleteEntry(*info,&rec3.id));
+    printf("ENTRY 3: %d\n", HT_GetAllEntries(*info, &rec3.id));
+
+    printf("ENTRY 4: %d\n", HT_GetAllEntries(*info, &rec4.id));
     printf("DELETE 4 = %d\n" , HT_DeleteEntry(*info,&rec4.id));
+    printf("ENTRY 4: %d\n", HT_GetAllEntries(*info, &rec4.id));
+
+    printf("ENTRY 5: %d\n", HT_GetAllEntries(*info, &rec5.id));
     printf("DELETE 5 = %d\n" , HT_DeleteEntry(*info,&rec5.id));
+    printf("ENTRY 5: %d\n", HT_GetAllEntries(*info, &rec5.id));
+
+    printf("ENTRY 6: %d\n", HT_GetAllEntries(*info, &rec6.id));
     printf("DELETE 6 = %d\n" , HT_DeleteEntry(*info,&rec6.id));
+    printf("ENTRY 6: %d\n", HT_GetAllEntries(*info, &rec6.id));
+
+    printf("ENTRY 7: %d\n", HT_GetAllEntries(*info, &rec7.id));
+    printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
+    printf("ENTRY 7: %d\n", HT_GetAllEntries(*info, &rec7.id));
+    
     printf("DELETE 7 = %d\n" , HT_DeleteEntry(*info,&rec7.id));
 
     printf("BLOCK COUNTER = %d\n" , BF_GetBlockCounter(info->fileDesc));

@@ -481,32 +481,43 @@ int HT_GetAllEntries(HT_info header_info, void* value)
     int    blockID;
     int    pkey;
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     switch (header_info.attrType)
     {
         case 'c':
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
             pkey = strtoi((char *)value);
         break;
 
         case 'i':
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
             pkey = *(int *)value;
         break;
     }
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
+    printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
 
     while(blockID != -1)
     {
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
         numOfBlocks++;
 
         if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
             BF_PrintError("Error getting block");
             return -1;
         }
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
 
         for (int i = 0 ; i < entries ; i++)
         {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
             if (block->rec[i] != NULL)
                 return -1;
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
             if (block->rec[i]->id == pkey)
             {
@@ -514,11 +525,16 @@ int HT_GetAllEntries(HT_info header_info, void* value)
                 printf("   Name: %s\n", block->rec[i]->name);
                 printf("Surname: %s\n", block->rec[i]->surname);
                 printf("Address: %s\n", block->rec[i]->address);
+
+                return numOfBlocks;
             } // if
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
         } // for
 
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
         blockID = block->nextBlock;
     } // while
 
-    return numOfBlocks;
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 13\n");
+    return -1;
 }
