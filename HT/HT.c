@@ -167,6 +167,11 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		BlockInit(fileDesc/*,i*/);
 	}
 
+    if (BF_CloseFile(fileDesc) < 0) {
+		BF_PrintError("Error closing file");
+		return -1;
+	}
+
     return 0;
 }
 
