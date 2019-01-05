@@ -1,3 +1,5 @@
+/* File: SHT.c */
+
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
@@ -5,8 +7,6 @@
 
 #include "SHT.h"
 #include "../BF/BF.h"
-#include "../HT/HT.h"
-
 
 int SHTBlockInit(const int fileDesc)
 {
@@ -33,7 +33,6 @@ int SHTBlockInit(const int fileDesc)
 
     for (int i = 0 ; i < entries ; i++)
         block->rec[i] = NULL;
-
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
@@ -73,7 +72,6 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     block->attrLength = attrLength;
     block->numBuckets = buckets;
     block->fileName = primaryFileName;
-
 
     if (BF_WriteBlock(fileDesc , 0 ) < 0) {
 		BF_PrintError("Error writing block back");
@@ -116,5 +114,11 @@ int SHT_CloseSecondaryIndex( SHT_info* header_info ){
 		BF_PrintError("Error closing file");
 		return -1;
 	}
+
     return 0;
+}
+
+int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord record);
+{
+
 }
