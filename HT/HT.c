@@ -16,6 +16,8 @@ int HashFunc(const unsigned int id, const int mask)
     return id % mask;
 }
 
+int sdsgajd = 9;
+
 unsigned int strtoi(const char* str)
 {
     int i;
