@@ -237,84 +237,50 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 
 int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
-    Block* block;
+    SecondaryBlock* sblock;
     int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    numOfBlocks = 0;
 	int	   pkey = -1;
 
-		 // if (!strcmp(header_info.attrName , "Id"))		pkey = secRec.record.id;
-		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi(secRec.record.name);
-	else if (!strcmp(header_info.attrName , "Surname")) pkey = strtoi(secRec.record.surname);
-	else if (!strcmp(header_info.attrName , "Address")) pkey = strtoi(secRec.record.address);
+		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi((char *)value);
+	else if (!strcmp(header_info_sht.attrName , "Surname")) pkey = strtoi((char *)value);
+	else if (!strcmp(header_info_sht.attrName , "Address")) pkey = strtoi((char *)value);
 
-	int blockID = HashFunc(pkey, header_info.numBuckets) + 1;
+	int blockID = HashFunc(pkey, header_info_sht.numBuckets) + 1;
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
-    switch (header_info.attrType)
-    {
-        case 'c':
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-            pkey = strtoi((char *)value);
-            printf("GIVEN ID STR = %s\n", (char *)value);
-        break;
-
-        case 'i':
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            pkey = *(int *)value;
-            printf("GIVEN ID INT = %d\n", *(int *)value);
-        break;
-
-        default:
-            printf("ATRR TYPE = %c\n", header_info.attrType);
-        break;
-    }
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-
-    printf("INFO FROM GET ALL ENTRIES: FileDesc = %d\n", header_info.fileDesc);
-    printf("INFO FROM GET ALL ENTRIES: AttrType = %c\n", header_info.attrType);
-    printf("INFO FROM GET ALL ENTRIES: AttrName = %s\n", header_info.attrName);
-    printf("INFO FROM GET ALL ENTRIES: AttrLen  = %d\n", header_info.attrLength);
-    printf("INFO FROM GET ALL ENTRIES: Buckets  = %ld\n", header_info.numBuckets);
-    blockID = HashFunc(pkey , header_info.numBuckets) + 1;
-    printf("PKEY = %d\n", pkey);
-    printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
 
     while(blockID != -1)
     {
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
         numOfBlocks++;
 
-        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
+        if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
             BF_PrintError("Error getting block");
             return -1;
         }
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
 
         for (int i = 0 ; i < entries ; i++)
         {
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-            if (block->rec[i] == NULL)
+			bool displayEntry = false;
+
+            if (sblock->rec[i] == NULL)
                 return -1;
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
-            if (block->rec[i]->id == pkey)
+				 if (!strcmp(header_info_sht.attrName , "Name"))    if (!strcmp(sblock->rec[i]->record.name    , (char *)value))  displayEntry = true;
+			else if (!strcmp(header_info_sht.attrName , "Surname")) if (!strcmp(sblock->rec[i]->record.surname , (char *)value))  displayEntry = true;
+			else if (!strcmp(header_info_sht.attrName , "Address")) if (!strcmp(sblock->rec[i]->record.address , (char *)value))  displayEntry = true;
+
+            if (displayEntry)
             {
-                printf("     ID: %d\n", block->rec[i]->id);
-                printf("   Name: %s\n", block->rec[i]->name);
-                printf("Surname: %s\n", block->rec[i]->surname);
-                printf("Address: %s\n", block->rec[i]->address);
-
-                return numOfBlocks;
-            } // if
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
+                printf("     ID: %d\n", sblock->rec[i]->record.id);
+                printf("   Name: %s\n", sblock->rec[i]->record.name);
+                printf("Surname: %s\n", sblock->rec[i]->record.surname);
+                printf("Address: %s\n", sblock->rec[i]->record.address);
+            }
         } // for
 
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
-        blockID = block->nextBlock;
+        blockID = sblock->nextBlock;
     } // while
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 13\n");
-    return -1;
+    return numOfBlocks;
 }
