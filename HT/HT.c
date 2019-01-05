@@ -1,4 +1,4 @@
-/* File: Ht.c */
+/* File: HT.c */
 
 #include <stdbool.h>
 #include <string.h>
@@ -204,7 +204,7 @@ int HT_CloseIndex(HT_info* header_info)
     // free(header_info);
     return 0;
 }
-#include <unistd.h>
+
 int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
@@ -367,7 +367,7 @@ int BlockDelete(HT_info* header_info)
 		    BF_PrintError("Error getting block");
 		    return -1;
 	    }
-        
+
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         int blockID = i + 1;
 
@@ -405,7 +405,7 @@ int BlockDelete(HT_info* header_info)
         } // while
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
-    
+
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
     return 0;
 }

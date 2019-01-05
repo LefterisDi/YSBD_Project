@@ -1,0 +1,10 @@
+{51,"Theresa","Mullins","North Charleston"}
+{11,"Geraldo","Felix","Provo"}
+{9,"Cordelia","Copeland","Ontario"}
+{45,"Alfredo","Day","Pueblo"}
+{25,"Betty","Suarez","Santa Rosa"}
+{52,"Craig","Yang","Detroit"}
+{69,"Ira","Terrell","Gresham"}
+{74,"Iva","Sherman","Rochester"}
+{7,"Lilian","Andrade","Springfield"}
+{2,"Marylee","Gilbert","Atlanta"}
