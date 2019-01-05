@@ -259,6 +259,11 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
             return -1;
         }
 
+        if (BF_ReadBlock(header_info_sht.sfileDesc , 0 , (void **)&header_info_sht) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
+
         for (int i = 0 ; i < entries ; i++)
         {
 			bool displayEntry = false;

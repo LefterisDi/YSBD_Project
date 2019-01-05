@@ -27,7 +27,7 @@ int main(void)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
     info = HT_OpenIndex("file1");
-    SHT_CreateSecondaryIndex("sfile" , "character" , 10 , 3 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
     sinfo = SHT_OpenSecondaryIndex("sfile");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
@@ -106,6 +106,14 @@ int main(void)
         line = NULL;
     }
     fclose(gen_fp);
+
+         if (BF_ReadBlock(sinfo->sfileDesc , 0 , (void **)&sinfo) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+
+    printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Atlanta"));
+
 
 
 
