@@ -450,6 +450,10 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         case 'i':
             pkey = *(int *)value;
         break;
+
+        default:
+            pkey = 0;
+        break;
     }
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
@@ -590,6 +594,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         break;
 
         default:
+            pkey = 0;
             // printf("ATRR TYPE = %c\n", header_info.attrType);
         break;
     }
