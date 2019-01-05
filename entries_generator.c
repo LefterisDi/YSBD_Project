@@ -12,6 +12,8 @@ int main(int argc, char const *argv[])
 
     int entries;
 
+    srand(time(NULL));
+
     if (argc < 2)
         entries = rand() % 1000;
     else
@@ -23,8 +25,6 @@ int main(int argc, char const *argv[])
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
-
-    srand(time(NULL));
 
     for (int i = 0; i < entries; i++)
     {
