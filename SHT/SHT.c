@@ -129,7 +129,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     SecondaryBlock* sblock;
     int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 	unsigned int pkey = 0;
-	printf("PKEY = %d\n", pkey);
+	// printf("PKEY = %d\n", pkey);
 
 	     // if (!strcmp(header_info.attrName , "Id"))		pkey = secRec.record.id;
 	 	 if (!strcmp(header_info.attrName , "Name"))    pkey = strtoi(secRec.record.name);
