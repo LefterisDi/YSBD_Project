@@ -28,6 +28,7 @@ int main(void)
     info = HT_OpenIndex("file1");
     SHT_CreateSecondaryIndex("sfile" , "character" , 10 , 3 , "file1");
     sinfo = SHT_OpenSecondaryIndex("sfile");
+    int sFDisc = sinfo->sfileDesc;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
 
@@ -98,17 +99,16 @@ int main(void)
     }
     fclose(gen_fp);
 
-    printf("%d\n\n",info->fileDesc);
+    printf("%d\n\n",sinfo->sfileDesc);
 
 
     printf("BLOCK DELETE = %d\n", BlockDelete(info));
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-
-    if (BF_ReadBlock(sinfo->sfileDesc , 0 , (void **)&sinfo) < 0) {
+    if (BF_ReadBlock(sFDisc , 0 , (void **)&sinfo) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
-    
+
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
