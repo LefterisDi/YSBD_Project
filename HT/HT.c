@@ -94,7 +94,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     // initialBlock->nextBlock = -1;
     block->nextBlock = -1;
 
-	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
     // initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
     block->rec = (Record **)malloc(entries * sizeof(Record *));
@@ -305,7 +305,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
         blockID = BlockInit(header_info.fileDesc);
-        printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc));
+        printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc) - 1);
         // sleep(1);
         block->nextBlock = blockID;
         printf("BLOCKID = %d\n",blockID);
@@ -409,7 +409,7 @@ int BlockDelete(HT_info* header_info)
         } // while
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
-
+    
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
     return 0;
 }
