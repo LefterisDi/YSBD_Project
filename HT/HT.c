@@ -362,6 +362,12 @@ int BlockDelete(HT_info* header_info)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     for (int i = 0; i < header_info->numBuckets; i++)
     {
+
+        if (BF_ReadBlock(header_info->fileDesc , 0 , (void **)&header_info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+        
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         int blockID = i + 1;
 
