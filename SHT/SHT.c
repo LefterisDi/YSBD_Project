@@ -335,9 +335,9 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
                 	return -1;
 			}
 
-				 if (!strcmp(header_info_sht.attrName , "Name"))    { if (!strcmp(sblock->rec[i]->record.name    , (char *)value)) displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "Surname")) { if (!strcmp(sblock->rec[i]->record.surname , (char *)value)) displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "Address")) { if (!strcmp(sblock->rec[i]->record.address , (char *)value)) displayEntry = true; }
+				 if (!strcmp(header_info_sht.attrName , "Name"))    { if (!strcmp(sblock->rec[i]->record.name    , (char *)value))  displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Surname")) { if (!strcmp(sblock->rec[i]->record.surname , (char *)value))  displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Address")) { if (!strcmp(sblock->rec[i]->record.address , (char *)value))  displayEntry = true; }
 
             if (displayEntry)
             {
