@@ -98,6 +98,10 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 
     // initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
     block->rec = (Record **)malloc(entries * sizeof(Record *));
+    if (block->rec == NULL) {
+        perror("Cannot allocate memory");
+        return -1;
+    }
 
     for (int i = 0 ; i < entries ; i++)
         block->rec[i] = NULL;
@@ -316,6 +320,11 @@ int HT_InsertEntry(HT_info header_info, Record record)
     int index = i % entries;
 
     block->rec[index] = (Record *)malloc(sizeof(Record));
+    if (block->rec[index] == NULL) {
+		perror("Cannot allocate memory");
+		return -1;
+	}
+
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 20\n");
 
     block->rec[index]->id = record.id;
