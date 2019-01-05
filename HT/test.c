@@ -11,7 +11,8 @@ int main(void)
 {
     HT_info* info;
     SHT_info* sinfo;
-    Record rec , rec2 , rec3 , rec4 , rec5 , rec6 , rec7;
+    Record rec;
+    SecondaryRecord secRec;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
     FILE* gen_fp;
@@ -73,9 +74,14 @@ int main(void)
         printf("SURNAME = %s\n",rec.surname);
         printf("ADDRESS = %s\n",rec.address);
 
+
         cntr++;
 
-        printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
+        secRec.record = rec;
+        secRec.blockId = HT_InsertEntry(*info,rec);
+
+        printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
+        printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
         printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
         printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
