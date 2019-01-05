@@ -40,4 +40,6 @@ int SHT_GetAllEntries(SHT_info header_info_sht, /* Secondary File header        
                       HT_info  header_info_ht , /* Primary File header               */
                       void*    value            /* Value of Key-field to be searched */ );
 
+int SHTBlockDelete(SHT_info* header_info);
+
 #endif // __SHT__

@@ -27,7 +27,7 @@ int SHTBlockInit(const int fileDesc)
 
     block->nextBlock = -1;
 
-	int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(SecondaryRecord);
+	int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 
     block->rec = (SecondaryRecord **)malloc(entries * sizeof(SecondaryRecord *));
 	if (block->rec == NULL) {
@@ -48,7 +48,7 @@ int SHTBlockInit(const int fileDesc)
 
 int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength , int buckets , char* primaryFileName)
 {
-    int      fileDesc;
+    int       fileDesc;
     SHT_info* block;
 
 	if (BF_CreateFile(sfileName) < 0) {
@@ -71,11 +71,11 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 
-    block->sfileDesc   = fileDesc;
+    block->sfileDesc  = fileDesc;
     block->attrName   = attrName;
     block->attrLength = attrLength;
     block->numBuckets = buckets;
-    block->fileName = primaryFileName;
+    block->fileName   = primaryFileName;
 
     if (BF_WriteBlock(fileDesc , 0 ) < 0) {
 		BF_PrintError("Error writing block back");
@@ -112,7 +112,7 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 }
 
 
-int SHT_CloseSecondaryIndex( SHT_info* header_info )
+int SHT_CloseSecondaryIndex(SHT_info* header_info)
 {
     if (BF_CloseFile(header_info->sfileDesc) < 0) {
 		BF_PrintError("Error closing file");
@@ -125,18 +125,29 @@ int SHT_CloseSecondaryIndex( SHT_info* header_info )
 int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 {
     SecondaryBlock* sblock;
-    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-	int pkey    = -1;
+    int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(Record);
+	unsigned int pkey = 0;
+	// printf("PKEY = %d\n", pkey);
 
 	     // if (!strcmp(header_info.attrName , "Id"))		pkey = secRec.record.id;
 	 	 if (!strcmp(header_info.attrName , "Name"))    pkey = strtoi(secRec.record.name);
 	else if (!strcmp(header_info.attrName , "Surname")) pkey = strtoi(secRec.record.surname);
 	else if (!strcmp(header_info.attrName , "Address")) pkey = strtoi(secRec.record.address);
 
-	int blockID = HashFunc(pkey, header_info.numBuckets) + 1;
+	printf("PKEY = %u\n", pkey);
+	printf("BUCKETS BEFORE = %ld\n", header_info.numBuckets);
+	int blockID = HashFunc(pkey, header_info.numBuckets);
+	printf("BLOCKID = %d\n",blockID);
 
+	blockID++;
+	printf("BUCKETS AFTER = %ld\n", header_info.numBuckets);
+
+	printf("PKEY = %u\n", pkey);
     printf("ENTRIES = %d\n",entries);
     printf("REC ID = %d\n", secRec.record.id);
+    printf("REC NAME = %s\n", secRec.record.name);
+    printf("REC SURNAME = %s\n", secRec.record.surname);
+    printf("REC ADDRESS = %s\n", secRec.record.address);
     printf("BLOCKID = %d\n",blockID);
     int    i;
     bool   availablePos = false;
@@ -173,7 +184,8 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
         {
 			printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
             blockID = sblock->nextBlock;
-            printf("BLOCKID = %d\n",blockID);
+            printf("BLOCKID 1 = %d\n",blockID);
+			// sleep(0.5);
         }
         else
         {
@@ -184,7 +196,8 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     } // while
 
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
-    printf("BLOCKID = %d\n",blockID);
+    printf("BLOCKID 2 = %d\n",blockID);
+	// sleep(0.5);
 
     printf("I : %d\n" , i);
     if (i == entries)
@@ -193,11 +206,12 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
         blockID = SHTBlockInit(header_info.sfileDesc);
 		printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 14\n");
 
-        printf("D: %d\n", BF_GetBlockCounter(header_info.sfileDesc) - 1);
+		printf("D: %d\n", BF_GetBlockCounter(header_info.sfileDesc) - 1);
 
         sblock->nextBlock = blockID;
 
-        printf("BLOCKID = %d\n",blockID);
+        printf("BLOCKID 3 = %d\n",blockID);
+		// sleep(0.5);
     }
 
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 15\n");
@@ -215,6 +229,11 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 		return -1;
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
+
+	printf("SECONDARY ID = %d\n", secRec.record.id);
+	printf("SECONDARY NAME = %s\n", secRec.record.name);
+	printf("SECONDARY SURNAME = %s\n", secRec.record.surname);
+	printf("SECONDARY ADDRESS = %s\n", secRec.record.address);
 
     sblock->rec[index]->blockId   = secRec.blockId;
     sblock->rec[index]->record.id = secRec.record.id;
@@ -238,7 +257,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
-    int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    entries     = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(Record);
     int    numOfBlocks = 0;
 	int	   pkey 	   = -1;
 
@@ -260,11 +279,6 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
 		}
 
         if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
-            BF_PrintError("Error getting block");
-            return -1;
-        }
-
-        if (BF_ReadBlock(header_info_sht.sfileDesc , 0 , (void **)&header_info_sht) < 0) {
             BF_PrintError("Error getting block");
             return -1;
         }
@@ -293,4 +307,60 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
     } // while
 
     return numOfBlocks;
+}
+
+int SHTBlockDelete(SHT_info* header_info)
+{
+    SecondaryBlock* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
+    for (int i = 0; i < header_info->numBuckets; i++)
+    {
+
+        if (BF_ReadBlock(header_info->sfileDesc , 0 , (void **)&header_info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
+        int blockID = i + 1;
+
+        while (blockID != -1)
+        {
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
+            if (BF_ReadBlock(header_info->sfileDesc , blockID , (void **)&block) < 0) {
+                BF_PrintError("Error getting block");
+                return -1;
+            }
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
+
+            for (int j = 0 ; j < entries ; j++)
+            {
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
+                if (block->rec[j] == NULL)
+                    break;
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
+
+                free(block->rec[j]);
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
+            } // for
+
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
+            free(block->rec);
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
+
+            if (BF_WriteBlock(header_info->sfileDesc , blockID) < 0) {
+                BF_PrintError("Error writing block back");
+                return -1;
+            }
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
+
+            blockID = block->nextBlock;
+        } // while
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
+    } // for
+
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
+    return 0;
 }
