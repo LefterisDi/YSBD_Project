@@ -183,7 +183,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
 HT_info* HT_OpenIndex(char* fileName)
 {
-    HT_info* block;
+    HT_info* info;
     int fileDesc;
 
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
@@ -191,12 +191,12 @@ HT_info* HT_OpenIndex(char* fileName)
 		return NULL;
 	}
 
-    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&info) < 0) {
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
 
-    return block;
+    return info;
 }
 
 int HT_CloseIndex(HT_info* header_info)
@@ -301,6 +301,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     printf("I : %d\n" , i);
     if (i == entries)
     {
+        int old_blockID = blockID;
         // Record* rec;
         printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
@@ -309,6 +310,11 @@ int HT_InsertEntry(HT_info header_info, Record record)
         // sleep(1);
         block->nextBlock = blockID;
         printf("BLOCKID = %d\n",blockID);
+
+    	if (BF_WriteBlock(header_info.fileDesc , old_blockID) < 0) {
+            BF_PrintError("Error writing block back");
+            return -1;
+        }
     }
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
