@@ -126,7 +126,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 {
     SecondaryBlock* sblock;
     int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-	int pkey = -1;
+	int pkey    = -1;
 
 	     // if (!strcmp(header_info.attrName , "Id"))		pkey = secRec.record.id;
 	 	 if (!strcmp(header_info.attrName , "Name"))    pkey = strtoi(secRec.record.name);
@@ -240,7 +240,7 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
     SecondaryBlock* sblock;
     int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    numOfBlocks = 0;
-	int	   pkey = -1;
+	int	   pkey 	   = -1;
 
 		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Surname")) pkey = strtoi((char *)value);
@@ -253,6 +253,11 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
     while(blockID != -1)
     {
         numOfBlocks++;
+
+		if (BF_ReadBlock(header_info_sht.sfileDesc , 0 , (void **)&header_info_sht) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+		}
 
         if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
             BF_PrintError("Error getting block");
