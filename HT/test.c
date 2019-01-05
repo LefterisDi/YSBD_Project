@@ -25,8 +25,8 @@ int main(void)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    // HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
-    // info = HT_OpenIndex("file1");
+    HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
+    info = HT_OpenIndex("file1");
     SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
     sinfo = SHT_OpenSecondaryIndex("sfile");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
@@ -36,19 +36,13 @@ int main(void)
     size_t len = 0;
     int cntr = 0;
 
+    int primFileDesc = info->fileDesc;
+    int secFileDesc = sinfo->sfileDesc;
+
     while (1)
     {
         char* token = NULL;
 
-        // if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
-		//     BF_PrintError("Error getting block");
-		//     return -1;
-	    // }
-
-        if (BF_ReadBlock(sinfo->sfileDesc , 0 , (void **)&sinfo) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
 
         fscanf(gen_fp, "{%d",&rec.id);
 
@@ -81,11 +75,23 @@ int main(void)
 
         cntr++;
 
-        secRec.record = rec;
-        // secRec.blockId = HT_InsertEntry(*info,rec);
-        secRec.blockId = 0;
+        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
 
-        // printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
+        secRec.record = rec;
+        secRec.blockId = HT_InsertEntry(*info,rec);
+        // secRec.blockId = 0;
+
+        printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
+
+
+        if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+
         printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
         // printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
@@ -107,7 +113,7 @@ int main(void)
     }
     fclose(gen_fp);
 
-         if (BF_ReadBlock(sinfo->sfileDesc , 0 , (void **)&sinfo) < 0) {
+         if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
 		    BF_PrintError("Error getting block");
 		    return -1;
 	    }
@@ -118,8 +124,22 @@ int main(void)
 
 
     printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
-    // printf("BLOCK DELETE = %d\n", BlockDelete(info));
-    // printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+       BF_PrintError("Error getting block");
+       return -1;
+   }
+    printf("BLOCK DELETE = %d\n", BlockDelete(info));
+
+    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+       BF_PrintError("Error getting block");
+       return -1;
+   }
+    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+
+    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+        BF_PrintError("Error getting block");
+        return -1;
+    }
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
