@@ -240,8 +240,14 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
     Block* block;
     int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    numOfBlocks = 0;
-    int    blockID;
-    int    pkey;
+	int	   pkey = -1;
+
+		 // if (!strcmp(header_info.attrName , "Id"))		pkey = secRec.record.id;
+		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi(secRec.record.name);
+	else if (!strcmp(header_info.attrName , "Surname")) pkey = strtoi(secRec.record.surname);
+	else if (!strcmp(header_info.attrName , "Address")) pkey = strtoi(secRec.record.address);
+
+	int blockID = HashFunc(pkey, header_info.numBuckets) + 1;
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     switch (header_info.attrType)
