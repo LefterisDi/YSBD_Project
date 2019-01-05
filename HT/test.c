@@ -36,6 +36,11 @@ int main(void)
         char* token = NULL;
         size_t len = 0;
 
+        if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+
         fscanf(gen_fp, "{%d",&rec.id);
 
         if(getline(&line, &len, gen_fp) == -1) {
@@ -65,6 +70,9 @@ int main(void)
         printf("ADDRESS = %s\n",rec.address);
 
         cntr++;
+
+    
+
         printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
 
         printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);

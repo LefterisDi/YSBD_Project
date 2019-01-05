@@ -217,12 +217,6 @@ int HT_InsertEntry(HT_info header_info, Record record)
     bool   entryExists = true;
 
     printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
-    printf("INFO FROM INSERT ENTRIES 1: FileDesc = %d\n", header_info.fileDesc);
-    printf("INFO FROM INSERT ENTRIES 1: AttrType = %c\n", header_info.attrType);
-    printf("INFO FROM INSERT ENTRIES 1: AttrName = %s\n", header_info.attrName);
-    printf("INFO FROM INSERT ENTRIES 1: AttrLen  = %d\n", header_info.attrLength);
-    printf("INFO FROM INSERT ENTRIES 1: Buckets  = %ld\n", header_info.numBuckets);
-    // usleep(150000);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
@@ -338,11 +332,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     printf("BLOCKID = %d\n",blockID);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
 
-    printf("INFO FROM INSERT ENTRIES 2: FileDesc = %d\n", header_info.fileDesc);
-    printf("INFO FROM INSERT ENTRIES 2: AttrType = %c\n", header_info.attrType);
-    printf("INFO FROM INSERT ENTRIES 2: AttrName = %s\n", header_info.attrName);
-    printf("INFO FROM INSERT ENTRIES 2: AttrLen  = %d\n", header_info.attrLength);
-    printf("INFO FROM INSERT ENTRIES 2: Buckets  = %ld\n", header_info.numBuckets);
+    printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     return blockID;
 

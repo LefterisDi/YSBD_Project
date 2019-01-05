@@ -89,3 +89,32 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 }
+
+
+SHT_info* SHT_OpenSecondaryIndex(char* sfileName){
+
+    SHT_info* block;
+    int fileDesc;
+
+    if ((fileDesc = BF_OpenFile(sfileName)) < 0) {
+		BF_PrintError("Error opening file");
+		return NULL;
+	}
+
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+		BF_PrintError("Error getting block");
+		return NULL;
+	}
+
+    return block;
+}
+
+
+int SHT_CloseSecondaryIndex( SHT_info* header_info ){
+
+    if (BF_CloseFile(header_info->sfileDesc) < 0) {
+		BF_PrintError("Error closing file");
+		return -1;
+	}
+    return 0;
+}
