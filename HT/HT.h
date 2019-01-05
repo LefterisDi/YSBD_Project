@@ -10,7 +10,7 @@ typedef struct {
     char address[40];
 } Record;
 
-typedef struct block {
+typedef struct {
     int      nextBlock;
     Record** rec;
 } Block;
