@@ -8,27 +8,6 @@
 #include "SHT.h"
 #include "../BF/BF.h"
 
-int HashFunc(const int id, const int mask)
-{
-    return id % mask;
-}
-
-int strtoi(const char* str)
-{
-    int i;
-    int len = strlen(str);
-
-    int key = 0;
-
-    for(i = 0; i < len; i++)
-    {
-        key = (key << 5) | (key >> 27);
-        key += (unsigned int) str[i];
-    }
-
-    return key;
-}
-
 int SHTBlockInit(const int fileDesc)
 {
 	SecondaryBlock* block;
@@ -302,4 +281,9 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     // }
     //
     // return blockID;
+}
+
+int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
+{
+
 }
