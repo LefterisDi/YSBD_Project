@@ -330,13 +330,15 @@ int SHTBlockDelete(SHT_info* header_info)
     int    entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 	int cntr = 0;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
+	int secFileDesc = header_info->sfileDesc;
+
+	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
+		BF_PrintError("Error getting block");
+		return -1;
+	}
+
     for (int i = 0; i < header_info->numBuckets; i++)
     {
-
-        if (BF_ReadBlock(header_info->sfileDesc , 0 , (void **)&header_info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
 
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         int blockID = i + 1;
@@ -344,7 +346,7 @@ int SHTBlockDelete(SHT_info* header_info)
         while (blockID != -1)
         {
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            if (BF_ReadBlock(header_info->sfileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(secFileDesc , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
@@ -366,7 +368,7 @@ int SHTBlockDelete(SHT_info* header_info)
             free(block->rec);
             printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
 
-            if (BF_WriteBlock(header_info->sfileDesc , blockID) < 0) {
+            if (BF_WriteBlock(secFileDesc , blockID) < 0) {
                 BF_PrintError("Error writing block back");
                 return -1;
             }
@@ -374,6 +376,12 @@ int SHTBlockDelete(SHT_info* header_info)
 
             blockID = block->nextBlock;
         } // while
+		
+		if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
+
         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
 
