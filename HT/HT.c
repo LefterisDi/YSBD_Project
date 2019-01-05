@@ -576,7 +576,9 @@ int HT_GetAllEntries(HT_info header_info, void* value)
     int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    numOfBlocks = 0;
     int    blockID;
-    int    pkey;
+    unsigned int pkey = 0;
+
+    int primFileDesc = header_info.fileDesc;
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     switch (header_info.attrType)
@@ -605,7 +607,14 @@ int HT_GetAllEntries(HT_info header_info, void* value)
     // printf("INFO FROM GET ALL ENTRIES: AttrName = %s\n", header_info.attrName);
     // printf("INFO FROM GET ALL ENTRIES: AttrLen  = %d\n", header_info.attrLength);
     // printf("INFO FROM GET ALL ENTRIES: Buckets  = %ld\n", header_info.numBuckets);
+    if (BF_ReadBlock(primFileDesc , 0 , (void **)&header_info) < 0) {
+        // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
+        BF_PrintError("Error getting block");
+        return -1;
+    }
+
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
+
     // printf("PKEY = %d\n", pkey);
     // printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
@@ -615,7 +624,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
         numOfBlocks++;
 
-        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+        if (BF_ReadBlock(primFileDesc , blockID , (void **)&block) < 0) {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
             BF_PrintError("Error getting block");
             return -1;

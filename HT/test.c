@@ -101,7 +101,12 @@ int main(void)
         // printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
         printf("REC ID FROM MAIN = %d\n", rec.id);
 
-        // printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
+        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+           BF_PrintError("Error getting block");
+           return -1;
+        }
+        
+        printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
 
 
@@ -118,10 +123,18 @@ int main(void)
 		    return -1;
 	    }
 
-    // printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Atlanta"));
+        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+           BF_PrintError("Error getting block");
+           return -1;
+       }
+
+    printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Bakersfield"));
 
 
-
+    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+       BF_PrintError("Error getting block");
+       return -1;
+   }
 
     printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
     if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {

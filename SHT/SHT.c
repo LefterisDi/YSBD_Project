@@ -272,56 +272,93 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
-    int    entries     = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
-    int    numOfBlocks = 0;
-	int	   pkey 	   = -1;
+    int    entries     		   = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+    int    totalSearchedBlocks = 0;
+    int    currSearchedBlocks  = 0;
+	bool   foundEntry  		   = false;
+	unsigned int pkey  		   = 0;
+
+	int secFileDesc = header_info_sht.sfileDesc;
 
 		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Surname")) pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Address")) pkey = strtoi((char *)value);
 
+	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+		BF_PrintError("Error getting block");
+		return -1;
+	}
+
 	int blockID = HashFunc(pkey, header_info_sht.numBuckets) + 1;
+
+	printf("VALUE = %s\n", (char *)value);
+	printf("BLOCKID = %d\n", blockID);
+
+
+
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
 
     while(blockID != -1)
     {
-        numOfBlocks++;
+        currSearchedBlocks++;
 
-		if (BF_ReadBlock(header_info_sht.sfileDesc , 0 , (void **)&header_info_sht) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-		}
-
-        if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
-            BF_PrintError("Error getting block");
-            return -1;
-        }
+		// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+		// }
+		//
+        // if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
+        //     BF_PrintError("Error getting block");
+        //     return -1;
+        // }
 
         for (int i = 0 ; i < entries ; i++)
         {
 			bool displayEntry = false;
 
-            if (sblock->rec[i] == NULL)
-                return -1;
+			if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+				BF_PrintError("Error getting block");
+				return -1;
+			}
 
-				 if (!strcmp(header_info_sht.attrName , "Name"))    if (!strcmp(sblock->rec[i]->record.name    , (char *)value))  displayEntry = true;
-			else if (!strcmp(header_info_sht.attrName , "Surname")) if (!strcmp(sblock->rec[i]->record.surname , (char *)value))  displayEntry = true;
-			else if (!strcmp(header_info_sht.attrName , "Address")) if (!strcmp(sblock->rec[i]->record.address , (char *)value))  displayEntry = true;
+			if (BF_ReadBlock(secFileDesc , blockID , (void **)&sblock) < 0) {
+				BF_PrintError("Error getting block");
+				return -1;
+			}
+
+            if (sblock->rec[i] == NULL)
+			{
+				if (foundEntry)
+                	return totalSearchedBlocks;
+				else
+                	return -1;
+			}
+
+				 if (!strcmp(header_info_sht.attrName , "Name"))    { if (!strcmp(sblock->rec[i]->record.name    , (char *)value)) displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Surname")) { if (!strcmp(sblock->rec[i]->record.surname , (char *)value)) displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Address")) { if (!strcmp(sblock->rec[i]->record.address , (char *)value)) displayEntry = true; }
 
             if (displayEntry)
             {
+				foundEntry = true;
+
+				totalSearchedBlocks += currSearchedBlocks;
+				currSearchedBlocks = 0;
+
                 printf("     ID: %d\n", sblock->rec[i]->record.id);
                 printf("   Name: %s\n", sblock->rec[i]->record.name);
                 printf("Surname: %s\n", sblock->rec[i]->record.surname);
-                printf("Address: %s\n", sblock->rec[i]->record.address);
+                printf("Address: %s\n\n", sblock->rec[i]->record.address);
+				// sleep(1);
             }
         } // for
 
         blockID = sblock->nextBlock;
+		printf("BLOCKID INSIDE = %d\n", blockID);
     } // while
 
-    return numOfBlocks;
+    return totalSearchedBlocks;
 }
 
 int SHTBlockDelete(SHT_info* header_info)
