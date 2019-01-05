@@ -90,12 +90,14 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		BF_PrintError("Error closing file");
 		return -1;
 	}
+
+	return 0;
 }
 
 
 SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 {
-    SHT_info* block;
+    SHT_info* info;
     int fileDesc;
 
     if ((fileDesc = BF_OpenFile(sfileName)) < 0) {
@@ -103,12 +105,12 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 		return NULL;
 	}
 
-    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&info) < 0) {
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
 
-    return block;
+    return info;
 }
 
 
@@ -125,7 +127,7 @@ int SHT_CloseSecondaryIndex(SHT_info* header_info)
 int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 {
     SecondaryBlock* sblock;
-    int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(Record);
+    int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 	unsigned int pkey = 0;
 	// printf("PKEY = %d\n", pkey);
 
@@ -136,10 +138,10 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 
 	printf("PKEY = %u\n", pkey);
 	printf("BUCKETS BEFORE = %ld\n", header_info.numBuckets);
-	int blockID = HashFunc(pkey, header_info.numBuckets);
+	int blockID = HashFunc(pkey, header_info.numBuckets) + 1;
 	printf("BLOCKID = %d\n",blockID);
 
-	blockID++;
+	// blockID++;
 	printf("BUCKETS AFTER = %ld\n", header_info.numBuckets);
 
 	printf("PKEY = %u\n", pkey);
@@ -202,6 +204,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     printf("I : %d\n" , i);
     if (i == entries)
     {
+		int old_blockID = blockID;
 		printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 13\n");
         blockID = SHTBlockInit(header_info.sfileDesc);
 		printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 14\n");
@@ -211,6 +214,12 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
         sblock->nextBlock = blockID;
 
         printf("BLOCKID 3 = %d\n",blockID);
+
+		if (BF_WriteBlock(header_info.sfileDesc , old_blockID) < 0) {
+	        BF_PrintError("Error writing block back");
+	        return -1;
+	    }
+
 		// sleep(0.5);
     }
 
@@ -241,6 +250,12 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     strcpy(sblock->rec[index]->record.name    , secRec.record.name);
     strcpy(sblock->rec[index]->record.surname , secRec.record.surname);
     strcpy(sblock->rec[index]->record.address , secRec.record.address);
+
+	printf("SECONDARY 2 ID = %d\n", sblock->rec[index]->record.id);
+	printf("SECONDARY 2 NAME = %s\n", sblock->rec[index]->record.name);
+	printf("SECONDARY 2 SURNAME = %s\n", sblock->rec[index]->record.surname);
+	printf("SECONDARY 2 ADDRESS = %s\n", sblock->rec[index]->record.address);
+	// sleep(1);
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 18\n");
 
     if (BF_WriteBlock(header_info.sfileDesc , blockID) < 0) {
@@ -257,7 +272,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
-    int    entries     = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(Record);
+    int    entries     = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
     int    numOfBlocks = 0;
 	int	   pkey 	   = -1;
 
@@ -312,8 +327,8 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
 int SHTBlockDelete(SHT_info* header_info)
 {
     SecondaryBlock* block;
-    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-
+    int    entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+	int cntr = 0;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     for (int i = 0; i < header_info->numBuckets; i++)
     {
@@ -342,6 +357,7 @@ int SHTBlockDelete(SHT_info* header_info)
                     break;
                     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
 
+				cntr++;
                 free(block->rec[j]);
                 printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
             } // for
@@ -362,5 +378,6 @@ int SHTBlockDelete(SHT_info* header_info)
     } // for
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
+	printf("CNTR = %d\n", cntr);
     return 0;
 }

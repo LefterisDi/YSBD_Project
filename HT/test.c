@@ -33,12 +33,12 @@ int main(void)
 
 
     char* line = NULL;
+    size_t len = 0;
     int cntr = 0;
 
     while (1)
     {
         char* token = NULL;
-        size_t len = 0;
 
         // if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
 		//     BF_PrintError("Error getting block");
@@ -103,8 +103,7 @@ int main(void)
         if (feof(gen_fp))
             break;
 
-        free(line);
-        line = NULL;
+        // line = NULL;
     }
     fclose(gen_fp);
 
@@ -124,5 +123,6 @@ int main(void)
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
+    free(line);
     return 0;
 }
