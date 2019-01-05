@@ -104,7 +104,7 @@ int main(void)
 
     printf("BLOCK DELETE = %d\n", BlockDelete(info));
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-    if (BF_ReadBlock(sFDisc , 0 , (void **)&sinfo) < 0) {
+    if (BF_ReadBlock(sFDesc , 0 , (void **)&sinfo) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
