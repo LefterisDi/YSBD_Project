@@ -11,8 +11,8 @@
 
 int HashFunc(const unsigned int id, const int mask)
 {
-    printf("HASHFUNC ID = %u\n", id);
-    printf("HASHFUNC MASK = %d\n", mask);
+    // printf("HASHFUNC ID = %u\n", id);
+    // printf("HASHFUNC MASK = %d\n", mask);
     return id % mask;
 }
 
@@ -85,7 +85,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
-    printf("BLOCKID FROM BLOCKINIT = %d\n",blockID);
+    // printf("BLOCKID FROM BLOCKINIT = %d\n",blockID);
 
 	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
@@ -216,13 +216,13 @@ int HT_InsertEntry(HT_info header_info, Record record)
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID = HashFunc(record.id, header_info.numBuckets) + 1;
-    printf("ENTRIES = %d\n",entries);
-    printf("REC ID = %d\n", record.id);
-    printf("BLOCKID = %d\n",blockID);
+    // printf("ENTRIES = %d\n",entries);
+    // printf("REC ID = %d\n", record.id);
+    // printf("BLOCKID = %d\n",blockID);
     int    i;
     bool   entryExists = true;
 
-    printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
+    // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
@@ -265,7 +265,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
             blockID = block->nextBlock;
-            printf("BLOCKID = %d\n",blockID);
+            // printf("BLOCKID = %d\n",blockID);
         }
         else
         {
@@ -273,7 +273,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
             break;
         }
     } // while
-    printf("BLOCKID = %d\n",blockID);
+    // printf("BLOCKID = %d\n",blockID);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 14\n");
     // while(1)
@@ -298,7 +298,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 15\n");
-    printf("I : %d\n" , i);
+    // printf("I : %d\n" , i);
     if (i == entries)
     {
         int old_blockID = blockID;
@@ -306,10 +306,10 @@ int HT_InsertEntry(HT_info header_info, Record record)
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
         blockID = BlockInit(header_info.fileDesc);
-        printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc) - 1);
+        // printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc) - 1);
         // sleep(1);
         block->nextBlock = blockID;
-        printf("BLOCKID = %d\n",blockID);
+        // printf("BLOCKID = %d\n",blockID);
 
     	if (BF_WriteBlock(header_info.fileDesc , old_blockID) < 0) {
             BF_PrintError("Error writing block back");
@@ -346,10 +346,10 @@ int HT_InsertEntry(HT_info header_info, Record record)
         BF_PrintError("Error writing block back");
         return -1;
     }
-    printf("BLOCKID = %d\n",blockID);
+    // printf("BLOCKID = %d\n",blockID);
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
 
-    printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
+    // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     return blockID;
 
@@ -578,29 +578,29 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         case 'c':
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
             pkey = strtoi((char *)value);
-            printf("GIVEN ID STR = %s\n", (char *)value);
+            // printf("GIVEN ID STR = %s\n", (char *)value);
         break;
 
         case 'i':
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
             pkey = *(int *)value;
-            printf("GIVEN ID INT = %d\n", *(int *)value);
+            // printf("GIVEN ID INT = %d\n", *(int *)value);
         break;
 
         default:
-            printf("ATRR TYPE = %c\n", header_info.attrType);
+            // printf("ATRR TYPE = %c\n", header_info.attrType);
         break;
     }
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
-    printf("INFO FROM GET ALL ENTRIES: FileDesc = %d\n", header_info.fileDesc);
-    printf("INFO FROM GET ALL ENTRIES: AttrType = %c\n", header_info.attrType);
-    printf("INFO FROM GET ALL ENTRIES: AttrName = %s\n", header_info.attrName);
-    printf("INFO FROM GET ALL ENTRIES: AttrLen  = %d\n", header_info.attrLength);
-    printf("INFO FROM GET ALL ENTRIES: Buckets  = %ld\n", header_info.numBuckets);
+    // printf("INFO FROM GET ALL ENTRIES: FileDesc = %d\n", header_info.fileDesc);
+    // printf("INFO FROM GET ALL ENTRIES: AttrType = %c\n", header_info.attrType);
+    // printf("INFO FROM GET ALL ENTRIES: AttrName = %s\n", header_info.attrName);
+    // printf("INFO FROM GET ALL ENTRIES: AttrLen  = %d\n", header_info.attrLength);
+    // printf("INFO FROM GET ALL ENTRIES: Buckets  = %ld\n", header_info.numBuckets);
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
-    printf("PKEY = %d\n", pkey);
-    printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
+    // printf("PKEY = %d\n", pkey);
+    // printf("BLOCKID FROM GET ALL ENTRIES = %d\n", blockID);
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
 
     while(blockID != -1)
