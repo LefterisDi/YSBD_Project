@@ -44,4 +44,9 @@ int HT_GetAllEntries( HT_info header_info, /* File header                       
 
 int BlockDelete(HT_info* header_info);
 
+
+int HashFunc(const int id, const int mask);
+
+int strtoi(const char* str);
+
 #endif // __HT__
