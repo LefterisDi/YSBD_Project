@@ -75,8 +75,6 @@ int main(void)
 
         cntr++;
 
-
-
         printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
 
         printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
