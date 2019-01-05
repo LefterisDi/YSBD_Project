@@ -9,17 +9,19 @@
 // #include "HashFuncs.h"
 #include "../BF/BF.h"
 
-int HashFunc(const int id, const int mask)
+int HashFunc(const unsigned int id, const int mask)
 {
+    printf("HASHFUNC ID = %u\n", id);
+    printf("HASHFUNC MASK = %d\n", mask);
     return id % mask;
 }
 
-int strtoi(const char* str)
+unsigned int strtoi(const char* str)
 {
     int i;
     int len = strlen(str);
 
-    int key = 0;
+    unsigned int key = 0;
 
     for(i = 0; i < len; i++)
     {
