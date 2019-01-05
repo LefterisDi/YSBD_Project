@@ -217,7 +217,6 @@ int HT_InsertEntry(HT_info header_info, Record record)
     bool   entryExists = true;
 
     printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
-    usleep(500000);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     while(1)
@@ -332,6 +331,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
     }
     printf("BLOCKID = %d\n",blockID);
     printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 22\n");
+
+    printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     return blockID;
 
