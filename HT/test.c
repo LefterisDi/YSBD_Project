@@ -28,7 +28,7 @@ int main(void)
     info = HT_OpenIndex("file1");
     SHT_CreateSecondaryIndex("sfile" , "character" , 10 , 3 , "file1");
     sinfo = SHT_OpenSecondaryIndex("sfile");
-    int sFDisc = sinfo->sfileDesc;
+    int sFDesc = sinfo->sfileDesc;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
 
