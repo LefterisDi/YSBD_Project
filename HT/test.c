@@ -25,8 +25,8 @@ int main(void)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
-    info = HT_OpenIndex("file1");
+    // HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
+    // info = HT_OpenIndex("file1");
     SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
     sinfo = SHT_OpenSecondaryIndex("sfile");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
@@ -40,10 +40,10 @@ int main(void)
         char* token = NULL;
         size_t len = 0;
 
-        if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
+        // if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+	    // }
 
         if (BF_ReadBlock(sinfo->sfileDesc , 0 , (void **)&sinfo) < 0) {
 		    BF_PrintError("Error getting block");
@@ -73,7 +73,7 @@ int main(void)
         // printf("TOKEN = %s\n",token);
         strcpy(rec.address, token);
 
-        printf("ID = %d\n",rec.id);
+        printf("\nID = %d\n",rec.id);
         printf("NAME = %s\n",rec.name);
         printf("SURNAME = %s\n",rec.surname);
         printf("ADDRESS = %s\n",rec.address);
@@ -82,19 +82,20 @@ int main(void)
         cntr++;
 
         secRec.record = rec;
-        secRec.blockId = HT_InsertEntry(*info,rec);
+        // secRec.blockId = HT_InsertEntry(*info,rec);
+        secRec.blockId = 0;
 
-        printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
+        // printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
         printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
-        printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
-        printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
-        printf("INFO FROM MAIN: AttrName = %s\n", info->attrName);
-        printf("INFO FROM MAIN: AttrLen  = %d\n", info->attrLength);
-        printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
+        // printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
+        // printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
+        // printf("INFO FROM MAIN: AttrName = %s\n", info->attrName);
+        // printf("INFO FROM MAIN: AttrLen  = %d\n", info->attrLength);
+        // printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
         printf("REC ID FROM MAIN = %d\n", rec.id);
 
-        printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
+        // printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
 
 
@@ -112,13 +113,14 @@ int main(void)
 		    return -1;
 	    }
 
-    printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Atlanta"));
+    // printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Atlanta"));
 
 
 
 
-    printf("BLOCK DELETE = %d\n", BlockDelete(info));
-    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+    printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
+    // printf("BLOCK DELETE = %d\n", BlockDelete(info));
+    // printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
