@@ -43,22 +43,25 @@ int main(void)
     HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
-    info->fileDesc   = tmp_info->fileDesc;
-    info->attrType   = tmp_info->attrType;
-    info->attrName   = tmp_info->attrName;
-    info->attrLength = tmp_info->attrLength;
-    info->numBuckets = tmp_info->numBuckets;
+    // info->fileDesc   = tmp_info->fileDesc;
+    // info->attrType   = tmp_info->attrType;
+    // info->attrName   = tmp_info->attrName;
+    // info->attrLength = tmp_info->attrLength;
+    // info->numBuckets = tmp_info->numBuckets;
+
+    *info = *tmp_info;
 
     SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
-    sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
-    sinfo->fileName   = tmp_sinfo->fileName;
-    sinfo->attrName   = tmp_sinfo->attrName;
-    sinfo->attrLength = tmp_sinfo->attrLength;
-    sinfo->numBuckets = tmp_sinfo->numBuckets;
+    // sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
+    // sinfo->fileName   = tmp_sinfo->fileName;
+    // sinfo->attrName   = tmp_sinfo->attrName;
+    // sinfo->attrLength = tmp_sinfo->attrLength;
+    // sinfo->numBuckets = tmp_sinfo->numBuckets;
 
+    *sinfo = *tmp_sinfo;
 
     char* line = NULL;
     size_t len = 0;
