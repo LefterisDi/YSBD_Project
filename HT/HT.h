@@ -44,6 +44,7 @@ int HT_GetAllEntries( HT_info header_info, /* File header                       
 
 int BlockDelete(HT_info* header_info);
 
+int BlockSearch(HT_info header_info, const int id);
 
 int HashFunc(const unsigned int id, const int mask);
 

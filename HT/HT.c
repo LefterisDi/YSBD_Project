@@ -373,6 +373,34 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // return blockID;
 }
 
+int BlockSearch(HT_info header_info, const int id)
+{
+    Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    blockID = HashFunc(id , header_info.numBuckets) + 1;
+
+    while(blockID != -1)
+    {
+        if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
+
+        for (int i = 0 ; i < entries ; i++)
+        {
+            if (block->rec[i] == NULL)
+                return -1;
+
+            if (block->rec[i]->id == id)
+                return blockID;
+        }
+
+        blockID = block->nextBlock;
+    }
+
+    return -1;
+}
+
 int BlockDelete(HT_info* header_info)
 {
     Block* block;
@@ -439,7 +467,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    blockID;
-    int    pkey;
+    unsigned int pkey;
 
     switch (header_info.attrType)
     {
