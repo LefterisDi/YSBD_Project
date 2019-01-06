@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "auxFuncs.h"
-#include "./BF/BF.h"
+#include "../BF/BF.h"
 
 int HashFunc(const unsigned int id, const int mask)
 {
@@ -13,8 +13,6 @@ int HashFunc(const unsigned int id, const int mask)
     // printf("HASHFUNC MASK = %d\n", mask);
     return id % mask;
 }
-
-int sdsgajd = 9;
 
 unsigned int strtoi(const char* str)
 {

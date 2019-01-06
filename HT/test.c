@@ -6,7 +6,7 @@
 #include "HT.h"
 #include "../BF/BF.h"
 #include "../SHT/SHT.h"
-#include "../auxFuncs.h"
+#include "../AuxFuncs/auxFuncs.h"
 
 int main(void)
 {

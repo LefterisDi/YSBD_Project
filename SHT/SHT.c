@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "SHT.h"
-#include "../auxFuncs.h"
+#include "../AuxFuncs/auxFuncs.h"
 #include "../BF/BF.h"
 
 int SHTBlockInit(const int fileDesc)
