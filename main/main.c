@@ -9,6 +9,8 @@
 
 
 int main(void){
+
+/*FIRST PART*/
     HT_info* info;
     Record rec;
 
@@ -24,17 +26,14 @@ int main(void){
 
 
     char* line = NULL;
+    size_t len = 0;
     int cntr = 0;
+
+    int primFileDesc = info->fileDesc;
 
     while (1)
     {
         char* token = NULL;
-        size_t len = 0;
-
-        if (BF_ReadBlock(info->fileDesc , 0 , (void **)&info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
 
         fscanf(gen_fp, "{%d",&rec.id);
 
@@ -54,24 +53,26 @@ int main(void){
         token = strtok(NULL,"\"");
         strcpy(rec.address, token);
 
-        printf("ID = %d\n",rec.id);
-        printf("NAME = %s\n",rec.name);
-        printf("SURNAME = %s\n",rec.surname);
-        printf("ADDRESS = %s\n",rec.address);
-
         cntr++;
+
+        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
 
         printf("INSERTED %d = %d\n" , cntr , HT_InsertEntry(*info,rec));
 
-        printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
-        printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
-        printf("INFO FROM MAIN: AttrName = %s\n", info->attrName);
-        printf("INFO FROM MAIN: AttrLen  = %d\n", info->attrLength);
-        printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
-        printf("REC ID FROM MAIN = %d\n", rec.id);
+        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+		    BF_PrintError("Error getting block");
+		    return -1;
+	    }
 
 
         if (rec.id % 4 == 0 || rec.id % 3 == 0){/*example search*/
+            if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+		        BF_PrintError("Error getting block");
+		        return -1;
+	        }
             printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
         }
 
@@ -82,4 +83,32 @@ int main(void){
         line = NULL;
     }
     fclose(gen_fp);
+
+/*SECOND PART*/
+
+    SHT_info* sinfo;
+    SecondaryRecord secRec;
+
+
+    FILE* gen_fp;
+    gen_fp = fopen("entries.txt","r");
+    if (gen_fp == NULL) {
+        perror("Cannot open file");
+        exit(EXIT_FAILURE);
+    }
+
+    SHT_CreateSecondaryIndex("sfile" , "Name" , 10 , 3 , "file1");
+    sinfo = SHT_OpenSecondaryIndex("sfile");
+
+    char* line = NULL;
+    size_t len = 0;
+    int cntr = 0;
+
+    int secFileDesc = sinfo->sfileDesc;
+
+    /*while (1)
+    {
+        read file
+    }*/
+
 }
