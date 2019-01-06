@@ -393,7 +393,7 @@ int BlockSearch(HT_info header_info, const int id)
 
             if (block->rec[i]->id == id)
                 return blockID;
-        } // for
+        }
 
         blockID = block->nextBlock;
     }
