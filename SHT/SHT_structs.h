@@ -3,6 +3,8 @@
 #ifndef __SHT_STRUCTS__
 #define __SHT_STRUCTS__
 
+#include "../HT/HT_structs.h"
+
 typedef struct {
     int    blockId; /* The block to which the record was inserted in the primary index */
     Record record;

@@ -8,7 +8,7 @@
 #include "../SHT/SHT.h"
 #include "../AuxFuncs/auxFuncs.h"
 
-int main(void)
+int main(int argc, char* argv[])
 {
     HT_info* info;
     SHT_info* sinfo;
@@ -17,7 +17,7 @@ int main(void)
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
     FILE* gen_fp;
-    gen_fp = fopen("entries.txt","r");
+    gen_fp = fopen(argv[1],"r");
     if (gen_fp == NULL) {
         perror("Cannot open file");
         exit(EXIT_FAILURE);
@@ -41,7 +41,7 @@ int main(void)
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "character" , 10 , 1);
+    HT_CreateIndex("file1" , 'i' , "character" , 10 , 100);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;
@@ -52,7 +52,7 @@ int main(void)
 
     *info = *tmp_info;
 
-    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 1 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 100 , "file1");
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
