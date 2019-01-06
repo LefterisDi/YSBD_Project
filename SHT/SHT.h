@@ -3,8 +3,8 @@
 #ifndef __SHT__
 #define __SHT__
 
-#include "../HT/HT_structs.h"
 #include "SHT_structs.h"
+#include "../HT/HT_structs.h"
 
 int SHT_CreateSecondaryIndex(char* sfileName,      /* File name         */
                              char* attrName,       /* Key-field Name    */

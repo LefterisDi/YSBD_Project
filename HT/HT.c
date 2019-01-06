@@ -1,13 +1,13 @@
 /* File: HT.c */
 
 #include <stdbool.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "HT.h"
-#include "../AuxFuncs/auxFuncs.h"
 #include "../BF/BF.h"
+#include "../AuxFuncs/auxFuncs.h"
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {

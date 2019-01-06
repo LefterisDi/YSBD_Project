@@ -1,13 +1,13 @@
 /* File: SHT.c */
 
 #include <stdbool.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "SHT.h"
-#include "../AuxFuncs/auxFuncs.h"
 #include "../BF/BF.h"
+#include "../AuxFuncs/auxFuncs.h"
 
 int SHTBlockInit(const int fileDesc)
 {
