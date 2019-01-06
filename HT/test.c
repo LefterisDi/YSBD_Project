@@ -6,6 +6,7 @@
 #include "HT.h"
 #include "../BF/BF.h"
 #include "../SHT/SHT.h"
+#include "../auxFuncs.h"
 
 int main(void)
 {
@@ -13,7 +14,7 @@ int main(void)
     SHT_info* sinfo;
     Record rec;
     SecondaryRecord secRec;
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
     FILE* gen_fp;
     gen_fp = fopen("entries.txt","r");
@@ -37,10 +38,10 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
+    HT_CreateIndex("file1" , 'i' , "character" , 10 , 1);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;
@@ -51,9 +52,9 @@ int main(void)
 
     *info = *tmp_info;
 
-    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 1 , "file1");
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
     // sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
     // sinfo->fileName   = tmp_sinfo->fileName;
@@ -98,10 +99,10 @@ int main(void)
         // printf("TOKEN = %s\n",token);
         strcpy(rec.address, token);
 
-        printf("\nID = %d\n",rec.id);
-        printf("NAME = %s\n",rec.name);
-        printf("SURNAME = %s\n",rec.surname);
-        printf("ADDRESS = %s\n",rec.address);
+        // printf("\nID = %d\n",rec.id);
+        // printf("NAME = %s\n",rec.name);
+        // printf("SURNAME = %s\n",rec.surname);
+        // printf("ADDRESS = %s\n",rec.address);
 
 
         cntr++;
@@ -130,7 +131,7 @@ int main(void)
         // printf("INFO FROM MAIN: AttrName = %s\n", info->attrName);
         // printf("INFO FROM MAIN: AttrLen  = %d\n", info->attrLength);
         // printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
-        printf("REC ID FROM MAIN = %d\n", rec.id);
+        // printf("REC ID FROM MAIN = %d\n", rec.id);
 
         // if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
         //    BF_PrintError("Error getting block");

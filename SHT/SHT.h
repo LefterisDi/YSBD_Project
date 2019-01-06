@@ -3,25 +3,8 @@
 #ifndef __SHT__
 #define __SHT__
 
-#include "../HT/HT.h"
-
-typedef struct {
-    int    blockId; /* The block to which the record was inserted in the primary index */
-    Record record;
-} SecondaryRecord;
-
-typedef struct {
-    int               nextBlock;
-    SecondaryRecord** rec;
-} SecondaryBlock;
-
-typedef struct {
-    int      sfileDesc;  /* File ID at block level                             */
-    char*    attrName;   /* Name of field that is the Key for the current file */
-    int      attrLength; /* Size of field that is the Key for the current file */
-    long int numBuckets; /* Number of "buckets" of the hashing file            */
-    char*    fileName;   /* Name of the primary index                          */
-} SHT_info;
+#include "../HT/HT_structs.h"
+#include "SHT_structs.h"
 
 int SHT_CreateSecondaryIndex(char* sfileName,      /* File name         */
                              char* attrName,       /* Key-field Name    */
@@ -39,7 +22,5 @@ int SHT_SecondaryInsertEntry(SHT_info header_info,   /* File header       */
 int SHT_GetAllEntries(SHT_info header_info_sht, /* Secondary File header             */
                       HT_info  header_info_ht , /* Primary File header               */
                       void*    value            /* Value of Key-field to be searched */ );
-
-int SHTBlockDelete(SHT_info* header_info);
 
 #endif // __SHT__
