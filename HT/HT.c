@@ -209,7 +209,9 @@ int HT_CloseIndex(HT_info* header_info)
 		BF_PrintError("Error closing file");
 		return -1;
 	}
-    // free(header_info);
+
+    free(header_info);
+
     return 0;
 }
 

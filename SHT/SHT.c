@@ -121,6 +121,8 @@ int SHT_CloseSecondaryIndex(SHT_info* header_info)
 		return -1;
 	}
 
+	free(header_info);
+
     return 0;
 }
 
