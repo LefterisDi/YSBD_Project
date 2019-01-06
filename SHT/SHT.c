@@ -278,16 +278,16 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
 	bool   foundEntry  		   = false;
 	unsigned int pkey  		   = 0;
 
-	int secFileDesc = header_info_sht.sfileDesc;
+	// int secFileDesc = header_info_sht.sfileDesc;
 
 		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Surname")) pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Address")) pkey = strtoi((char *)value);
 
-	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
-		BF_PrintError("Error getting block");
-		return -1;
-	}
+	// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+	// 	BF_PrintError("Error getting block");
+	// 	return -1;
+	// }
 
 	int blockID = HashFunc(pkey, header_info_sht.numBuckets) + 1;
 
@@ -317,12 +317,12 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
         {
 			bool displayEntry = false;
 
-			if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
-				BF_PrintError("Error getting block");
-				return -1;
-			}
+			// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+			// 	BF_PrintError("Error getting block");
+			// 	return -1;
+			// }
 
-			if (BF_ReadBlock(secFileDesc , blockID , (void **)&sblock) < 0) {
+			if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
 				BF_PrintError("Error getting block");
 				return -1;
 			}
@@ -367,12 +367,12 @@ int SHTBlockDelete(SHT_info* header_info)
     int    entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 	int cntr = 0;
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
-	int secFileDesc = header_info->sfileDesc;
-
-	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
-		BF_PrintError("Error getting block");
-		return -1;
-	}
+	// int secFileDesc = header_info->sfileDesc;
+	//
+	// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
+	// 	BF_PrintError("Error getting block");
+	// 	return -1;
+	// }
 
     for (int i = 0; i < header_info->numBuckets; i++)
     {
@@ -383,7 +383,7 @@ int SHTBlockDelete(SHT_info* header_info)
         while (blockID != -1)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            if (BF_ReadBlock(secFileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(header_info->sfileDesc , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
@@ -405,7 +405,7 @@ int SHTBlockDelete(SHT_info* header_info)
             free(block->rec);
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
 
-            if (BF_WriteBlock(secFileDesc , blockID) < 0) {
+            if (BF_WriteBlock(header_info->sfileDesc , blockID) < 0) {
                 BF_PrintError("Error writing block back");
                 return -1;
             }
@@ -414,10 +414,10 @@ int SHTBlockDelete(SHT_info* header_info)
             blockID = block->nextBlock;
         } // while
 
-		if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
+		// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+	    // }
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for

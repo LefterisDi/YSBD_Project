@@ -22,22 +22,50 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
+    info = (HT_info *)malloc(sizeof(HT_info));
+    if (info == NULL) {
+        perror("Cannot allocate memory");
+        fclose(gen_fp);
+        exit(EXIT_FAILURE);
+    }
+
+    sinfo = (SHT_info *)malloc(sizeof(SHT_info));
+    if (sinfo == NULL) {
+        perror("Cannot allocate memory");
+        free(info);
+        fclose(gen_fp);
+        exit(EXIT_FAILURE);
+    }
+
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
-    info = HT_OpenIndex("file1");
+    HT_info* tmp_info = HT_OpenIndex("file1");
+
+    info->fileDesc   = tmp_info->fileDesc;
+    info->attrType   = tmp_info->attrType;
+    info->attrName   = tmp_info->attrName;
+    info->attrLength = tmp_info->attrLength;
+    info->numBuckets = tmp_info->numBuckets;
+
     SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
-    sinfo = SHT_OpenSecondaryIndex("sfile");
+    SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
+
+    sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
+    sinfo->fileName   = tmp_sinfo->fileName;
+    sinfo->attrName   = tmp_sinfo->attrName;
+    sinfo->attrLength = tmp_sinfo->attrLength;
+    sinfo->numBuckets = tmp_sinfo->numBuckets;
 
 
     char* line = NULL;
     size_t len = 0;
     int cntr = 0;
 
-    int primFileDesc = info->fileDesc;
-    int secFileDesc = sinfo->sfileDesc;
+    // int primFileDesc = info->fileDesc;
+    // int secFileDesc = sinfo->sfileDesc;
 
     while (1)
     {
@@ -75,10 +103,10 @@ int main(void)
 
         cntr++;
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
+        // if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+	    // }
 
         secRec.record = rec;
         secRec.blockId = HT_InsertEntry(*info,rec);
@@ -87,10 +115,10 @@ int main(void)
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
 
 
-        if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
+        // if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+	    // }
 
         printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
@@ -101,11 +129,11 @@ int main(void)
         // printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
         printf("REC ID FROM MAIN = %d\n", rec.id);
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-           BF_PrintError("Error getting block");
-           return -1;
-        }
-        
+        // if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+        //    BF_PrintError("Error getting block");
+        //    return -1;
+        // }
+
         printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
 
@@ -118,41 +146,41 @@ int main(void)
     }
     fclose(gen_fp);
 
-         if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
+        //  if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+		//     BF_PrintError("Error getting block");
+		//     return -1;
+	    // }
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-           BF_PrintError("Error getting block");
-           return -1;
-       }
+       //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+       //     BF_PrintError("Error getting block");
+       //     return -1;
+       // }
 
     printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Bakersfield"));
 
 
-    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
+   //  if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+   //     BF_PrintError("Error getting block");
+   //     return -1;
+   // }
 
     printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
-    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
+   //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+   //     BF_PrintError("Error getting block");
+   //     return -1;
+   // }
     printf("BLOCK DELETE = %d\n", BlockDelete(info));
 
-    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
+   //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
+   //     BF_PrintError("Error getting block");
+   //     return -1;
+   // }
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 
-    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-        BF_PrintError("Error getting block");
-        return -1;
-    }
+    // if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
+    //     BF_PrintError("Error getting block");
+    //     return -1;
+    // }
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
