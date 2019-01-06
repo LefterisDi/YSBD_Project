@@ -1,6 +1,11 @@
 /* File: auxFuncs.c */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "auxFuncs.h"
+#include "./BF/BF.h"
 
 int HashFunc(const unsigned int id, const int mask)
 {
