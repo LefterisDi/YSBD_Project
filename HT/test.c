@@ -9,7 +9,9 @@
 
 int main(void)
 {
+    HT_info* tempInfo;
     HT_info* info;
+    SHT_info* tempSinfo;
     SHT_info* sinfo;
     Record rec;
     SecondaryRecord secRec;
@@ -26,18 +28,27 @@ int main(void)
     BF_Init();
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'i' , "character" , 10 , 3);
-    info = HT_OpenIndex("file1");
+    tempInfo = HT_OpenIndex("file1");
+    info = malloc(sizeof(HT_info));
+    info->attrLength = tempInfo->attrLength;
+    info->attrName = tempInfo->attrName;
+    info->attrType = tempInfo->attrType;
+    info->fileDesc = tempInfo->fileDesc;
+    info->numBuckets = tempInfo->numBuckets;
     SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 3 , "file1");
-    sinfo = SHT_OpenSecondaryIndex("sfile");
+    tempSinfo = SHT_OpenSecondaryIndex("sfile");
+    sinfo = malloc(sizeof(SHT_info));
+    sinfo->attrLength = tempSinfo->attrLength;
+    sinfo->attrName = tempSinfo->attrName;
+    sinfo->fileName = tempSinfo->fileName;
+    sinfo->numBuckets = tempSinfo->numBuckets;
+    sinfo->sfileDesc = tempSinfo->sfileDesc;
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
 
     char* line = NULL;
     size_t len = 0;
     int cntr = 0;
-
-    int primFileDesc = info->fileDesc;
-    int secFileDesc = sinfo->sfileDesc;
 
     while (1)
     {
@@ -75,22 +86,12 @@ int main(void)
 
         cntr++;
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
-
         secRec.record = rec;
         secRec.blockId = HT_InsertEntry(*info,rec);
         // secRec.blockId = 0;
 
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
 
-
-        if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
 
         printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
@@ -101,10 +102,6 @@ int main(void)
         // printf("INFO FROM MAIN: Buckets  = %ld\n", info->numBuckets);
         printf("REC ID FROM MAIN = %d\n", rec.id);
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-           BF_PrintError("Error getting block");
-           return -1;
-        }
         
         printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
@@ -118,41 +115,18 @@ int main(void)
     }
     fclose(gen_fp);
 
-         if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
 
-        if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-           BF_PrintError("Error getting block");
-           return -1;
-       }
 
     printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Bakersfield"));
 
 
-    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
 
     printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
-    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
-    printf("BLOCK DELETE = %d\n", BlockDelete(info));
 
-    if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
-       BF_PrintError("Error getting block");
-       return -1;
-   }
+    printf("BLOCK DELETE = %d\n", BlockDelete(info));
+    
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 
-    if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
-        BF_PrintError("Error getting block");
-        return -1;
-    }
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
 
