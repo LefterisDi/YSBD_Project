@@ -21,8 +21,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdlib.h>
-#include "BF.h"
-#include "HT.h"
+#include "./BF/BF.h"
+#include "./HT/HT.h"
 
 
 
@@ -210,7 +210,7 @@ int main(char argc,char** argv)
 
 	int createErrorCode = SHT_CreateSecondaryIndex(sfileName,sAttrName,sAttrLength,sBuckets,fileName);
 
-	if (createErrorCode<0)
+	if (createErrorCode < 0)
 	{
 		printf("Checkpoint Result 8: FAILED\n");
 		return -1;
@@ -240,6 +240,7 @@ int main(char argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+
 		/*
 		We need to do two inserts:
 			* One in the HT.
