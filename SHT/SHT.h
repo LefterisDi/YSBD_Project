@@ -20,7 +20,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info,   /* File header       */
                              SecondaryRecord  record /* Record definition */ );
 
 int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, /* Secondary File header             */
-                      HT_info  header_info_ht , /* Primary File header               */
-                      void*    value            /* Value of Key-field to be searched */ );
+                               HT_info  header_info_ht , /* Primary File header               */
+                               void*    value            /* Value of Key-field to be searched */ );
 
 #endif // __SHT__

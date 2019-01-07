@@ -208,6 +208,44 @@ int BlockDelete(HT_info* header_info)
 }
 
 
+int SHTBlockInit(const int fileDesc)
+{
+	SecondaryBlock* block;
+    int blockID;
+
+    if (BF_AllocateBlock(fileDesc) < 0) {
+        BF_PrintError("Error allocating block");
+        return -1;
+    }
+
+    blockID = BF_GetBlockCounter(fileDesc) - 1;
+
+	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
+		BF_PrintError("Error getting block");
+		return -1;
+	}
+
+    block->nextBlock = -1;
+
+	int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+
+    block->rec = (SecondaryRecord **)malloc(entries * sizeof(SecondaryRecord *));
+	if (block->rec == NULL) {
+		perror("Cannot allocate memory");
+		return -1;
+	}
+
+    for (int i = 0 ; i < entries ; i++)
+        block->rec[i] = NULL;
+
+    if (BF_WriteBlock(fileDesc , blockID) < 0) {
+        BF_PrintError("Error writing block back");
+        return -1;
+    }
+
+    return blockID;
+}
+
 int SHTBlockDelete(SHT_info* header_info)
 {
     SecondaryBlock* block;

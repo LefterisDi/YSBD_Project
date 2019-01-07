@@ -60,21 +60,22 @@ int main(int argc, char* argv[])
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
-    SHT_info* secInfo = SHT_OpenSecondaryIndex("file1");
-    if (secInfo == NULL) {
-        printf("ERROR\n");
-    }
-
-    printf("%d\n", secInfo->sfileDesc);
-    printf("%s\n", secInfo->fileName);
-    printf("%s\n", secInfo->attrName);
-    printf("%d\n", secInfo->attrLength);
-    printf("%ld\n", secInfo->numBuckets);
-
-    fclose(gen_fp);
-    free(info);
-    free(sinfo);
-    return -1;
+    // SHT_info* secInfo = SHT_OpenSecondaryIndex("file1");
+    // if (secInfo == NULL) {
+    //     printf("ERROR\n");
+    // }
+    //
+    // printf("%d\n", secInfo->sfileDesc);
+    // printf("%s\n", secInfo->fileName);
+    // printf("%s\n", secInfo->attrName);
+    // printf("%d\n", secInfo->attrLength);
+    // printf("%ld\n", secInfo->numBuckets);
+    //
+    // fclose(gen_fp);
+    // free(info);
+    // free(sinfo);
+    // return -1;
+    
     // sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
     // sinfo->fileName   = tmp_sinfo->fileName;
     // sinfo->attrName   = tmp_sinfo->attrName;
@@ -179,7 +180,7 @@ int main(int argc, char* argv[])
        //     return -1;
        // }
 
-    printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Bakersfield"));
+    printf("SECONDARY GETALL: %d\n\n", SHT_SecondaryGetAllEntries(*sinfo,*info,"Bakersfield"));
 
 
    //  if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {

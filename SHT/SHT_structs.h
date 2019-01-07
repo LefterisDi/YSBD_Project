@@ -17,7 +17,7 @@ typedef struct {
     SecondaryRecord** rec;
 } SecondaryBlock;
 
-typedef struct {
+typedef struct sec_info {
     int      sfileDesc;  /* File ID at block level                             */
     char*    attrName;   /* Name of field that is the Key for the current file */
     int      attrLength; /* Size of field that is the Key for the current file */
@@ -25,9 +25,9 @@ typedef struct {
     char*    fileName;   /* Name of the primary index                          */
 } SHT_info;
 
-typedef struct {
-    bool hashFlag;        /* This flag indicates the hashing that was used for a file */
-    SHT_info* info;
-} SecInfo;
+// typedef struct {
+//     bool hashFlag;        /* This flag indicates the hashing that was used for a file */
+//     SHT_info* info;
+// } SecInfo;
 
 #endif // __SHT_STRUCTS__

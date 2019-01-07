@@ -13,6 +13,7 @@ int BlockInit(const int fileDesc);
 int BlockDelete(HT_info* header_info);
 int BlockSearch(HT_info header_info, const int id);
 
+int SHTBlockInit(const int fileDesc);
 int SHTBlockDelete(SHT_info* header_info);
 
 #endif // __AUX_FUNCS__

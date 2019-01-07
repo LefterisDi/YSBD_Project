@@ -39,12 +39,14 @@ int HashStatistics(char* filename)
     printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 
     fclose(gen_fp);
+    free(info);
+    return 0;
 }
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
-    int      fileDesc;
-    HT_info* block;
+    int   fileDesc;
+    Info* infoBlock;
     // HT_info info;
 
 	if (BF_CreateFile(fileName) < 0) {
@@ -62,7 +64,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
-    if (BF_ReadBlock(fileDesc , 0 , (void **)&block) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&infoBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
@@ -73,13 +75,40 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.attrType   = attrType;
     // info.numBuckets = buckets;
 
-    block->fileDesc   = fileDesc;
-    // block->attrName   = attrName;
-    block->attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
-    strcpy(block->attrName,attrName);
-    block->attrLength = attrLength;
-    block->attrType   = attrType;
-    block->numBuckets = buckets;
+    // infoBlock->info->attrName   = attrName;
+
+    infoBlock->sec_info = NULL;
+    infoBlock->info     = (HT_info *)malloc(sizeof(HT_info));
+
+    if (infoBlock->info == NULL) {
+        perror("Cannot allocate memory");
+
+        if (BF_CloseFile(fileDesc) < 0) {
+    		BF_PrintError("Error closing file");
+    	}
+
+        return -1;
+    }
+
+    infoBlock->info->fileDesc   = fileDesc;
+    infoBlock->info->numBuckets = buckets;
+    infoBlock->info->attrLength = attrLength;
+    infoBlock->info->attrType   = attrType;
+    infoBlock->info->attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
+
+    if (infoBlock->info->attrName == NULL) {
+        perror("Cannot allocate memory");
+
+        if (BF_CloseFile(fileDesc) < 0) {
+    		BF_PrintError("Error closing file");
+    	}
+
+        free(infoBlock->info);
+
+        return -1;
+    }
+
+    strcpy(infoBlock->info->attrName,attrName);
 
     //copy content to the block
 	// memcpy(block, &info, sizeof(HT_info));
@@ -98,12 +127,14 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
+    free(infoBlock->info);
+
     return 0;
 }
 
 HT_info* HT_OpenIndex(char* fileName)
 {
-    HT_info* info;
+    Info* infoBlock;
     int fileDesc;
 
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
@@ -111,12 +142,12 @@ HT_info* HT_OpenIndex(char* fileName)
 		return NULL;
 	}
 
-    if (BF_ReadBlock(fileDesc , 0 , (void **)&info) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&infoBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
 
-    return info;
+    return infoBlock->info;
 }
 
 int HT_CloseIndex(HT_info* header_info)

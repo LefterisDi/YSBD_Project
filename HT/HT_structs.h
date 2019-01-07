@@ -26,8 +26,9 @@ typedef struct {
 } HT_info;
 
 typedef struct {
-    bool hashFlag;        /* This flag indicates the hashing that was used for a file */
-    HT_info* info;
-} PrimInfo;
+    bool     hashFlag;        /* This flag indicates the hashing that was used for a file */
+    HT_info  info;
+    SHT_info sec_info;
+} Info;
 
 #endif // __HT_STRUCTS__
