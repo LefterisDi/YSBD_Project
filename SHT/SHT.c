@@ -277,7 +277,7 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
     SecondaryBlock* sblock;
     int    entries     		   = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
     int    totalSearchedBlocks = 0;
-    int    currSearchedBlocks  = 0;
+    // int    currSearchedBlocks  = 0;
 	bool   foundEntry  		   = false;
 	unsigned int pkey  		   = 0;
 
@@ -304,7 +304,8 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
 
     while(blockID != -1)
     {
-        currSearchedBlocks++;
+        // currSearchedBlocks++;
+        totalSearchedBlocks++;
 
 		// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
 		//     BF_PrintError("Error getting block");
@@ -346,8 +347,8 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
             {
 				foundEntry = true;
 
-				totalSearchedBlocks += currSearchedBlocks;
-				currSearchedBlocks = 0;
+				// totalSearchedBlocks += currSearchedBlocks;
+				// currSearchedBlocks = 0;
 
                 printf("     ID: %d\n", sblock->rec[i]->record.id);
                 printf("   Name: %s\n", sblock->rec[i]->record.name);
