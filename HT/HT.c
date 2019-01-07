@@ -10,51 +10,267 @@
 #include "../SHT/SHT.h"
 #include "../AuxFuncs/auxFuncs.h"
 
+int HT_PrintStats(HT_info info)
+{
+    Block* block;
+    int    entries  = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+
+    unsigned int totalBlocks               = 0;
+    unsigned int bucketsWithOverflowBlocks = 0;
+    unsigned int minNumOfEntries           = 0;
+    unsigned int minNumOfBlocks            = 0;
+    unsigned int maxNumOfEntries           = 0;
+    unsigned int maxNumOfBlocks            = 0;
+    unsigned int overflowBuckets [info.numBuckets];
+    unsigned int bucketEntries   [info.numBuckets];
+
+    for (int i = 0 ; i < info.numBuckets ; i++)
+    {
+        overflowBuckets[i] = 0;
+        bucketEntries[i] = 0;
+    }
+
+    for (int i = 1 ; i <= info.numBuckets ; i++)
+    {
+        // unsigned int totalEntries = 0;
+        int blockID = i;
+
+        while (blockID != -1)
+        {
+            totalBlocks++;
+            //
+            // printf("\nINFO: %d\n", info.fileDesc);
+            // printf("INFO: %s\n", info.attrName);
+            // printf("INFO: %c\n", info.attrType);
+            // printf("INFO: %d\n", info.attrLength);
+            // printf("INFO: %ld\n", info.numBuckets);
+            // printf("INFO: %d\n", blockID);
+
+            if (BF_ReadBlock(info.fileDesc , blockID , (void **)&block) < 0) {
+                BF_PrintError("Error getting block");
+                return -1;
+            }
+
+            if (blockID == i)
+            {
+                if (block->nextBlock == -1)
+                    bucketsWithOverflowBlocks++;
+            }
+            else
+                overflowBuckets[i-1]++;
+
+            for (int j = 0 ; j < entries ; j++)
+            {
+                if (block->rec[j] == NULL)
+                    break;
+
+                bucketEntries[i-1]++;
+                // printf("NEW BUCKET ENTRIES = %u\n", bucketEntries[i-1]);
+
+            } // for
+
+            blockID = block->nextBlock;
+        } // while
+
+        //
+        // if (!minNumOfEntries || currEntries < minNumOfEntries)
+        //     minNumOfEntries = currEntries;
+        //
+        // if (currEntries > maxNumOfEntries)
+        //     maxNumOfEntries = currEntries;
+
+        // bucketEntries[i] = totalEntries;
+
+    } // for
+
+    minNumOfEntries = maxNumOfEntries = bucketEntries[0];
+    // printf("BUCKET ENTRIES = %u\n", bucketEntries[0]);
+
+    unsigned int totalEntries = 0;
+
+    for (int i = 0 ; i < info.numBuckets ; i++)
+    {
+        // printf("BUCKET ENTRIES = %u\n", bucketEntries[i]);
+        if (bucketEntries[i] < minNumOfEntries)
+            minNumOfEntries = bucketEntries[i];
+
+        if (bucketEntries[i] > maxNumOfEntries)
+            maxNumOfEntries = bucketEntries[i];
+
+        totalEntries += bucketEntries[i];
+    }
+
+    double meanNumOfEntries = (double)totalEntries / info.numBuckets;
+
+
+    minNumOfBlocks = maxNumOfBlocks = overflowBuckets[0];
+
+    for (int i = 0 ; i < info.numBuckets ; i++)
+    {
+        if (overflowBuckets[i] < minNumOfBlocks)
+            minNumOfBlocks = overflowBuckets[i];
+
+        if (overflowBuckets[i] > maxNumOfBlocks)
+            maxNumOfBlocks = overflowBuckets[i];
+    }
+
+    double meanNumOfBlocks = (double)totalBlocks / info.numBuckets - 1.0;
+
+    // ┌─────────────────┬─────────┬─────────┬────────┐
+    // │      Stats      │   Min   │   Max   │  Mean  │
+    // ├─────────────────┼─────────┼─────────┼────────┤
+    // │     Entries     │         │         │        │
+    // ├─────────────────┼─────────┼─────────┼────────┤
+    // │     Blocks      │         │         │        │
+    // ├─────────────────┼─────────┴─────────┴────────┤
+    // │  Total Blocks   │                            │
+    // └─────────────────┴────────────────────────────┘
+
+    printf("┌─────────────────┬─────────┬─────────┬────────┐\n");
+    printf("│      Stats      │   Min   │   Max   │  Mean  │\n");
+    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+    printf("│     Entries     │");
+
+    if (minNumOfEntries < 10)
+        printf("    %u    │", minNumOfEntries);
+    else if (minNumOfEntries < 100)
+        printf("   %u    │", minNumOfEntries);
+    else if (minNumOfEntries < 1000)
+        printf("   %u   │", minNumOfEntries);
+    else if (minNumOfEntries < 10000)
+        printf("  %u   │", minNumOfEntries);
+    else if (minNumOfEntries < 100000)
+        printf("  %u  │", minNumOfEntries);
+    else if (minNumOfEntries < 1000000)
+        printf(" %u  │", minNumOfEntries);
+    else if (minNumOfEntries < 10000000)
+        printf(" %u │", minNumOfEntries);
+    else if (minNumOfEntries < 100000000)
+        printf("%u │", minNumOfEntries);
+    else
+        printf("%u│", minNumOfEntries);
+
+    if (maxNumOfEntries < 10)
+        printf("    %u    │", maxNumOfEntries);
+    else if (maxNumOfEntries < 100)
+        printf("   %u    │", maxNumOfEntries);
+    else if (maxNumOfEntries < 1000)
+        printf("   %u   │", maxNumOfEntries);
+    else if (maxNumOfEntries < 10000)
+        printf("  %u   │", maxNumOfEntries);
+    else if (maxNumOfEntries < 100000)
+        printf("  %u  │", maxNumOfEntries);
+    else if (maxNumOfEntries < 1000000)
+        printf(" %u  │", maxNumOfEntries);
+    else if (maxNumOfEntries < 10000000)
+        printf(" %u │", maxNumOfEntries);
+    else if (maxNumOfEntries < 100000000)
+        printf("%u │", maxNumOfEntries);
+    else
+        printf("%u│", maxNumOfEntries);
+
+    if (meanNumOfEntries < 10)
+        printf("  %.2f  │\n", meanNumOfEntries);
+    else if (meanNumOfEntries < 100)
+        printf("  %.2f │\n", meanNumOfEntries);
+    else if (meanNumOfEntries < 1000)
+        printf(" %.2f │\n", meanNumOfEntries);
+    else if (meanNumOfEntries < 10000)
+        printf(" %.2f│\n", meanNumOfEntries);
+    else
+        printf("%.2f│\n", meanNumOfEntries);
+
+    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+    printf("│     Blocks      │");
+
+    if (minNumOfBlocks < 10)
+        printf("    %u    │", minNumOfBlocks);
+    else if (minNumOfBlocks < 100)
+        printf("   %u    │", minNumOfBlocks);
+    else if (minNumOfBlocks < 1000)
+        printf("   %u   │", minNumOfBlocks);
+    else if (minNumOfBlocks < 10000)
+        printf("  %u   │", minNumOfBlocks);
+    else if (minNumOfBlocks < 100000)
+        printf("  %u  │", minNumOfBlocks);
+    else if (minNumOfBlocks < 1000000)
+        printf(" %u  │", minNumOfBlocks);
+    else if (minNumOfBlocks < 10000000)
+        printf(" %u │", minNumOfBlocks);
+    else if (minNumOfBlocks < 100000000)
+        printf("%u │", minNumOfBlocks);
+    else
+        printf("%u│", minNumOfBlocks);
+
+    if (maxNumOfBlocks < 10)
+        printf("    %u    │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 100)
+        printf("   %u    │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 1000)
+        printf("   %u   │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 10000)
+        printf("  %u   │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 100000)
+        printf("  %u  │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 1000000)
+        printf(" %u  │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 10000000)
+        printf(" %u │", maxNumOfBlocks);
+    else if (maxNumOfBlocks < 100000000)
+        printf("%u │", maxNumOfBlocks);
+    else
+        printf("%u│", maxNumOfBlocks);
+
+    if (meanNumOfBlocks < 10)
+        printf("  %.2f  │\n", meanNumOfBlocks);
+    else if (meanNumOfBlocks < 100)
+        printf("  %.2f │\n", meanNumOfBlocks);
+    else if (meanNumOfBlocks < 1000)
+        printf(" %.2f │\n", meanNumOfBlocks);
+    else if (meanNumOfBlocks < 10000)
+        printf(" %.2f│\n", meanNumOfBlocks);
+    else
+        printf("%.2f│\n", meanNumOfBlocks);
+
+    printf("├─────────────────┼─────────┴─────────┴────────┤\n");
+    printf("│  Total Blocks   │             %-15u│\n",totalBlocks);
+    printf("└─────────────────┴────────────────────────────┘\n");
+
+    return 0;
+}
+
 int HashStatistics(char* filename)
 {
     HT_info*  info;
     SHT_info* sinfo;
-    // Info* infoBlock;
-    // FILE* gen_fp;
-    //
-    // gen_fp = fopen(filename,"r");
-    // if (gen_fp == NULL) {
-    //     perror("Cannot open file");
-    //     exit(EXIT_FAILURE);
-    // }
-
-    // info = (HT_info *)malloc(sizeof(HT_info));
-    // if (info == NULL) {
-    //     perror("Cannot allocate memory");
-    //     fclose(gen_fp);
-    //     exit(EXIT_FAILURE);
-    // }
-    //
-    // HT_info * tmp_info = HT_OpenIndex(filename);
-    //
-    // *info = *tmp_info;
 
     info = HT_OpenIndex(filename);
     if (info != NULL)
     {
+        HT_PrintStats(*info);
+
+        if (BF_CloseFile(info->fileDesc) < 0) {
+    		BF_PrintError("Error closing file");
+    		return -1;
+    	}
+
         return 0;
     }
 
     sinfo = SHT_OpenSecondaryIndex(filename);
     if (sinfo != NULL)
     {
+        SHT_PrintStats(*sinfo);
 
+        if (BF_CloseFile(sinfo->sfileDesc) < 0) {
+    		BF_PrintError("Error closing file");
+    		return -1;
+    	}
+
+        return 0;
     }
-    else
-        return -1;
 
-
-
-
-
-    // printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-
-    // return 0;
+    return -1;
 }
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
@@ -147,7 +363,13 @@ HT_info* HT_OpenIndex(char* fileName)
 	}
 
 	if (infoBlock->hashFlag != 0)
-		return NULL;
+    {
+        if (BF_CloseFile(fileDesc) < 0) {
+            BF_PrintError("Error closing file");
+        }
+
+        return NULL;
+    }
 
     return &(infoBlock->info);
 }

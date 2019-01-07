@@ -24,4 +24,6 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, /* Secondary File heade
                                HT_info  header_info_ht , /* Primary File header               */
                                void*    value            /* Value of Key-field to be searched */ );
 
+int SHT_PrintStats(SHT_info sec_info);
+
 #endif // __SHT__
