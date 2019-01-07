@@ -3,6 +3,8 @@
 #ifndef __SHT_STRUCTS__
 #define __SHT_STRUCTS__
 
+#include <stdbool.h>
+
 #include "../HT/HT_structs.h"
 
 typedef struct {
@@ -22,5 +24,10 @@ typedef struct {
     long int numBuckets; /* Number of "buckets" of the hashing file            */
     char*    fileName;   /* Name of the primary index                          */
 } SHT_info;
+
+typedef struct {
+    bool hashFlag;        /* This flag indicates the hashing that was used for a file */
+    SHT_info* info;
+} SecInfo;
 
 #endif // __SHT_STRUCTS__

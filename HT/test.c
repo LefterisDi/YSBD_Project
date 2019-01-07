@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     sinfo = (SHT_info *)malloc(sizeof(SHT_info));
     if (sinfo == NULL) {
         perror("Cannot allocate memory");
-        free(info);
+        // free(info);
         fclose(gen_fp);
         exit(EXIT_FAILURE);
     }
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "Id" , 10 , 100);
+    HT_CreateIndex("file1" , 'i' , "Id" , 2 , 100);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;
@@ -60,6 +60,21 @@ int main(int argc, char* argv[])
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
+    SHT_info* secInfo = SHT_OpenSecondaryIndex("file1");
+    if (secInfo == NULL) {
+        printf("ERROR\n");
+    }
+
+    printf("%d\n", secInfo->sfileDesc);
+    printf("%s\n", secInfo->fileName);
+    printf("%s\n", secInfo->attrName);
+    printf("%d\n", secInfo->attrLength);
+    printf("%ld\n", secInfo->numBuckets);
+
+    fclose(gen_fp);
+    free(info);
+    free(sinfo);
+    return -1;
     // sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
     // sinfo->fileName   = tmp_sinfo->fileName;
     // sinfo->attrName   = tmp_sinfo->attrName;
@@ -193,5 +208,6 @@ int main(int argc, char* argv[])
 
 
     free(line);
+    free(info);
     return 0;
 }

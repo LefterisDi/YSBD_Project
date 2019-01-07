@@ -9,37 +9,37 @@
 #include "../BF/BF.h"
 #include "../AuxFuncs/auxFuncs.h"
 
-// int HashStatistics(char* filename)
-// {
-//     HT_info* info;
-//     FILE* gen_fp;
-//
-//     gen_fp = fopen(filename,"r");
-//     if (gen_fp == NULL) {
-//         perror("Cannot open file");
-//         exit(EXIT_FAILURE);
-//     }
-//
-//     info = (HT_info *)malloc(sizeof(HT_info));
-//     if (info == NULL) {
-//         perror("Cannot allocate memory");
-//         fclose(gen_fp);
-//         exit(EXIT_FAILURE);
-//     }
-//
-//     HT_info * tmp_info = HT_OpenIndex(filename);
-//
-//     *info = *tmp_info;
-//
-//
-//
-//
-//
-//
-//     printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-//
-//     fclose(gen_fp);
-// }
+int HashStatistics(char* filename)
+{
+    HT_info* info;
+    FILE* gen_fp;
+
+    gen_fp = fopen(filename,"r");
+    if (gen_fp == NULL) {
+        perror("Cannot open file");
+        exit(EXIT_FAILURE);
+    }
+
+    info = (HT_info *)malloc(sizeof(HT_info));
+    if (info == NULL) {
+        perror("Cannot allocate memory");
+        fclose(gen_fp);
+        exit(EXIT_FAILURE);
+    }
+
+    HT_info * tmp_info = HT_OpenIndex(filename);
+
+    *info = *tmp_info;
+
+
+
+
+
+
+    printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+
+    fclose(gen_fp);
+}
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
@@ -74,9 +74,9 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.numBuckets = buckets;
 
     block->fileDesc   = fileDesc;
-    block->attrName   = attrName;
-    // block->attrName   = (char *)malloc(sizeof(attrName));
-    // strcpy(block->attrName,attrName);
+    // block->attrName   = attrName;
+    block->attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
+    strcpy(block->attrName,attrName);
     block->attrLength = attrLength;
     block->attrType   = attrType;
     block->numBuckets = buckets;
@@ -128,7 +128,7 @@ int HT_CloseIndex(HT_info* header_info)
 		return -1;
 	}
 
-    free(header_info);
+    free(header_info->attrName);
 
     return 0;
 }

@@ -3,6 +3,8 @@
 #ifndef __HT_STRUCTS__
 #define __HT_STRUCTS__
 
+#include <stdbool.h>
+
 typedef struct {
     int  id;
     char name[15];
@@ -22,5 +24,10 @@ typedef struct {
     int      attrLength;  /* Size of field that is the Key for the current file             */
     long int numBuckets;  /* Number of "buckets" of the hashing file                        */
 } HT_info;
+
+typedef struct {
+    bool hashFlag;        /* This flag indicates the hashing that was used for a file */
+    HT_info* info;
+} PrimInfo;
 
 #endif // __HT_STRUCTS__
