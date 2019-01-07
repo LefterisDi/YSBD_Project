@@ -16,6 +16,10 @@ int main(int argc, char* argv[])
     SecondaryRecord secRec;
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 0\n");
 
+    if (argc < 2) {
+        printf("Error: Missing input file\n");
+    }
+
     FILE* gen_fp;
     gen_fp = fopen(argv[1],"r");
     if (gen_fp == NULL) {
@@ -41,7 +45,7 @@ int main(int argc, char* argv[])
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "character" , 10 , 100);
+    HT_CreateIndex("file1" , 'i' , "Id" , 10 , 100);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;

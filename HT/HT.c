@@ -9,6 +9,38 @@
 #include "../BF/BF.h"
 #include "../AuxFuncs/auxFuncs.h"
 
+// int HashStatistics(char* filename)
+// {
+//     HT_info* info;
+//     FILE* gen_fp;
+//
+//     gen_fp = fopen(filename,"r");
+//     if (gen_fp == NULL) {
+//         perror("Cannot open file");
+//         exit(EXIT_FAILURE);
+//     }
+//
+//     info = (HT_info *)malloc(sizeof(HT_info));
+//     if (info == NULL) {
+//         perror("Cannot allocate memory");
+//         fclose(gen_fp);
+//         exit(EXIT_FAILURE);
+//     }
+//
+//     HT_info * tmp_info = HT_OpenIndex(filename);
+//
+//     *info = *tmp_info;
+//
+//
+//
+//
+//
+//
+//     printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+//
+//     fclose(gen_fp);
+// }
+
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
 {
     int      fileDesc;
@@ -105,7 +137,26 @@ int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-    int    blockID = HashFunc(record.id, header_info.numBuckets) + 1;
+    int    blockID;
+    unsigned int pkey;
+
+    switch (header_info.attrType)
+    {
+        case 'c':
+                if (!strcmp(header_info.attrName , "Name"))    pkey = strtoi(record.name);
+           else if (!strcmp(header_info.attrName , "Surname")) pkey = strtoi(record.surname);
+           else if (!strcmp(header_info.attrName , "Address")) pkey = strtoi(record.address);
+        break;
+
+        case 'i':
+            pkey = record.id;
+        break;
+
+        default:
+        return -1;
+    }
+
+    blockID = HashFunc(pkey, header_info.numBuckets) + 1;
     // printf("ENTRIES = %d\n",entries);
     // printf("REC ID = %d\n", record.id);
     // printf("BLOCKID = %d\n",blockID);
@@ -134,12 +185,28 @@ int HT_InsertEntry(HT_info header_info, Record record)
                 break;
             }
 
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
-            if (block->rec[i]->id == record.id)
+            switch (header_info.attrType)
             {
-                // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
-                return -1;
-            } // if
+                case 'c':
+                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i]->name    , record.name))     return -1; }
+                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i]->surname , record.surname))  return -1; }
+                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i]->address , record.address))  return -1; }
+                break;
+
+                case 'i':
+                    if (block->rec[i]->id == pkey)
+                        return -1;
+                break;
+            }
+
+            // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
+
+            // if (block->rec[i]->id == record.id)
+            // {
+            //     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
+            //     return -1;
+            // } // if
+
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
         } // for
 
@@ -279,14 +346,15 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         break;
 
         default:
-            pkey = 0;
-        break;
+        return -1;
     }
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
+        bool foundEntry = false;
+
         if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
             BF_PrintError("Error getting block");
             return -1;
@@ -297,7 +365,21 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             if (block->rec[i] == NULL)
                 return -1;
 
-            if (block->rec[i]->id == pkey)
+            switch (header_info.attrType)
+            {
+                case 'c':
+                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i]->name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i]->surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i]->address , (char *)value))  foundEntry = true; }
+                break;
+
+                case 'i':
+                    if (block->rec[i]->id == pkey)
+                        foundEntry = true;
+                break;
+            }
+
+            if (foundEntry)
             {
                 Block* currBlock   = block;
                 int    currBlockID = block->nextBlock;
@@ -403,7 +485,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
     int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
     int    numOfBlocks = 0;
     int    blockID;
-    unsigned int pkey = 0;
+    unsigned int pkey;
 
     // int primFileDesc = header_info.fileDesc;
 
@@ -423,9 +505,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         break;
 
         default:
-            pkey = 0;
-            // printf("ATRR TYPE = %c\n", header_info.attrType);
-        break;
+        return -1;
     }
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
 
@@ -448,6 +528,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
 
     while(blockID != -1)
     {
+        bool foundEntry = false;
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
         numOfBlocks++;
 
@@ -465,7 +546,22 @@ int HT_GetAllEntries(HT_info header_info, void* value)
                 return -1;
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
-            if (block->rec[i]->id == pkey)
+            switch (header_info.attrType)
+            {
+                case 'c':
+                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i]->name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i]->surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i]->address , (char *)value))  foundEntry = true; }
+                break;
+
+                case 'i':
+                    if (block->rec[i]->id == pkey)
+                        foundEntry = true;
+                break;
+            }
+
+            // if (block->rec[i]->id == pkey)
+            if (foundEntry)
             {
                 // printf("     ID: %d\n", block->rec[i]->id);
                 // printf("   Name: %s\n", block->rec[i]->name);

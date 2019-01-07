@@ -1,145 +1,1000 @@
-{209,"Renato","Cox","Murrieta"}
-{1059,"Traci","Frazier","Oceanside"}
-{455,"Carlos","Woodward","Cleveland"}
-{942,"Armand","Le","Baltimore"}
-{843,"John","Blair","Buffalo"}
-{728,"Betsy","Preston","Hayward"}
-{208,"Olin","Bridges","Port St. Lucie"}
-{1339,"Marcelino","Person","Fargo"}
-{331,"Timothy","Moran","St. Louis"}
-{68,"Juliet","Gill","Vancouver"}
-{723,"Harley","Charles","Gresham"}
-{577,"Eliza","Dejesus","Savannah"}
-{1159,"Sheryll","Golden","Detroit"}
-{273,"Adam","Anthony","Elizabeth"}
-{309,"Myles","Valdez","Boise"}
-{1103,"Afton","Garrett","Phoenix"}
-{655,"Yaeko","Donaldson","Oklahoma City"}
-{708,"Merlene","Rasmussen","South Bend"}
-{406,"Kathryne","Sandoval","North Las Vegas"}
-{1022,"Vernon","Rhodes","Washington"}
-{470,"Delbert","Felix","Clearwater"}
-{297,"Penney","Ingram","Topeka"}
-{981,"Elisha","Moon","Montgomery"}
-{369,"Will","Pratt","Providence"}
-{18,"Isreal","Sloan","Kansas City"}
-{284,"Duane","Mcguire","Killeen"}
-{651,"Zona","Guzman","Garland"}
-{1008,"Lorenzo","Duran","Green Bay"}
-{152,"Homer","Sierra","Davenport"}
-{632,"Dale","Hood","Glendale"}
-{1386,"Mickey","Moyer","Provo"}
-{1296,"Gertha","Glass","Naperville"}
-{1349,"Todd","Deleon","Austin"}
-{667,"Libbie","Shah","Carrollton"}
-{547,"Rudolph","Douglas","Birmingham"}
-{201,"Gisela","Tyler","Anchorage"}
-{1361,"Todd","Alexander","Indianapolis"}
-{1364,"Ted","Fry","Springfield"}
-{299,"Cameron","Humphrey","Denver"}
-{944,"Loree","Montgomery","Bakersfield"}
-{1021,"Hiram","Hill","Boise"}
-{1288,"Kurt","Schmitt","Nashville"}
-{1023,"Loraine","Nelson","Detroit"}
-{1377,"Billie","Truong","Clearwater"}
-{865,"Marco","Chandler","Allentown"}
-{655,"Codi","Sullivan","Bellevue"}
-{281,"Marcel","Montoya","Savannah"}
-{1092,"Janay","Townsend","Montgomery"}
-{444,"Efren","Salgado","Oceanside"}
-{1401,"Tora","Castaneda","New Haven"}
-{959,"Joyce","Walsh","Downey"}
-{1411,"Vera","Fields","Arvada"}
-{255,"Bob","Bradshaw","Vancouver"}
-{1285,"Krystina","Gates","Plano"}
-{294,"Annie","Sanders","St. Petersburg"}
-{360,"Britt","Zamora","Plano"}
-{191,"Samual","Johnston","Elk Grove"}
-{79,"Yolanda","Golden","El Paso"}
-{145,"Maragret","Wallace","Springfield"}
-{26,"Merle","Person","Vallejo"}
-{1053,"Johnathan","Turner","Elizabeth"}
-{1438,"Roslyn","Schroeder","Elgin"}
-{1058,"Elliott","Preston","Santa Maria"}
-{259,"Jeromy","Bullock","Colorado Springs"}
-{1080,"Scott","Maxwell","Yonkers"}
-{638,"Nelson","Robinson","West Covina"}
-{1175,"Claud","Curry","Athens"}
-{1104,"Pablo","Reese","Manchester"}
-{628,"Luella","Molina","Palm Bay"}
-{30,"Guillermo","Lu","Abilene"}
-{147,"Merilyn","Klein","Cambridge"}
-{989,"Nancie","Pugh","Akron"}
-{1311,"Clayton","Austin","Fullerton"}
-{292,"Max","Snow","Norman"}
-{894,"Inga","Wilkinson","St. Louis"}
-{194,"Sheryll","Blackwell","Colorado Springs"}
-{399,"Angelique","Pitts","Boulder"}
-{292,"Mae","Bowman","San Antonio"}
-{230,"Jazmine","Garrison","Glendale"}
-{582,"Israel","Tanner","Durham"}
-{681,"Bernice","Trevino","Orlando"}
-{1399,"Chrissy","Benson","Cincinnati"}
-{179,"Kimbra","Peterson","Raleigh"}
-{1156,"Kamala","Pierce","Elizabeth"}
-{589,"Tien","Mccall","Orlando"}
-{349,"Adan","Hull","Edison"}
-{633,"Francisca","Mora","West Jordan"}
-{277,"Freddie","Graham","Norman"}
-{674,"Leonarda","Fields","Richardson"}
-{1329,"Rosario","Weaver","Fullerton"}
-{21,"Johnson","Hickman","Chesapeake"}
-{1074,"Shelton","Zhang","Fort Collins"}
-{1034,"Raisa","Moyer","Costa Mesa"}
-{392,"Micah","Preston","Newport News"}
-{1011,"Anibal","Randolph","Huntington Beach"}
-{1159,"Lyda","Ellis","Victorville"}
-{849,"Sanjuanita","Shepherd","Sacramento"}
-{394,"Ethelyn","Chapman","Minneapolis"}
-{622,"Marshall","Young","Montgomery"}
-{979,"Perry","Pittman","Boise"}
-{843,"Laraine","David","Sioux Falls"}
-{262,"Neil","Galindo","Minneapolis"}
-{1135,"Marketta","Sellers","Toledo"}
-{512,"Sal","Gates","Pasadena"}
-{1434,"Leonel","Moyer","Richmond"}
-{432,"Brendon","Oliver","Temecula"}
-{793,"Gene","Leblanc","Round Rock"}
-{1298,"Weldon","Ferguson","High Point"}
-{291,"Frankie","Graham","North Las Vegas"}
-{147,"Jake","Moon","Tallahassee"}
-{229,"Emerson","Willis","Charleston"}
-{1361,"Charles","Tang","Miami Gardens"}
-{229,"Marcus","Rowe","Fort Wayne"}
-{1244,"Mikaela","Reed","North Las Vegas"}
-{505,"Bee","Terry","Mesquite"}
-{1045,"Bennie","Villa","Orlando"}
-{1181,"Echo","Meza","Irving"}
-{1162,"Julieann","Wilson","Shreveport"}
-{535,"Tracy","Sawyer","Mesquite"}
-{1283,"Billie","Ibarra","Rialto"}
-{194,"Shay","Michael","Waterbury"}
-{646,"Mac","Keith","Toledo"}
-{38,"Warren","Garza","High Point"}
-{11,"Johnsie","Cortes","Coral Springs"}
-{658,"Mariella","Cano","Hialeah"}
-{717,"Le","Mora","Spokane"}
-{1325,"Billie","Chung","Akron"}
-{220,"Leila","Mcintyre","Pueblo"}
-{1170,"Abraham","Richards","Oklahoma City"}
-{893,"Janelle","Gates","Farmington Hills"}
-{1066,"Charolette","Lucas","Downey"}
-{652,"Neal","Lester","Escondido"}
-{1229,"Tomas","Benton","Pompano Beach"}
-{919,"Merle","Simmons","Irving"}
-{1387,"Cristopher","Boyer","Palmdale"}
-{122,"Roger","Peters","Clovis"}
-{862,"Murray","Wall","Newark"}
-{599,"Samual","Duncan","Bakersfield"}
-{147,"Mariah","Whitehead","Broken Arrow"}
-{553,"Fabiola","Preston","San Bernardino"}
-{1258,"Terrell","Barnes","Davenport"}
-{1230,"Jonah","Perry","Oakland"}
-{783,"Louie","Gibbs","Gresham"}
-{139,"Adrienne","Russo","Pittsburgh"}
-{1306,"Lesley","Adkins","Seattle"}
+{2268,"Shira","Alvarez","Cambridge"}
+{2412,"Cinda","Finley","Surprise"}
+{6912,"Hershel","Rosario","Gresham"}
+{4195,"Meri","Villalobos","West Valley City"}
+{4118,"Caroll","Hutchinson","Hollywood"}
+{7511,"Tuan","Bowman","Miramar"}
+{5610,"Lorriane","Mullen","Fayetteville"}
+{996,"Erick","Mccarty","Fremont"}
+{3468,"Alvina","Hernandez","Augusta"}
+{2187,"Ashley","Norton","Pembroke Pines"}
+{1391,"Kellee","Christian","Richmond"}
+{7291,"Archie","Bush","Boise"}
+{7504,"Blondell","Hobbs","Baton Rouge"}
+{6467,"Johnny","Mckinney","Rochester"}
+{7626,"Fredrick","Castillo","Chandler"}
+{1359,"Leon","Christian","Bellevue"}
+{1110,"Kim","Galindo","Atlanta"}
+{1714,"Chester","Norris","Chula Vista"}
+{8190,"Cris","Mcclure","Houston"}
+{5824,"Roxann","Parrish","Indianapolis"}
+{1605,"Marcus","Ramsey","Lancaster"}
+{3649,"Jerrell","Branch","Simi Valley"}
+{2386,"Holly","Hurst","Detroit"}
+{7645,"Cristobal","Patrick","North Las Vegas"}
+{8719,"Starla","Watts","Long Beach"}
+{7990,"Erin","Logan","Seattle"}
+{5583,"Marisa","Silva","Riverside"}
+{7991,"Leo","Mays","Miami"}
+{7729,"Cortez","Pacheco","Murrieta"}
+{2089,"Leeann","Gibbs","Downey"}
+{4527,"Heriberto","Malone","Rochester"}
+{7287,"Harrison","Hail","Scottsdale"}
+{2624,"Richie","Hubbard","Sandy Springs"}
+{1174,"Arletta","Cantrell","Rochester"}
+{5759,"Cherly","Baker","West Palm Beach"}
+{390,"Earleen","Palacios","Durham"}
+{4612,"Verda","Todd","Hartford"}
+{9874,"Leonardo","Orozco","Daly City"}
+{6678,"Sherrell","Gross","Moreno Valley"}
+{1488,"Jenny","Navarro","Lubbock"}
+{3253,"Neil","Delgado","Portland"}
+{1643,"Carmen","Hines","Chesapeake"}
+{8838,"Madelaine","Galvan","Tampa"}
+{755,"Loise","Calhoun","Tucson"}
+{6661,"Alonso","Beltran","Waterbury"}
+{7069,"Shane","Bernal","Edison"}
+{9489,"Jeffrey","Singh","Stamford"}
+{1179,"Alma","Dickerson","Miramar"}
+{8763,"Vasiliki","Wang","Garland"}
+{715,"Jenine","Mann","Tucson"}
+{2326,"Jarred","Watson","Omaha"}
+{5647,"Jeff","Reeves","Lowell"}
+{9576,"Justin","Bonilla","El Monte"}
+{4436,"Chae","Duran","Reno"}
+{7067,"Son","Kline","Gilbert"}
+{3793,"Albertine","Cantu","Boston"}
+{9075,"Dillon","Keith","Boulder"}
+{3994,"Caroyln","Patterson","Roseville"}
+{5927,"Mary","Hopkins","Cape Coral"}
+{5193,"Grant","Trejo","Pittsburgh"}
+{1621,"Merilyn","Luna","Chicago"}
+{2804,"Breann","Aguilar","High Point"}
+{3150,"Randall","Kelley","Arvada"}
+{2008,"Yuki","Austin","Pueblo"}
+{295,"Val","Stone","Eugene"}
+{7578,"Kristofer","Gallegos","Dayton"}
+{5979,"Louanne","Hurst","Elizabeth"}
+{8911,"Lera","Stafford","Waterbury"}
+{6282,"Viki","Camacho","Topeka"}
+{1110,"Santo","Russell","Irvine"}
+{6938,"Sonja","Lynn","New Orleans"}
+{7327,"Nathaniel","Hayden","Shreveport"}
+{1956,"Benita","Watkins","Newark"}
+{828,"Terrence","Sutton","Palm Bay"}
+{7408,"Cliff","Bridges","Fargo"}
+{9740,"Liza","Solomon","Peoria"}
+{4757,"Reggie","Welch","Carrollton"}
+{4744,"Nathaniel","Tyler","Sioux Falls"}
+{8910,"Weston","Burnett","Newport News"}
+{1813,"Millard","Cameron","Columbus"}
+{7908,"Linda","Schaefer","Peoria"}
+{8546,"Stella","Moody","Elk Grove"}
+{5463,"Ebonie","Soto","Hialeah"}
+{6287,"Leonardo","Pratt","Nashville"}
+{7872,"Rudy","Le","Washington"}
+{1438,"Luba","Crosby","Bellevue"}
+{3237,"Rick","Craig","Concord"}
+{5758,"Trevor","Rowe","Newark"}
+{9086,"Neville","Patel","Waco"}
+{2852,"Reid","Singleton","Little Rock"}
+{7397,"Eldridge","Newman","Peoria"}
+{2105,"Lillia","Norman","Chandler"}
+{2194,"Latoyia","Nichols","Sunnyvale"}
+{9042,"Stephenie","Small","Paterson"}
+{3847,"Zane","Cardenas","Greensboro"}
+{9415,"Tessa","Murphy","Fort Wayne"}
+{6191,"Johnathan","Gilmore","Philadelphia"}
+{7912,"Yvette","Dawson","Bridgeport"}
+{1560,"Mabelle","Mata","Cape Coral"}
+{3647,"Tyler","Burnett","Lincoln"}
+{5953,"Vance","Cameron","Bridgeport"}
+{4547,"William","Aguilar","Waterbury"}
+{9880,"Maryann","Travis","Raleigh"}
+{7380,"Romona","Ayers","Round Rock"}
+{8617,"Rodrigo","Morales","Vancouver"}
+{5933,"Devon","Mcbride","Billings"}
+{949,"Zane","Liu","Murfreesboro"}
+{8959,"Corene","Rowland","Inglewood"}
+{9282,"Rayford","Butler","Columbia"}
+{1664,"Athena","Oconnell","Los Angeles"}
+{7849,"Vaughn","Wyatt","Spokane"}
+{6357,"Mickey","Beil","Louisville"}
+{5999,"Charisse","Benson","Albuquerque"}
+{7212,"Doretta","Hensley","Kansas City"}
+{8237,"Micah","Mcdonald","Stamford"}
+{5239,"Antoine","Jordan","San Bernardino"}
+{3723,"Earlean","Hull","Lancaster"}
+{4641,"Johnnie","Hull","Gresham"}
+{729,"Katheleen","Berg","Farmington Hills"}
+{2045,"Ezra","Cruz","West Jordan"}
+{6753,"Dennise","Gallegos","Cary"}
+{5062,"Cordell","Sharp","Eugene"}
+{5415,"Murray","Fowler","Broken Arrow"}
+{2504,"Zetta","Mayo","Kansas"}
+{9915,"Aletha","Navarro","Albuquerque"}
+{4227,"Loyd","Chapman","Los Angeles"}
+{9736,"Fredda","Garner","McKinney"}
+{5631,"Danilo","Hines","Beaumont"}
+{3862,"Ashlea","Villalobos","Joliet"}
+{6040,"Conrad","Hester","Norfolk"}
+{7675,"Sachiko","Mccall","Abilene"}
+{4093,"Chun","Hines","Frisco"}
+{2150,"Tomas","Arroyo","Norman"}
+{9626,"Dan","Reilly","Anaheim"}
+{6284,"Emelda","Blevins","Evansville"}
+{4112,"Jocelyn","Wilkerson","Naperville"}
+{1856,"Frankie","Wallace","Pittsburgh"}
+{9714,"Latarsha","Richard","Yonkers"}
+{2458,"Darron","Anthony","Orlando"}
+{4750,"Basil","Tran","Gresham"}
+{8395,"Penni","Cross","Alexandria"}
+{5865,"Bethann","Zavala","Arlington"}
+{5434,"Davis","Stephens","Hollywood"}
+{4148,"Barry","Fischer","Chattanooga"}
+{936,"Kareem","Portillo","Roseville"}
+{162,"Stephen","Hines","Garden Grove"}
+{2517,"Reginald","Davidson","Jackson"}
+{1592,"Clayton","Donovan","Norman"}
+{9101,"Jason","Morgan","Savannah"}
+{2669,"Jacque","Maldonado","Las Vegas"}
+{2902,"Keith","Graves","Peoria"}
+{4297,"Celestine","Griffin","Atlanta"}
+{1575,"Marcene","Lowe","Lafayette"}
+{9217,"Tandra","Murillo","Philadelphia"}
+{9527,"Rocco","Jenkins","St. Petersburg"}
+{4734,"Pierre","Barrera","Newark"}
+{7804,"Solomon","Elliott","Denver"}
+{2701,"Cecila","Montes","Pasadena"}
+{3800,"Oda","Stokes","Tempe"}
+{201,"Eufemia","Lowery","Corpus Christi"}
+{6337,"Ned","Khan","Oxnard"}
+{2124,"Loyce","Weiss","Richardson"}
+{3388,"Sunshine","Porter","Laredo"}
+{8432,"Danny","Hall","Santa Maria"}
+{7666,"Travis","Wilkerson","Fort Lauderdale"}
+{8223,"Shera","Holland","Miami Gardens"}
+{335,"Wilfred","Bennett","Little Rock"}
+{8978,"Terry","Mendoza","Pasadena"}
+{1407,"Evangelina","Eaton","Athens"}
+{4196,"Ali","Lamb","Berkeley"}
+{4995,"Candace","Branch","Sunnyvale"}
+{6370,"Mitchell","Zamora","Salt Lake City"}
+{1156,"Araceli","Pratt","Vallejo"}
+{2285,"Lory","Vega","Miami Gardens"}
+{9984,"Vergie","Mcmillan","Coral Springs"}
+{2040,"Josette","Cannon","Honolulu"}
+{3402,"Cesar","Russo","Garland"}
+{9926,"Lyndon","Thompson","Raleigh"}
+{5130,"Tillie","Hubbard","Farmington Hills"}
+{6849,"Marylou","Roberts","San Antonio"}
+{2326,"Yong","Horton","Columbus"}
+{9199,"Sergio","Silva","Cary"}
+{2867,"Brett","Mitchell","El Cajon"}
+{7188,"Shanice","Gardner","Clarksville"}
+{6337,"Sirena","Meyers","Pembroke Pines"}
+{511,"Morris","Watson","Kansas City"}
+{8056,"Warren","Stark","Costa Mesa"}
+{3720,"Cletus","Atkinson","Springfield"}
+{9509,"Williams","Mccarty","Denver"}
+{7568,"Hyun","Bonilla","Raleigh"}
+{6944,"Derek","Mayo","Buffalo"}
+{9198,"Julee","Mccall","High Point"}
+{4683,"Dale","Perez","San Antonio"}
+{8040,"Kurt","Rosales","Westminster"}
+{5668,"Beaulah","Lam","Clovis"}
+{694,"Bob","Ventura","Surprise"}
+{4215,"Sung","Mata","Portland"}
+{939,"Timmy","Bernal","Seattle"}
+{4118,"Deon","Holt","Milwaukee"}
+{3657,"Quinn","Jaramillo","Topeka"}
+{8910,"Rudolf","Espinosa","Eugene"}
+{4029,"Jonie","Green","Portland"}
+{1615,"Darryl","Henderson","Lewisville"}
+{2726,"Tijuana","Richard","Everett"}
+{5142,"Kenna","Harrell","Springfield"}
+{5118,"Terence","Nava","Wilmington"}
+{3673,"Reynaldo","Serrano","Lancaster"}
+{6929,"Desmond","Hines","Vancouver"}
+{7533,"Deandre","Schaefer","Norwalk"}
+{8135,"Bernard","Cameron","West Valley City"}
+{2903,"Errol","Sparks","Las Vegas"}
+{5842,"Marc","Gibbs","Detroit"}
+{9441,"Wonda","Walker","Centennial"}
+{377,"Arcelia","Hancock","Garland"}
+{3300,"Alphonso","Woods","Lakewood"}
+{263,"Melvina","Johnson","Amarillo"}
+{295,"Minna","Boone","New Orleans"}
+{4910,"Josie","Rice","Alexandria"}
+{2203,"Georgann","Meza","Gainesville"}
+{4547,"Salley","Sullivan","Memphis"}
+{2442,"Leigha","Cisneros","Durham"}
+{3164,"Myong","Figueroa","Jackson"}
+{8091,"Norman","Guerra","Glendale"}
+{1072,"Cecil","Salinas","Miami"}
+{2708,"Lucila","Middleton","Reno"}
+{7274,"Kirk","Vega","Lafayette"}
+{5485,"Chet","Weeks","Tulsa"}
+{627,"Shonta","Delacruz","Milwaukee"}
+{7151,"Fatima","Lara","Paterson"}
+{5013,"Leone","Hines","Shreveport"}
+{4699,"Tisha","Thomas","Killeen"}
+{9607,"Lane","Franco","Laredo"}
+{7080,"Dina","Pacheco","Vancouver"}
+{3012,"Tatum","Glover","Lincoln"}
+{989,"Andre","Stephenson","Richardson"}
+{1222,"Jared","Beltran","Honolulu"}
+{3714,"Esmeralda","Sellers","Newport News"}
+{4085,"Kathlene","Hester","Buffalo"}
+{6134,"Chung","Estes","Temecula"}
+{5768,"Hannah","Boyle","High Point"}
+{5219,"Esteban","Strong","Nashville"}
+{1615,"Manuel","Villarreal","Eugene"}
+{2438,"Trinidad","Marsh","Modesto"}
+{8734,"Christen","Montgomery","Boise"}
+{3064,"Cherri","Boyd","Concord"}
+{2382,"Fabian","Freeman","Gainesville"}
+{1080,"Lisabeth","Rangel","Denton"}
+{2552,"Alvin","Choi","Omaha"}
+{318,"Trey","Blake","Lexington"}
+{4392,"Luis","Camacho","Denton"}
+{4184,"Kelsie","Meadows","Oakland"}
+{2511,"Grant","Melton","San Jose"}
+{772,"Darryl","Calderon","Rockford"}
+{8397,"Fidel","Ballard","Sioux Falls"}
+{8819,"Julee","Blanchard","Chesapeake"}
+{5603,"Oda","Schmidt","Moreno Valley"}
+{5401,"Sulema","Rosario","Fullerton"}
+{6992,"Rob","Norton","Evansville"}
+{8118,"Rickie","Foley","Bellevue"}
+{1326,"Clyde","Underwood","Gresham"}
+{8500,"Mitchel","Ibarra","Detroit"}
+{4510,"Marquitta","Brock","Fort Worth"}
+{7804,"Lucrecia","Truong","Westminster"}
+{9923,"Dominick","Myers","Durham"}
+{7900,"Dion","Cano","North Charleston"}
+{4784,"Joshua","Cline","Colorado Springs"}
+{9134,"Merilyn","Hoffman","Kent"}
+{3155,"Jc","Rowe","Burbank"}
+{1147,"Courtney","Booker","Memphis"}
+{2935,"Wes","Cortes","Overland Park"}
+{4668,"Desmond","Stevenson","Abilene"}
+{8336,"Samuel","Everett","Arvada"}
+{8794,"Cinda","Heath","Berkeley"}
+{7993,"Mervin","Clark","Tampa"}
+{4347,"Stanton","Hickman","Beaumont"}
+{2066,"Hisako","Martin","Syracuse"}
+{8432,"Rick","Reyes","Grand Prairie"}
+{7716,"Lemuel","Coleman","Pueblo"}
+{5401,"Georgie","Figueroa","Mobile"}
+{7863,"Aurelio","Jordan","Little Rock"}
+{6322,"Ailene","Cabrera","Boulder"}
+{4344,"James","Olsen","Manchester"}
+{4897,"Edmund","Pollard","Atlanta"}
+{7937,"Mollie","Hodge","Gresham"}
+{4698,"Mary","Cohen","McAllen"}
+{1679,"Dorris","Mcdowell","Fort Worth"}
+{2275,"Peter","Mayo","Lakewood"}
+{9264,"Millard","Delgado","Springfield"}
+{2376,"Merle","Parrish","Mobile"}
+{1444,"Ling","Gallagher","Boise"}
+{6361,"Ingeborg","Yates","Charleston"}
+{2980,"Josiah","Wilkerson","Naperville"}
+{7820,"Emilie","Singh","Pomona"}
+{3229,"Kent","Reynolds","Edison"}
+{6817,"Dalene","Palmer","Sioux Falls"}
+{1934,"Adalberto","Lin","Topeka"}
+{7695,"Alesha","Salas","Chesapeake"}
+{2074,"Ramiro","Cross","Orange"}
+{700,"Brent","Rich","Knoxville"}
+{3232,"Seth","Chase","Victorville"}
+{9487,"Gregg","Burgess","Gainesville"}
+{6918,"Classie","Cortez","Oakland"}
+{988,"Karena","Ross","Tyler"}
+{8815,"Pasquale","Salgado","Washington"}
+{49,"Ardelia","Schroeder","Garland"}
+{6567,"Deedra","Graves","Beaumont"}
+{7697,"Sommer","Peck","Los Angeles"}
+{6839,"Jinny","Howe","San Jose"}
+{3151,"Craig","Garner","Elizabeth"}
+{1577,"Lincoln","Galvan","Chattanooga"}
+{8124,"Teofila","Walter","Lancaster"}
+{2459,"Daron","Stephens","Norfolk"}
+{5032,"Marcie","Washington","Columbus"}
+{4112,"Alaine","Randall","Montgomery"}
+{2533,"Landon","Felix","Phoenix"}
+{4274,"Clair","Pittman","Newport News"}
+{4682,"Carry","Henry","Baltimore"}
+{4701,"Ashley","Stein","San Diego"}
+{5110,"Daphine","Singh","Clarksville"}
+{3252,"Granville","Williams","El Cajon"}
+{911,"Ricky","Sierra","Anaheim"}
+{2255,"Olin","Crosby","Odessa"}
+{8542,"Alexandra","Woodard","El Cajon"}
+{6132,"Sheila","Patel","Charleston"}
+{9307,"Jae","Middleton","Garland"}
+{4842,"Hosea","Todd","Durham"}
+{2290,"Marla","Morse","Stockton"}
+{8631,"Kurtis","Horn","Joliet"}
+{1897,"Karey","Montes","Carrollton"}
+{5792,"Harland","Avery","Visalia"}
+{6190,"Tynisha","Estes","Tyler"}
+{3003,"Angelo","Cooper","Amarillo"}
+{914,"Rolf","Cline","Round Rock"}
+{5002,"Dusti","Barker","Hollywood"}
+{9012,"Robbyn","Livingston","Paterson"}
+{5887,"Jeannine","Villegas","Stamford"}
+{7125,"Earleen","Hubbard","Springfield"}
+{7615,"Azucena","Jennings","St. Petersburg"}
+{6003,"Osvaldo","Harrison","Rochester"}
+{7560,"Wilfred","Hardin","Santa Ana"}
+{2328,"Lois","Parsons","Fremont"}
+{385,"Jeanmarie","Norris","Springfield"}
+{3100,"Felipe","Reilly","Raleigh"}
+{2212,"Delila","Marquez","Peoria"}
+{3249,"Landon","Terry","Victorville"}
+{6393,"Marya","Sherman","San Mateo"}
+{3271,"Gregory","Alfaro","Ann Arbor"}
+{2554,"Ernie","Mack","Miramar"}
+{3929,"Anton","Abbott","Plano"}
+{1339,"Scott","Leach","Springfield"}
+{2906,"Lane","Valentine","West Covina"}
+{4971,"Staci","Hernandez","Vancouver"}
+{8458,"Stanley","Nelson","Escondido"}
+{6813,"Evelyne","Andersen","Surprise"}
+{8439,"Emmanuel","Giles","North Las Vegas"}
+{3208,"Kenneth","Bautista","Elk Grove"}
+{7769,"Hoyt","Bravo","Aurora"}
+{4488,"Bernardo","Scott","Murfreesboro"}
+{97,"Augusta","Little","North Las Vegas"}
+{2636,"Romeo","Warren","Cape Coral"}
+{2511,"Jule","Padilla","Topeka"}
+{4464,"Ruben","Arroyo","Inglewood"}
+{2641,"Alethea","Bowen","Palm Bay"}
+{5757,"Dorian","Sims","Abilene"}
+{3982,"Roland","Richards","Simi Valley"}
+{7200,"Odette","Soto","San Jose"}
+{9717,"Brittny","Reyes","Irvine"}
+{948,"Domenic","Valentine","Madison"}
+{6930,"Megan","Coffey","Sacramento"}
+{7701,"Nancee","Bradford","Peoria"}
+{8620,"Lovie","Jacobson","Overland Park"}
+{2051,"Lyle","Alfaro","Hartford"}
+{9290,"Kris","Trevino","Killeen"}
+{4739,"Jeri","Lim","Burbank"}
+{6928,"Rudolf","Lamb","McAllen"}
+{4954,"Winston","Watts","Kansas"}
+{8092,"Sheree","Villanueva","Arvada"}
+{1318,"Stephenie","Page","Fayetteville"}
+{5664,"Wilfred","Murray","Hartford"}
+{6269,"Mauricio","Lawrence","Tyler"}
+{5612,"Tamekia","Haynes","Coral Springs"}
+{7737,"Lachelle","Villegas","Waco"}
+{7089,"Jefferson","Bailey","Boulder"}
+{8292,"Genie","Delarosa","Bridgeport"}
+{7028,"Chloe","Blankenship","Aurora"}
+{7627,"Loan","Quintero","Peoria"}
+{4336,"Cary","Wilkinson","Tampa"}
+{3488,"Leonard","Larsen","Nashville"}
+{4001,"Rubye","Mejia","Richmond"}
+{5340,"Milford","Noble","Naperville"}
+{9922,"Winfred","Cuevas","West Valley City"}
+{7110,"Harland","Brooks","Aurora"}
+{2644,"Jarrett","David","Centennial"}
+{519,"Casey","Mccann","Grand Prairie"}
+{8641,"Clemente","Morton","Las Vegas"}
+{7628,"Ramiro","Dyer","Oceanside"}
+{0,"Pasquale","Rasmussen","Honolulu"}
+{2904,"Shona","English","Carrollton"}
+{1732,"Jewell","Sandoval","Oklahoma City"}
+{9571,"Marion","Newton","Clarksville"}
+{9380,"Weldon","Mcconnell","Plano"}
+{7416,"Shila","Houston","San Bernardino"}
+{3289,"Brendon","Ferguson","Springfield"}
+{2775,"Bernardo","Carlson","Gainesville"}
+{5820,"Sharron","Henderson","Independence"}
+{3368,"Annemarie","Hammond","Albuquerque"}
+{3448,"Latoyia","Quintana","Sandy Springs"}
+{6732,"Earline","Vasquez","Savannah"}
+{8782,"Ethyl","Shaffer","Des Moines"}
+{7008,"Katie","Stout","Gilbert"}
+{6676,"Alina","Fuentes","Waterbury"}
+{7745,"Jodi","Proctor","Kansas"}
+{3460,"Lina","Villalobos","Grand Rapids"}
+{2913,"Wilhelmina","Whitehead","Salem"}
+{1173,"Lore","Spears","San Antonio"}
+{2358,"Hershel","Stevenson","Waco"}
+{9141,"Jason","Baker","Lansing"}
+{4115,"Rickey","Robles","New Haven"}
+{5123,"Christia","Mason","Miami Gardens"}
+{9923,"Colette","Gates","Peoria"}
+{4885,"Napoleon","Walter","Boulder"}
+{1635,"Arnoldo","Gallegos","Rancho Cucamonga"}
+{2405,"Rodney","Parra","Olathe"}
+{4461,"Garth","Buchanan","Anaheim"}
+{7402,"Leila","Rocha","Shreveport"}
+{3390,"Avery","Mcdonald","Visalia"}
+{7680,"Nathan","Hodges","Kansas City"}
+{3701,"Elin","Riley","Richardson"}
+{7920,"Lawrence","Barron","Mesquite"}
+{4110,"Marline","Mcmahon","Dayton"}
+{7637,"Regena","Guerrero","Chesapeake"}
+{4279,"Mellissa","Steele","Corpus Christi"}
+{9916,"Aletha","Mcgee","Port St. Lucie"}
+{7712,"Latricia","Henson","Lincoln"}
+{5389,"Harold","Fitzgerald","Lancaster"}
+{8973,"Eric","Phan","Buffalo"}
+{2046,"Jimmie","Morgan","Kansas City"}
+{2754,"Byron","Richard","Palmdale"}
+{2603,"Alexa","Davenport","Pasadena"}
+{6031,"Laverne","Randall","Wichita"}
+{554,"Landon","Elliott","Joliet"}
+{1905,"Trina","Brady","Vancouver"}
+{7625,"Ernie","Robbins","Worcester"}
+{6120,"Camellia","Garza","Edison"}
+{4556,"Wynell","Bush","Burbank"}
+{3911,"Adriene","Webb","Shreveport"}
+{870,"Farah","Moran","Augusta"}
+{3501,"Jenee","Bates","Abilene"}
+{8365,"Elenora","Haley","Farmington Hills"}
+{7510,"Dorie","Mcfarland","Oxnard"}
+{9786,"Alejandra","Guevara","Costa Mesa"}
+{1332,"Kirby","Guevara","Augusta"}
+{7488,"Franklyn","Mcbride","Beaumont"}
+{7221,"Francoise","Chen","Gilbert"}
+{7783,"Dusty","Mckenzie","Clearwater"}
+{9582,"Jason","Benitez","Chattanooga"}
+{1153,"Randolph","Schultz","Chesapeake"}
+{7555,"Lolita","Pugh","Oxnard"}
+{4474,"Brad","Hunt","Garden Grove"}
+{8196,"Darrick","Campbell","Little Rock"}
+{5672,"Pablo","Juarez","Inglewood"}
+{8156,"Everette","Russell","Tacoma"}
+{4350,"Junior","Miller","West Palm Beach"}
+{543,"Alecia","Gross","Chula Vista"}
+{999,"Rayford","Pittman","Pembroke Pines"}
+{3071,"Frankie","Frost","Columbus"}
+{9753,"Ivonne","Mccarthy","Sioux Falls"}
+{1996,"Bernie","Flowers","New Orleans"}
+{3855,"Mckinley","Copeland","Thornton"}
+{4312,"Christin","Ventura","Tyler"}
+{4725,"Jefferson","Harrison","Santa Maria"}
+{7609,"Roderick","Hail","Spokane"}
+{3955,"Bao","Trujillo","Scottsdale"}
+{5124,"Una","Leal","Arvada"}
+{5037,"Rocky","Mcclure","Washington"}
+{2006,"Laverne","Avery","Winston–Salem"}
+{2788,"Lakisha","Fischer","Evansville"}
+{4224,"Elmer","Aguirre","Edison"}
+{9900,"Edwin","Tate","Carrollton"}
+{8782,"Jocelyn","Harper","Corpus Christi"}
+{4196,"Remona","Gaines","Fayetteville"}
+{9051,"Erik","Santos","Everett"}
+{5915,"Xiao","Brewer","Topeka"}
+{750,"Evita","Huff","Omaha"}
+{1777,"Steve","May","Las Vegas"}
+{6355,"Douglass","Sexton","Round Rock"}
+{6273,"Shante","Lester","Thousand Oaks"}
+{137,"Benita","Garza","Pasadena"}
+{6683,"Jacquie","Clay","Coral Springs"}
+{4407,"Jere","Villanueva","Columbia"}
+{9847,"Lou","Cobb","Clearwater"}
+{2778,"Cameron","Galindo","Pueblo"}
+{3470,"Dorian","Rivas","Provo"}
+{2365,"Roseanna","Day","Rochester"}
+{1704,"Esteban","Roberson","Birmingham"}
+{9196,"Mervin","Long","Hampton"}
+{9775,"Shauna","Nichols","El Monte"}
+{7785,"Krishna","Durham","Jersey City"}
+{4909,"Bradford","Ahmed","Santa Clarita"}
+{3354,"Rubin","Baldwin","McKinney"}
+{1895,"Curt","Lopez","High Point"}
+{9343,"Alesha","Medrano","Lakewood"}
+{3278,"Erasmo","Craig","Bellevue"}
+{3769,"Layla","Woodard","Bellevue"}
+{2643,"Todd","Maxwell","Norfolk"}
+{7297,"Natacha","Morris","Ann Arbor"}
+{2963,"Pearlie","Hampton","Austin"}
+{9780,"Sharon","Giles","Davenport"}
+{6032,"Luciano","Mueller","Farmington Hills"}
+{1160,"Lanny","Hernandez","Arlington"}
+{6586,"Dahlia","Vaughn","Evansville"}
+{5379,"Ivelisse","Hamilton","Clearwater"}
+{5609,"Yuko","Vincent","Costa Mesa"}
+{7517,"Rosalva","Orr","Midland"}
+{3072,"Patria","Malone","Ontario"}
+{5383,"Thomasine","Leach","Huntington Beach"}
+{1936,"Alva","Velasquez","Elgin"}
+{6478,"Clyde","George","Waterbury"}
+{343,"Mack","Pittman","Scottsdale"}
+{8444,"Nestor","Parrish","Santa Ana"}
+{3240,"Essie","Mcmillan","Lexington"}
+{3346,"Willie","Roy","Garland"}
+{7795,"Glennis","Grimes","Baltimore"}
+{9259,"Carter","Conway","Springfield"}
+{3102,"Carey","Morrison","Lexington"}
+{8993,"Holley","Chung","Berkeley"}
+{5870,"Chang","James","Chattanooga"}
+{2220,"Nikia","Blevins","Ann Arbor"}
+{2600,"Kum","Hanna","Cedar Rapids"}
+{1653,"Amos","Tyler","Charleston"}
+{8702,"Carlos","Hunt","Spokane"}
+{622,"Sulema","Berg","Centennial"}
+{6841,"Johnnie","Finley","Durham"}
+{4908,"Efren","Mullen","Seattle"}
+{7639,"Chauncey","Coffey","San Antonio"}
+{6730,"Shad","Russell","Midland"}
+{6910,"Elias","Strickland","Broken Arrow"}
+{6140,"Clark","Bruce","Elizabeth"}
+{3097,"Edmund","Santiago","Miramar"}
+{6219,"Santo","Reese","Westminster"}
+{7069,"Oscar","Dunn","South Bend"}
+{6279,"Allison","Espinosa","Wichita"}
+{5226,"Elliott","Cervantes","Beaumont"}
+{8895,"Archie","Carson","Coral Springs"}
+{2274,"Rick","Howard","Sunnyvale"}
+{1315,"David","James","Hampton"}
+{9711,"Courtney","David","Saint Paul"}
+{5260,"Illa","Glenn","Charleston"}
+{5847,"Donnell","Sanford","Lowell"}
+{9522,"Erich","Maddox","Colorado Springs"}
+{8646,"Jerald","Cannon","St. Louis"}
+{8103,"Dominque","Hahn","Visalia"}
+{4391,"Odis","Solis","Tyler"}
+{2831,"Alesha","Sawyer","Chicago"}
+{8129,"Piper","Cochran","Raleigh"}
+{8982,"Harley","Phillips","Saint Paul"}
+{4590,"Lynwood","Noble","Vancouver"}
+{2037,"Virgil","Hart","Houston"}
+{4532,"Everette","Hancock","Beaumont"}
+{726,"Brook","Solomon","Victorville"}
+{62,"Mariela","Figueroa","Charleston"}
+{2976,"Young","Palacios","Glendale"}
+{2307,"Carmen","Mcconnell","Savannah"}
+{9512,"Regena","Humphrey","Plano"}
+{4872,"Chun","Middleton","Santa Rosa"}
+{3851,"Trenton","Mata","Modesto"}
+{5764,"Santo","Walsh","Overland Park"}
+{5116,"Sal","Winters","Huntsville"}
+{6976,"Dominique","Houston","New Haven"}
+{7509,"Matthew","Greer","Springfield"}
+{2116,"Frederick","Mccullough","Savannah"}
+{6031,"Irwin","Nolan","Montgomery"}
+{3541,"Ahmed","Shah","Salem"}
+{5024,"Ted","Hood","Minneapolis"}
+{3092,"Lynn","Schaefer","Wichita Falls"}
+{4693,"Derek","Giles","Birmingham"}
+{6896,"Sylvie","Spence","Lewisville"}
+{6471,"Jayna","Johnston","Green Bay"}
+{4255,"May","Shannon","Costa Mesa"}
+{3478,"William","Williamson","Escondido"}
+{7390,"Libbie","Gonzalez","Nashville"}
+{1016,"Rae","Faulkner","Sunnyvale"}
+{5408,"Arnita","Roy","Pittsburgh"}
+{3938,"Garret","Ross","Cleveland"}
+{3892,"Buford","Huff","Miramar"}
+{8061,"Ilse","Richardson","Durham"}
+{1076,"Edra","Hahn","Tyler"}
+{4857,"Rickie","Levy","Boston"}
+{4977,"Isaiah","Sloan","Corpus Christi"}
+{6931,"Sean","Frye","Boise"}
+{2147,"Myron","Shaw","Mesquite"}
+{7767,"Sol","Harper","Killeen"}
+{282,"Mauricio","Lynn","Santa Maria"}
+{6173,"Antione","Parsons","Plano"}
+{6796,"Damion","Daniels","Los Angeles"}
+{8242,"Joaquin","Mayer","Rochester"}
+{2717,"Charley","Sullivan","Greensboro"}
+{197,"Alene","West","New Haven"}
+{9806,"Hien","English","Columbus"}
+{2023,"Zane","Hahn","Aurora"}
+{6111,"Digna","Portillo","Arvada"}
+{3085,"Inez","Everett","Richardson"}
+{7505,"Nida","Figueroa","Salem"}
+{3357,"Penny","Acevedo","Irving"}
+{2291,"Nestor","Kelley","Madison"}
+{4757,"Genie","Cobb","Santa Rosa"}
+{4299,"Jose","Fletcher","Downey"}
+{7747,"Tanner","Pearson","Spokane"}
+{3809,"Dalia","Flores","Fayetteville"}
+{6620,"Herminia","Vincent","Cary"}
+{4202,"Latanya","Nguyen","Abilene"}
+{2422,"Debbra","Mayer","Cleveland"}
+{7321,"Shawn","Preston","Amarillo"}
+{8416,"Basilia","Clark","Chattanooga"}
+{5043,"Carina","Leonard","Indianapolis"}
+{6529,"Daina","Carey","Stamford"}
+{7718,"Elijah","Aguirre","Cincinnati"}
+{8791,"Sheldon","Nava","Philadelphia"}
+{7944,"Lilly","Mcdaniel","Centennial"}
+{4417,"Augustus","Prince","Las Cruces"}
+{3766,"Alba","Pratt","Frisco"}
+{6629,"Wayne","Moreno","Carlsbad"}
+{5913,"Sandee","Rosas","Santa Maria"}
+{9466,"Jerrold","Mccarty","McAllen"}
+{8913,"Chris","Mitchell","Orlando"}
+{1383,"Tamisha","Lawson","Anaheim"}
+{1273,"Lala","Benjamin","Simi Valley"}
+{1639,"Kerrie","Barajas","Orange"}
+{3877,"Jesus","Chang","Peoria"}
+{7281,"Edwardo","Ware","Norman"}
+{1649,"Rosana","Tran","Kansas"}
+{6099,"Verline","Santiago","Erie"}
+{9725,"Booker","Byrd","Charlotte"}
+{9368,"Marlo","Buckley","Boise"}
+{6139,"Marilou","Alfaro","North Charleston"}
+{5187,"Tarsha","Montgomery","Cape Coral"}
+{2603,"Yahaira","Mayo","Chesapeake"}
+{3171,"Ali","Dunlap","Garden Grove"}
+{3504,"Gabriel","Blackwell","Huntington Beach"}
+{7739,"Chantell","Wilkinson","Concord"}
+{5670,"Rosemarie","Montoya","Moreno Valley"}
+{1099,"Loreen","Cherry","Hayward"}
+{9021,"Edmund","James","Pompano Beach"}
+{2579,"Assunta","Dudley","Murfreesboro"}
+{7490,"Melania","Harris","Santa Maria"}
+{7601,"Mason","Velasquez","Olathe"}
+{4287,"Shad","Person","Augusta"}
+{6358,"Refugio","Mendoza","Colorado Springs"}
+{1493,"Bertha","Nava","Wichita"}
+{6152,"Benny","Sherman","Ann Arbor"}
+{794,"Antionette","Wade","Tulsa"}
+{7437,"Petronila","Griffith","Lakewood"}
+{686,"Wilber","Pham","Hollywood"}
+{3878,"Mike","Allison","Abilene"}
+{188,"Siu","Conrad","Erie"}
+{8257,"Dacia","Warner","Mobile"}
+{88,"Lai","Christian","Amarillo"}
+{5080,"Amy","Hendrix","Newark"}
+{3632,"Jae","English","Costa Mesa"}
+{1643,"Hisako","Hood","Houston"}
+{8399,"Emerson","Dougherty","Cincinnati"}
+{6602,"Melodi","Coffey","Rancho Cucamonga"}
+{7557,"Jordan","Wise","Joliet"}
+{8790,"Tiny","Benitez","Tallahassee"}
+{2654,"Stephania","Eaton","Fullerton"}
+{6048,"Thi","Pennington","Bellevue"}
+{3287,"Lovella","Deleon","Coral Springs"}
+{5233,"Cortney","Rubio","Clarksville"}
+{7912,"Deonna","Waters","Burbank"}
+{2948,"Alyssa","Olsen","Macon"}
+{6973,"Angla","Diaz","Ontario"}
+{7452,"Georgie","Mack","Jacksonville"}
+{2703,"Marissa","Xiong","Round Rock"}
+{6346,"Carli","Barnett","Odessa"}
+{7591,"William","Rangel","St. Petersburg"}
+{5903,"Hedwig","Malone","Richardson"}
+{2868,"Dewitt","Beltran","Las Cruces"}
+{704,"Anya","May","Eugene"}
+{9128,"Hollis","Jacobs","Odessa"}
+{8875,"Colette","Quinn","Seattle"}
+{7352,"Phebe","Moreno","Chattanooga"}
+{9329,"Wilfredo","Larsen","Kansas City"}
+{3471,"Brittaney","Moses","Everett"}
+{3234,"Fernando","Sosa","Naperville"}
+{218,"Willie","Small","Allentown"}
+{7863,"Vaughn","Trejo","Virginia Beach"}
+{6979,"Ayako","Powell","Oceanside"}
+{4396,"Burma","Tate","Oceanside"}
+{3682,"Shawnta","Costa","Aurora"}
+{654,"Rodrigo","Mccarty","Madison"}
+{1381,"Lakisha","Monroe","Wichita"}
+{2008,"Dayle","Casey","Miramar"}
+{4482,"Joya","Hodge","New Haven"}
+{6773,"Jamar","Edwards","Arlington"}
+{4101,"Vernon","Sims","Tallahassee"}
+{937,"Chauncey","Mendez","Peoria"}
+{9164,"Deangelo","Sosa","Mobile"}
+{7158,"Sidney","Goodman","Tyler"}
+{3206,"Garfield","Alvarez","Rancho Cucamonga"}
+{126,"Rudolph","Lozano","Rochester"}
+{5312,"Lance","Callahan","Plano"}
+{566,"Catherina","Terry","Boulder"}
+{9468,"Nicholas","Jones","Fayetteville"}
+{7720,"Arlen","Bradshaw","Winston–Salem"}
+{1831,"Alfredo","Calhoun","Manchester"}
+{3373,"Keva","Beasley","Tallahassee"}
+{8928,"Cedric","Bautista","Round Rock"}
+{7594,"Jaye","Boyle","Fort Collins"}
+{8031,"Haley","Trevino","Colorado Springs"}
+{5765,"Deidra","Bruce","Torrance"}
+{6770,"Jon","Curry","Gilbert"}
+{6368,"Charissa","Parsons","Aurora"}
+{2994,"Elnora","Logan","Toledo"}
+{6375,"Joel","Mayo","San Francisco"}
+{8837,"Fred","Stevenson","Carlsbad"}
+{5693,"Rupert","Leon","Bakersfield"}
+{5700,"Bryce","Becker","Santa Clara"}
+{969,"Desmond","Cardenas","Columbus"}
+{9862,"Morgan","Livingston","Aurora"}
+{3976,"Ty","Terrell","Dallas"}
+{9033,"Frida","Campbell","Temecula"}
+{5982,"Bella","Romero","Brownsville"}
+{760,"Brigitte","Esquivel","Clarksville"}
+{1238,"Desire","Bowers","Peoria"}
+{1207,"Preston","Pearson","San Jose"}
+{6441,"Tobie","Costa","Pompano Beach"}
+{6069,"Bruno","Christian","Saint Paul"}
+{6201,"Lashaunda","Oconnor","Concord"}
+{5341,"Anton","Dyer","New Orleans"}
+{9448,"Guy","Alfaro","Hampton"}
+{6735,"Frances","Stokes","Temecula"}
+{1564,"Minerva","Goodwin","Dayton"}
+{399,"Ruben","Ibarra","Pueblo"}
+{5333,"Ahmed","Ruiz","Evansville"}
+{8600,"Jo","Sawyer","Sacramento"}
+{5150,"Darwin","Hunt","Evansville"}
+{6068,"Thersa","Krueger","San Mateo"}
+{2569,"Juan","Armstrong","New York"}
+{6736,"Branden","Lim","North Las Vegas"}
+{4029,"Chuck","Snow","Broken Arrow"}
+{3097,"Lory","Jacobs","Frisco"}
+{1343,"Sudie","Melton","Midland"}
+{2402,"Charita","Ellis","Brownsville"}
+{3628,"Jenice","Meadows","Clearwater"}
+{6697,"Marietta","Bullock","Norman"}
+{4192,"Percy","Boyle","Westminster"}
+{5077,"Willie","English","Ventura"}
+{7307,"Gwenda","Shaffer","Alexandria"}
+{8156,"Blanche","Bautista","Hialeah"}
+{7402,"Leon","Andersen","Stockton"}
+{1549,"Deetta","Mitchell","Thousand Oaks"}
+{8070,"Ambrose","Leon","Hartford"}
+{6073,"Lenard","Padilla","Richmond"}
+{514,"Eveline","Donovan","St. Louis"}
+{4112,"Anderson","Palacios","Philadelphia"}
+{7588,"Tajuana","Austin","Fort Collins"}
+{7640,"Gale","Franco","Killeen"}
+{8791,"Dong","Wilkerson","Allentown"}
+{8847,"Kimberley","Spence","Elk Grove"}
+{479,"Rosenda","Valenzuela","Spokane"}
+{5958,"Cedrick","Potter","Green Bay"}
+{3398,"Tashia","Hartman","Lubbock"}
+{3138,"Susanna","Knox","Baton Rouge"}
+{1101,"Moriah","Carson","Inglewood"}
+{2692,"Maria","Adams","Birmingham"}
+{9584,"Ali","Middleton","Pittsburgh"}
+{3872,"Marietta","Perez","Lansing"}
+{5237,"Enoch","Craig","Port St. Lucie"}
+{1648,"Eric","Chase","Syracuse"}
+{8505,"Isreal","Howard","Virginia Beach"}
+{9733,"Jerold","Watts","Escondido"}
+{5301,"Dot","Parsons","San Antonio"}
+{2871,"Eugenio","Reilly","Durham"}
+{1608,"Seth","Noble","Thousand Oaks"}
+{690,"Denae","Blair","Anchorage"}
+{9560,"Verna","Dennis","South Bend"}
+{4009,"Dorethea","Velez","Olathe"}
+{5272,"Gwyn","Shields","Fort Wayne"}
+{2508,"January","Montgomery","Warren"}
+{3438,"Aaron","Mcfarland","Los Angeles"}
+{7681,"Tod","Duarte","Brownsville"}
+{2097,"Steve","Le","Wichita"}
+{4652,"Donn","Wolf","Aurora"}
+{9275,"Teofila","Travis","Newport News"}
+{921,"Johna","Horn","Chandler"}
+{295,"Arden","Dalton","Richardson"}
+{9204,"Carmelia","Morris","Erie"}
+{19,"Janise","Nava","Miami"}
+{700,"Ernest","Murray","Madison"}
+{6693,"Senaida","Lara","St. Petersburg"}
+{934,"Cassy","Leach","Houston"}
+{3688,"Julee","Martin","Pittsburgh"}
+{2705,"Keneth","Lucero","Tacoma"}
+{8419,"Yasmin","Hale","Roseville"}
+{6702,"Jackelyn","Parsons","Murrieta"}
+{9570,"Harry","Brady","Broken Arrow"}
+{5993,"Britany","Smith","Cleveland"}
+{6756,"Bruce","Mosley","Everett"}
+{2718,"Zachary","Livingston","Newark"}
+{1157,"Tatiana","Douglas","Carlsbad"}
+{6995,"Pedro","Sims","Kent"}
+{1568,"Odell","Patrick","Jersey City"}
+{1545,"Jackson","Deleon","El Paso"}
+{6855,"Mervin","Greer","Garland"}
+{6989,"Horace","Parks","Tampa"}
+{4004,"Elliot","Avila","Downey"}
+{9271,"Wesley","Copeland","Atlanta"}
+{4757,"Daisy","Grimes","Denver"}
+{9274,"Lesa","Collier","Minneapolis"}
+{402,"Royce","Carr","Clearwater"}
+{517,"Jackelyn","Melendez","Palmdale"}
+{9286,"Jerrell","Hodges","Long Beach"}
+{4992,"Cherrie","Branch","Glendale"}
+{4630,"Ayesha","Peralta","Inglewood"}
+{9927,"Sherlyn","Bravo","Norfolk"}
+{4593,"Jae","Whitehead","Chattanooga"}
+{3685,"Felice","Warren","Saint Paul"}
+{555,"My","Whitaker","Grand Prairie"}
+{8978,"Roy","Sanchez","Hialeah"}
+{1637,"Wayne","Malone","Daly City"}
+{460,"Dotty","Salgado","Columbus"}
+{251,"Mandy","Vu","Pasadena"}
+{5087,"Timmy","Brock","Antioch"}
+{3181,"Cedrick","Reilly","Downey"}
+{8938,"Lucas","Horn","Augusta"}
+{342,"Ronny","Huerta","Davenport"}
+{7962,"Mario","Mccall","McAllen"}
+{8162,"Carroll","Mayer","Miramar"}
+{7774,"Whitley","Ward","El Cajon"}
+{5771,"Dolly","Davidson","Lowell"}
+{4699,"Lizzie","Velazquez","Rialto"}
+{31,"Nellie","Johns","Birmingham"}
+{4681,"Landon","Scott","Kansas"}
+{5665,"Neville","Massey","Detroit"}
+{3362,"Bong","Rosas","Mesquite"}
+{8731,"Kurt","Griffin","Joliet"}
+{3502,"Elroy","Weaver","Colorado Springs"}
+{3348,"Bernardo","Hendrix","Lubbock"}
+{6811,"Georgina","Browning","Newport News"}
+{7208,"Jewel","Beasley","Vallejo"}
+{3374,"Rhoda","Oneal","Sandy Springs"}
+{9931,"Ambrose","Newton","Topeka"}
+{6623,"Donovan","Duffy","Santa Rosa"}
+{9985,"Malcolm","Mendoza","Clovis"}
+{3045,"Antonietta","Keller","Thornton"}
+{9402,"Maryanne","Nicholson","Elk Grove"}
+{5070,"Danille","Lee","North Las Vegas"}
+{4044,"Kyle","Saunders","Chula Vista"}
+{4949,"Maribel","Waller","Baltimore"}
+{2976,"Ollie","Bowers","San Antonio"}
+{949,"Myrle","Sampson","Cleveland"}
+{7501,"Ermelinda","Bentley","El Paso"}
+{1660,"Vincenzo","Figueroa","Providence"}
+{4383,"Dwight","Pope","Scottsdale"}
+{4746,"Paulene","Oliver","Jersey City"}
+{2050,"Alia","Dejesus","Sunnyvale"}
+{1158,"Suzette","Trejo","Glendale"}
+{9982,"Cheree","Heath","Killeen"}
+{3732,"Kellee","Lyons","Victorville"}
+{7200,"Augustine","Montgomery","Davenport"}
+{8739,"Alise","Spencer","Miami Gardens"}
+{3206,"Johnson","Dennis","Chesapeake"}
+{3955,"Renae","Ware","Jersey City"}
+{7476,"Wilburn","Fox","Jersey City"}
+{281,"Lovie","Weaver","Pasadena"}
+{3639,"Allegra","Chang","Arvada"}
+{1249,"Argentina","Hull","Tempe"}
+{6220,"Darlene","Heath","Clearwater"}
+{3642,"Enoch","Church","Salinas"}
+{1643,"Lorean","Parsons","Denver"}
+{5819,"Latricia","Jaramillo","San Jose"}
+{3877,"Renato","Delacruz","Portland"}
+{8979,"Sunni","Salazar","Richmond"}
+{3394,"Morgan","Mccann","Oxnard"}
+{2494,"Selina","Dyer","Henderson"}
+{5605,"Erin","Singh","Wilmington"}
+{9205,"Billie","Beil","Cincinnati"}
+{3536,"Jarrett","Chang","Pearland"}
+{6001,"Lesley","Norton","McKinney"}
+{6139,"Yer","Whitney","Lubbock"}
+{619,"Lonnie","Shelton","Grand Prairie"}
+{242,"Denver","Cuevas","Westminster"}
+{9733,"Gregory","Whitehead","West Covina"}
+{3868,"Mandi","Schultz","Daly City"}
+{9091,"Teodora","Zimmerman","Joliet"}
+{1521,"Dana","Gentry","Santa Clara"}
+{5598,"Alaine","Bowers","Berkeley"}
+{4230,"Juan","Cline","Everett"}
+{7092,"Venice","Ford","Cary"}
+{8328,"Maurine","Galindo","Worcester"}
+{9540,"Kris","Mcintosh","Tulsa"}
+{7883,"Allen","Jackson","Lincoln"}
+{9447,"Aron","White","Tucson"}
+{2313,"Daniel","Vo","Fontana"}
+{2674,"Mary","Meadows","Huntsville"}
+{8604,"Cletus","Leblanc","Abilene"}
+{3461,"Shawn","Adams","Eugene"}
+{7373,"Ramon","Vo","Macon"}
+{5542,"Edmund","Morrow","Temecula"}
+{5327,"Minda","Norman","Aurora"}
+{7404,"Antione","Navarro","Victorville"}
+{3797,"Mirtha","Schwartz","Bellevue"}
+{5976,"Ivory","Roberts","Waco"}
+{2513,"Maryland","Webster","Lubbock"}
+{8380,"Alisha","Carrillo","San Diego"}
+{5277,"Isidro","Booker","Orlando"}
+{9154,"Leandro","Greer","Pueblo"}
+{8408,"Elizebeth","Hamilton","Lakewood"}
+{3317,"Antony","Roth","Garden Grove"}
+{5911,"Theresia","Tran","Colorado Springs"}
+{3057,"Randell","Ahmed","Joliet"}
+{9622,"Brigid","Freeman","Topeka"}
+{9153,"Mila","Avila","Miramar"}
+{3364,"Nicole","Wilson","Norfolk"}
+{5414,"Leonardo","Barry","Corpus Christi"}
+{4633,"Caridad","Morrow","Cleveland"}
+{392,"Lady","Gordon","Plano"}
+{3285,"Lakeisha","Dorsey","Erie"}
+{5000,"Dominic","Mendoza","Carlsbad"}
+{9479,"Elmo","Farrell","Carlsbad"}
+{237,"Laure","Meyers","Murrieta"}
+{7004,"Connie","Bass","Roseville"}
+{8454,"Arron","Golden","Reno"}
+{9899,"Micah","Russell","Rochester"}
+{1152,"Kermit","Mcclain","Erie"}
+{4137,"Trina","Bennett","Kansas"}
+{8437,"Hye","Ruiz","Jacksonville"}
+{7193,"Nakita","Lugo","Kansas City"}
+{7623,"Pura","Decker","Syracuse"}
+{1780,"Wally","Mcdowell","San Jose"}
+{6628,"Alejandro","Phelps","Newport News"}
+{3989,"Lee","Meza","Fort Wayne"}
+{2257,"Fred","Holland","Berkeley"}
+{8941,"Mauro","Johns","San Antonio"}
+{4528,"Li","Donaldson","Alexandria"}
+{7933,"Graciela","Duke","San Antonio"}
+{7239,"Marla","Hicks","Rancho Cucamonga"}
+{5515,"Johnathon","Bush","Everett"}
+{988,"Arie","English","Pasadena"}
+{801,"Buford","Mack","Wilmington"}
+{442,"Gianna","Ellison","Chula Vista"}
+{5926,"Xiomara","Gill","Palmdale"}
+{3728,"Tiara","Ponce","College Station"}
+{6869,"Freeman","Ford","Springfield"}
+{3542,"Livia","Stone","Oceanside"}
+{2471,"Reggie","Duran","Fort Lauderdale"}
+{6558,"Janise","Middleton","Manchester"}
+{5990,"Andera","Preston","New Haven"}
+{3042,"Buster","Pace","McKinney"}
+{9146,"Luigi","Doyle","Richardson"}
+{8858,"Gertrude","Fletcher","Denver"}
+{1620,"Laurice","Cardenas","Sunnyvale"}
+{5980,"Edgar","Dominguez","Salem"}
+{9992,"Darrin","Martin","Las Vegas"}
+{5702,"Marshall","Wolfe","Pembroke Pines"}
+{6543,"Deon","Hickman","Buffalo"}
+{9095,"Lyle","Calderon","Ventura"}
+{5694,"Kasha","Parra","Augusta"}
+{1200,"Denna","Poole","Jackson"}
+{5723,"Tasha","Humphrey","Torrance"}
+{5439,"Van","Jennings","Sioux Falls"}
+{3817,"Liliana","Waters","Denver"}
+{8416,"Lue","Walter","Gilbert"}
+{6464,"Hobert","Patterson","Springfield"}
+{7152,"Dayna","Warner","Columbia"}
+{3074,"Frances","Michael","Odessa"}
+{7528,"Barney","Daugherty","Killeen"}
+{3276,"Zane","Lawrence","Athens"}
+{1206,"Deneen","Hensley","Tacoma"}
+{7542,"Vashti","Rich","Cedar Rapids"}
+{6387,"Ashleigh","Little","Chesapeake"}
+{787,"Delta","Cruz","Norwalk"}
+{9606,"Beverlee","Moyer","Kent"}
+{5387,"Rolf","Grant","Stamford"}
+{6143,"Anjanette","Lee","Broken Arrow"}
+{7963,"Gilberto","Melendez","Cincinnati"}
+{7027,"Rosena","Winters","Wichita Falls"}
+{640,"Tomeka","Whitehead","Elk Grove"}
+{3968,"Tobias","Potts","Sunnyvale"}
+{6109,"Cordelia","Winters","Burbank"}
+{2313,"Jeanine","Delarosa","Lowell"}
+{2964,"Eduardo","Long","Baton Rouge"}
+{6975,"Mathilde","Benjamin","Eugene"}
+{1808,"Beckie","Magana","Boston"}
+{9196,"Chae","Barry","South Bend"}
+{1080,"Nathanael","Bond","Pasadena"}
+{9593,"Herb","Nolan","Clovis"}
+{4962,"Billy","Munoz","Wichita"}
+{6271,"Karma","Wolf","Dallas"}
+{5215,"Tad","Kent","Boulder"}
+{3229,"Rodney","Esquivel","Torrance"}
+{6001,"Leonel","Ortega","Carrollton"}
+{968,"Jan","Carr","Centennial"}
+{4023,"Darla","Wilkerson","Fontana"}
+{7012,"Tena","Clarke","Evansville"}
+{5920,"Colby","Waters","Washington"}
+{9257,"Lavina","Benitez","Pasadena"}
+{1064,"Carole","Moses","Las Vegas"}
+{8856,"Romeo","Palmer","Baton Rouge"}
+{3844,"Galen","Kelley","Charlotte"}
