@@ -207,14 +207,16 @@ int main(char argc,char** argv)
 	C8: Create/Open secondary index.
 	*/
 	printf("@Checkpoint 8: Create Secondary/ Open Index\n");
+
 	int createErrorCode = SHT_CreateSecondaryIndex(sfileName,sAttrName,sAttrLength,sBuckets,fileName);
+
 	if (createErrorCode<0)
 	{
 		printf("Checkpoint Result 8: FAILED\n");
 		return -1;
 	}
 
-	SHT_info* shi=SHT_OpenSecondaryIndex(sfileName);
+	SHT_info* shi = SHT_OpenSecondaryIndex(sfileName);
 
 	if(shi != NULL)
 		printf("Checkpoint Result 8 SUCCESS\n");
