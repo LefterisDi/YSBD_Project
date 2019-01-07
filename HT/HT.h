@@ -3,25 +3,7 @@
 #ifndef __HT__
 #define __HT__
 
-typedef struct {
-    int  id;
-    char name[15];
-    char surname[20];
-    char address[40];
-} Record;
-
-typedef struct {
-    int      nextBlock;
-    Record** rec;
-} Block;
-
-typedef struct {
-    int      fileDesc;    /* File ID at block level                                         */
-    char     attrType;    /* Type of field that is the Key for the current file: 'c' or 'i' */
-    char*    attrName;    /* Name of field that is the Key for the current file             */
-    int      attrLength;  /* Size of field that is the Key for the current file             */
-    long int numBuckets;  /* Number of "buckets" of the hashing file                        */
-} HT_info;
+#include "HT_structs.h"
 
 int HT_CreateIndex( char* fileName,   /* File name                */
                     char  attrType,   /* Key-field Type: 'c', 'i' */
@@ -41,13 +23,5 @@ int HT_DeleteEntry( HT_info header_info, /* File header                      */
 
 int HT_GetAllEntries( HT_info header_info, /* File header                       */
                       void*   value        /* Value of Key-field to be searched */ );
-
-int BlockDelete(HT_info* header_info);
-
-int BlockSearch(HT_info header_info, const int id);
-
-int HashFunc(const unsigned int id, const int mask);
-
-unsigned int strtoi(const char* str);
 
 #endif // __HT__

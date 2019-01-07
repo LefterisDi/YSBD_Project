@@ -1,12 +1,13 @@
 /* File: SHT.c */
 
 #include <stdbool.h>
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "SHT.h"
 #include "../BF/BF.h"
+#include "../AuxFuncs/auxFuncs.h"
 
 int SHTBlockInit(const int fileDesc)
 {
@@ -120,6 +121,8 @@ int SHT_CloseSecondaryIndex(SHT_info* header_info)
 		BF_PrintError("Error closing file");
 		return -1;
 	}
+
+	free(header_info);
 
     return 0;
 }
@@ -278,21 +281,21 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
 	bool   foundEntry  		   = false;
 	unsigned int pkey  		   = 0;
 
-	int secFileDesc = header_info_sht.sfileDesc;
+	// int secFileDesc = header_info_sht.sfileDesc;
 
 		 if (!strcmp(header_info_sht.attrName , "Name"))    pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Surname")) pkey = strtoi((char *)value);
 	else if (!strcmp(header_info_sht.attrName , "Address")) pkey = strtoi((char *)value);
 
-	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
-		BF_PrintError("Error getting block");
-		return -1;
-	}
+	// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+	// 	BF_PrintError("Error getting block");
+	// 	return -1;
+	// }
 
 	int blockID = HashFunc(pkey, header_info_sht.numBuckets) + 1;
 
-	printf("VALUE = %s\n", (char *)value);
-	printf("BLOCKID = %d\n", blockID);
+	// printf("VALUE = %s\n", (char *)value);
+	// printf("BLOCKID = %d\n", blockID);
 
 
 
@@ -317,12 +320,12 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
         {
 			bool displayEntry = false;
 
-			if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
-				BF_PrintError("Error getting block");
-				return -1;
-			}
+			// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
+			// 	BF_PrintError("Error getting block");
+			// 	return -1;
+			// }
 
-			if (BF_ReadBlock(secFileDesc , blockID , (void **)&sblock) < 0) {
+			if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
 				BF_PrintError("Error getting block");
 				return -1;
 			}
@@ -355,74 +358,8 @@ int SHT_GetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* va
         } // for
 
         blockID = sblock->nextBlock;
-		printf("BLOCKID INSIDE = %d\n", blockID);
+		// printf("BLOCKID INSIDE = %d\n", blockID);
     } // while
 
     return totalSearchedBlocks;
-}
-
-int SHTBlockDelete(SHT_info* header_info)
-{
-    SecondaryBlock* block;
-    int    entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
-	int cntr = 0;
-    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
-	int secFileDesc = header_info->sfileDesc;
-
-	if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
-		BF_PrintError("Error getting block");
-		return -1;
-	}
-
-    for (int i = 0; i < header_info->numBuckets; i++)
-    {
-
-        // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-        int blockID = i + 1;
-
-        while (blockID != -1)
-        {
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            if (BF_ReadBlock(secFileDesc , blockID , (void **)&block) < 0) {
-                BF_PrintError("Error getting block");
-                return -1;
-            }
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-
-            for (int j = 0 ; j < entries ; j++)
-            {
-                // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
-                if (block->rec[j] == NULL)
-                    break;
-                    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
-
-				cntr++;
-                free(block->rec[j]);
-                // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
-            } // for
-
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 8\n");
-            free(block->rec);
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-
-            if (BF_WriteBlock(secFileDesc , blockID) < 0) {
-                BF_PrintError("Error writing block back");
-                return -1;
-            }
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
-
-            blockID = block->nextBlock;
-        } // while
-
-		if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info) < 0) {
-		    BF_PrintError("Error getting block");
-		    return -1;
-	    }
-
-        // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
-    } // for
-
-    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
-	// printf("CNTR = %d\n", cntr);
-    return 0;
 }
