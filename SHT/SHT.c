@@ -34,6 +34,8 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 
+	infoBlock->hashFlag = 1;
+
 	infoBlock->sec_info.sfileDesc  = fileDesc;
 	infoBlock->sec_info.numBuckets = buckets;
 	infoBlock->sec_info.attrLength = attrLength;
@@ -98,6 +100,9 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
+
+	if (infoBlock->hashFlag != 1)
+		return NULL;
 
     return &(infoBlock->sec_info);
 }

@@ -168,6 +168,7 @@ int main(int argc, char* argv[])
 
         // line = NULL;
     }
+    
     fclose(gen_fp);
 
         //  if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {

@@ -7,40 +7,54 @@
 
 #include "HT.h"
 #include "../BF/BF.h"
+#include "../SHT/SHT.h"
 #include "../AuxFuncs/auxFuncs.h"
 
 int HashStatistics(char* filename)
 {
-    HT_info* info;
-    FILE* gen_fp;
+    HT_info*  info;
+    SHT_info* sinfo;
+    // Info* infoBlock;
+    // FILE* gen_fp;
+    //
+    // gen_fp = fopen(filename,"r");
+    // if (gen_fp == NULL) {
+    //     perror("Cannot open file");
+    //     exit(EXIT_FAILURE);
+    // }
 
-    gen_fp = fopen(filename,"r");
-    if (gen_fp == NULL) {
-        perror("Cannot open file");
-        exit(EXIT_FAILURE);
+    // info = (HT_info *)malloc(sizeof(HT_info));
+    // if (info == NULL) {
+    //     perror("Cannot allocate memory");
+    //     fclose(gen_fp);
+    //     exit(EXIT_FAILURE);
+    // }
+    //
+    // HT_info * tmp_info = HT_OpenIndex(filename);
+    //
+    // *info = *tmp_info;
+
+    info = HT_OpenIndex(filename);
+    if (info != NULL)
+    {
+        return 0;
     }
 
-    info = (HT_info *)malloc(sizeof(HT_info));
-    if (info == NULL) {
-        perror("Cannot allocate memory");
-        fclose(gen_fp);
-        exit(EXIT_FAILURE);
+    sinfo = SHT_OpenSecondaryIndex(filename);
+    if (sinfo != NULL)
+    {
+
     }
-
-    HT_info * tmp_info = HT_OpenIndex(filename);
-
-    *info = *tmp_info;
+    else
+        return -1;
 
 
 
 
 
+    // printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
 
-    printf("STATISTICS CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-
-    fclose(gen_fp);
-    free(info);
-    return 0;
+    // return 0;
 }
 
 int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength, int buckets)
@@ -76,6 +90,8 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // info.numBuckets = buckets;
 
     // infoBlock->info->attrName   = attrName;
+
+    infoBlock->hashFlag = 0;
 
     infoBlock->info.fileDesc   = fileDesc;
     infoBlock->info.numBuckets = buckets;
@@ -129,6 +145,9 @@ HT_info* HT_OpenIndex(char* fileName)
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
+
+	if (infoBlock->hashFlag != 0)
+		return NULL;
 
     return &(infoBlock->info);
 }
