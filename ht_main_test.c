@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include "./BF/BF.h"
 #include "./HT/HT.h"
+#include "./SHT/SHT.h"
 
 
 
@@ -109,9 +110,9 @@ int main(char argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
-		int err=HT_GetAllEntries(*hi,(void*)&record.id);
+		int err = HT_GetAllEntries(*hi , (void*)&record.id);
 
-		if (err<0)
+		if (err < 0)
 			ch4 += 1;
 	}
 
@@ -254,7 +255,7 @@ int main(char argc,char** argv)
 			sRecord.record  = record;
 			sRecord.blockId = blockId;
 
-			int sInsertError = SHT_InsertEntry(*shi,sRecord);
+			int sInsertError = SHT_SecondaryInsertEntry(*shi,sRecord);
 
 			if(sInsertError < 0)
 				ch9 += 1;
@@ -296,7 +297,7 @@ int main(char argc,char** argv)
 	printf("@Checkpoint 11\n");
 
 	int htCloseError  = HT_CloseIndex(hi);
-	int shtCloseError = SHT_CloseSecondaryIndex(*shi);
+	int shtCloseError = SHT_CloseSecondaryIndex(shi);
 
 	if (htCloseError == 0 && shtCloseError == 0)
 		printf("Checkpoint Result 11: SUCCESS\n");
