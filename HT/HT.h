@@ -3,7 +3,8 @@
 #ifndef __HT__
 #define __HT__
 
-#include "HT_structs.h"
+// #include "HT_structs.h"
+#include "../structs.h"
 
 int HT_CreateIndex( char* fileName,   /* File name                */
                     char  attrType,   /* Key-field Type: 'c', 'i' */

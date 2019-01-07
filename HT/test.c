@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     // free(info);
     // free(sinfo);
     // return -1;
-    
+
     // sinfo->sfileDesc  = tmp_sinfo->sfileDesc;
     // sinfo->fileName   = tmp_sinfo->fileName;
     // sinfo->attrName   = tmp_sinfo->attrName;
@@ -210,5 +210,7 @@ int main(int argc, char* argv[])
 
     free(line);
     free(info);
+    free(sinfo);
+
     return 0;
 }

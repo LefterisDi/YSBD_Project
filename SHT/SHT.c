@@ -34,10 +34,12 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 
-	infoBlock->info     = NULL;
-	infoBlock->sec_info = (SHT_info *)malloc(sizeof(SHT_info));
+	infoBlock->sec_info.sfileDesc  = fileDesc;
+	infoBlock->sec_info.numBuckets = buckets;
+	infoBlock->sec_info.attrLength = attrLength;
+	infoBlock->sec_info.fileName   = (char *)malloc((sizeof(primFileName) + 1) * sizeof(char));
 
-	if (infoBlock->sec_info == NULL) {
+	if (infoBlock->sec_info.fileName == NULL) {
 		perror("Cannot allocate memory");
 
 		if (BF_CloseFile(fileDesc) < 0) {
@@ -47,40 +49,22 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 
-	infoBlock->sec_info->sfileDesc  = fileDesc;
-	infoBlock->sec_info->numBuckets = buckets;
-	infoBlock->sec_info->attrLength = attrLength;
-	infoBlock->sec_info->fileName   = (char *)malloc((sizeof(primFileName) + 1) * sizeof(char));
+	infoBlock->sec_info.attrName = (char *)malloc((attrLength + 1) * sizeof(char));
 
-	if (infoBlock->sec_info->fileName == NULL) {
+	if (infoBlock->sec_info.attrName == NULL) {
 		perror("Cannot allocate memory");
 
 		if (BF_CloseFile(fileDesc) < 0) {
 			BF_PrintError("Error closing file");
 		}
 
-		free(infoBlock->sec_info);
+		free(infoBlock->sec_info.fileName);
 
 		return -1;
 	}
 
-	infoBlock->sec_info->attrName = (char *)malloc((attrLength + 1) * sizeof(char));
-
-	if (infoBlock->sec_info->attrName == NULL) {
-		perror("Cannot allocate memory");
-
-		if (BF_CloseFile(fileDesc) < 0) {
-			BF_PrintError("Error closing file");
-		}
-
-		free(infoBlock->sec_info->fileName);
-		free(infoBlock->sec_info);
-
-		return -1;
-	}
-
-	strcpy(infoBlock->sec_info->fileName,primFileName);
-	strcpy(infoBlock->sec_info->attrName,attrName);
+	strcpy(infoBlock->sec_info.fileName,primFileName);
+	strcpy(infoBlock->sec_info.attrName,attrName);
 
     if (BF_WriteBlock(fileDesc , 0 ) < 0) {
 		BF_PrintError("Error writing block back");
@@ -96,15 +80,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		return -1;
 	}
 
-	free(infoBlock->sec_info);
-
 	return 0;
 }
 
 
 SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 {
-    SHT_info* info;
+    Info* infoBlock;
     int fileDesc;
 
     if ((fileDesc = BF_OpenFile(sfileName)) < 0) {
@@ -112,12 +94,12 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 		return NULL;
 	}
 
-    if (BF_ReadBlock(fileDesc , 0 , (void **)&info) < 0) {
+    if (BF_ReadBlock(fileDesc , 0 , (void **)&infoBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return NULL;
 	}
 
-    return info;
+    return &(infoBlock->sec_info);
 }
 
 

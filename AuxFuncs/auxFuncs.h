@@ -3,8 +3,9 @@
 #ifndef __AUX_FUNCS__
 #define __AUX_FUNCS__
 
-#include "../HT/HT_structs.h"
-#include "../SHT/SHT_structs.h"
+// #include "../HT/HT_structs.h"
+// #include "../SHT/SHT_structs.h"
+#include "../structs.h"
 
 unsigned int strtoi(const char* str);
 int HashFunc(const unsigned int id, const int mask);
