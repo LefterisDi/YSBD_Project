@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "auxFuncs.h"
+#include "../SHT/SHT.h"
+#include "../HT/HT.h"
 #include "../BF/BF.h"
 
 int HashFunc(const unsigned int id, const int mask)
@@ -146,15 +148,21 @@ int BlockSearch(HT_info header_info, const int id)
     return -1;
 }
 
-int BlockDelete(HT_info* header_info)
+int BlockDelete(char* filename)
 {
     Block* block;
     int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
-
     // int primFileDesc = header_info->fileDesc;
 
+    HT_info  header_info;
+
+    HT_info* tmp_info = HT_OpenIndex(filename);
+    if (tmp_info == NULL)
+        return -1;
+
+    header_info = *tmp_info;
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
-    for (int i = 0; i < header_info->numBuckets; i++)
+    for (int i = 0; i < header_info.numBuckets; i++)
     {
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
@@ -163,8 +171,13 @@ int BlockDelete(HT_info* header_info)
         while (blockID != -1)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            if (BF_ReadBlock(header_info->fileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
+
+                if (BF_CloseFile(header_info.fileDesc) < 0) {
+            		BF_PrintError("Error closing file");
+            	}
+
                 return -1;
             }
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
@@ -184,8 +197,13 @@ int BlockDelete(HT_info* header_info)
             free(block->rec);
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
 
-            if (BF_WriteBlock(header_info->fileDesc , blockID) < 0) {
+            if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
                 BF_PrintError("Error writing block back");
+
+                if (BF_CloseFile(header_info.fileDesc) < 0) {
+            		BF_PrintError("Error closing file");
+            	}
+
                 return -1;
             }
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
@@ -202,6 +220,11 @@ int BlockDelete(HT_info* header_info)
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
+
+    if (BF_CloseFile(header_info.fileDesc) < 0) {
+        BF_PrintError("Error closing file");
+        return -1;
+    }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
     return 0;
@@ -246,7 +269,7 @@ int SHTBlockInit(const int fileDesc)
     return blockID;
 }
 
-int SHTBlockDelete(SHT_info* header_info)
+int SHTBlockDelete(char* filename)
 {
     SecondaryBlock* block;
     int    entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
@@ -259,7 +282,16 @@ int SHTBlockDelete(SHT_info* header_info)
 	// 	return -1;
 	// }
 
-    for (int i = 0; i < header_info->numBuckets; i++)
+    SHT_info  header_info;
+
+    SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex(filename);
+    if (tmp_sinfo == NULL)
+        return -1;
+
+    header_info = *tmp_sinfo;
+
+
+    for (int i = 0; i < header_info.numBuckets; i++)
     {
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
@@ -268,8 +300,13 @@ int SHTBlockDelete(SHT_info* header_info)
         while (blockID != -1)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            if (BF_ReadBlock(header_info->sfileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(header_info.sfileDesc , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
+
+                if (BF_CloseFile(header_info.sfileDesc) < 0) {
+                    BF_PrintError("Error closing file");
+                }
+
                 return -1;
             }
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
@@ -290,8 +327,13 @@ int SHTBlockDelete(SHT_info* header_info)
             free(block->rec);
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
 
-            if (BF_WriteBlock(header_info->sfileDesc , blockID) < 0) {
+            if (BF_WriteBlock(header_info.sfileDesc , blockID) < 0) {
                 BF_PrintError("Error writing block back");
+
+                if (BF_CloseFile(header_info.sfileDesc) < 0) {
+                    BF_PrintError("Error closing file");
+                }
+
                 return -1;
             }
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
@@ -306,6 +348,11 @@ int SHTBlockDelete(SHT_info* header_info)
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
     } // for
+
+    if (BF_CloseFile(header_info.sfileDesc) < 0) {
+        BF_PrintError("Error closing file");
+        return -1;
+    }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
 	// printf("CNTR = %d\n", cntr);

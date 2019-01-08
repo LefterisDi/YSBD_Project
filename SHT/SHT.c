@@ -280,7 +280,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
 	infoBlock->hashFlag = 1;
 
-	infoBlock->sec_info.sfileDesc  = fileDesc;
+	infoBlock->sec_info.sfileDesc  = -1;
 	infoBlock->sec_info.numBuckets = buckets;
 	infoBlock->sec_info.attrLength = attrLength;
 	infoBlock->sec_info.fileName   = (char *)malloc((sizeof(primFileName) + 1) * sizeof(char));
@@ -354,6 +354,10 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 		return NULL;
 	}
 
+
+    infoBlock->sec_info.sfileDesc = fileDesc;
+    printf("S_INFOBLOCK = %d\n",infoBlock->info.fileDesc );
+
     return &(infoBlock->sec_info);
 }
 
@@ -367,6 +371,9 @@ int SHT_CloseSecondaryIndex(SHT_info* header_info)
 
 	free(header_info->fileName);
 	free(header_info->attrName);
+
+	header_info->fileName = NULL;
+	header_info->attrName = NULL;
 
     return 0;
 }

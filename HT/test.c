@@ -189,23 +189,36 @@ int main(int argc, char* argv[])
    //     return -1;
    // }
 
+   // if (BF_CloseFile(info->fileDesc) < 0) {
+   //     BF_PrintError("Error closing file");
+   //     return -1;
+   // }
+   //
+   // if (BF_CloseFile(sinfo->sfileDesc) < 0) {
+   //     BF_PrintError("Error closing file");
+   //     return -1;
+   // }
+
    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
    printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
    HashStatistics("file1");
+   HashStatistics("sfile");
 
-   *sinfo = *(SHT_OpenSecondaryIndex("sfile"));
+   // *sinfo = *(SHT_OpenSecondaryIndex("sfile"));
+   // printf("FILEDESC FROM MAIN 1 = %d\n", sinfo->sfileDesc);
 
-    printf("BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
+    printf("BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
    //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
    //     BF_PrintError("Error getting block");
    //     return -1;
    // }
-   *info = *(HT_OpenIndex("file1"));
-    printf("BLOCK DELETE = %d\n", BlockDelete(info));
+   // *info = *(HT_OpenIndex("file1"));
+   // printf("FILEDESC FROM MAIN 2 = %d\n", info->fileDesc);
+    printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
 
-    printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
-    printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
+    // printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
+    // printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
    //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
    //     BF_PrintError("Error getting block");
