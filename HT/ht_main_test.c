@@ -27,7 +27,7 @@
 #include "../SHT/SHT.h"
 
 
-int main(char argc,char** argv)
+int main(int argc,char** argv)
 {
 	/*
 	How many records to use for the  test.
@@ -50,7 +50,7 @@ int main(char argc,char** argv)
 	int   attrLength  = 4;
 	int   buckets     = 10;
 	char* sfileName   = "secondary.index";
-	char  sAttrType   = 'c';
+	// char  sAttrType   = 'c';
 	char* sAttrName   = "name";
 	int   sAttrLength = 15;
 	int   sBuckets    = 10;
@@ -92,7 +92,8 @@ int main(char argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
-		HT_InsertEntry(*hi,record);
+		printf("\nRECORD ID = %d\n", record.id);
+		printf("INSERTED = %d\n", HT_InsertEntry(*hi,record));
 	}
 	/*
 	C4: Get all entries.
