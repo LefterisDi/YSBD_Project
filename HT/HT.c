@@ -13,7 +13,6 @@
 int HT_PrintStats(HT_info info)
 {
     Block* block;
-    int    entries  = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
     unsigned int totalBlocks               = 0;
     unsigned int bucketsWithOverflowBlocks = 0;
@@ -23,6 +22,8 @@ int HT_PrintStats(HT_info info)
     unsigned int maxNumOfBlocks            = 0;
     unsigned int overflowBlocks [info.numBuckets];
     unsigned int bucketEntries   [info.numBuckets];
+
+    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
     for (int i = 0 ; i < info.numBuckets ; i++)
     {
@@ -279,7 +280,24 @@ int HT_PrintStats(HT_info info)
     printf("├─────────────────┼─────────────────────────────┤\n");
     printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
     printf("└─────────────────┴─────────────────────────────┘\n");
-
+    
+	/*
+	 *     ┌───────────────┬─────────────────┐
+	 *     │   Bucket ID   │ Overflow Blocks │
+	 *     ├───────────────┼─────────────────┤
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     ├───────────────┼─────────────────┤
+ 	 *     │ Total Buckets │                 │
+ 	 *     │ with Overflow │                 │
+	 *     │    Blocks     │                 │
+	 *     └───────────────┴─────────────────┘
+	 */
 	printf("       ┌───────────────┬─────────────────┐\n");
 	printf("       │   Bucket ID   │ Overflow Blocks │\n");
 	printf("       ├───────────────┼─────────────────┤\n");

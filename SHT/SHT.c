@@ -12,11 +12,10 @@
 int SHT_PrintStats(SHT_info sec_info)
 {
     SecondaryBlock* sblock;
-    int    entries  = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 
 	unsigned int totalEntries 			   = 0;
     unsigned int totalBlocks  			   = 0;
-    unsigned int bucketsWithOverflowBlocks = 0;
+	unsigned int bucketsWithOverflowBlocks = 0;
 	unsigned int minNumOfEntries 		   = 0;
     unsigned int minNumOfBlocks  		   = 0;
 	unsigned int maxNumOfEntries 		   = 0;
@@ -24,7 +23,9 @@ int SHT_PrintStats(SHT_info sec_info)
 	unsigned int bucketEntries     [sec_info.numBuckets];
 	unsigned int overflowBlocks    [sec_info.numBuckets];
 
-    for (int i = 0; i < sec_info.numBuckets; i++)
+	int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+
+	for (int i = 0; i < sec_info.numBuckets; i++)
     {
 		bucketEntries [i] = 0;
         overflowBlocks[i] = 0;
@@ -256,6 +257,23 @@ int SHT_PrintStats(SHT_info sec_info)
     printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
     printf("└─────────────────┴─────────────────────────────┘\n");
 
+	/*
+	 *     ┌───────────────┬─────────────────┐
+	 *     │   Bucket ID   │ Overflow Blocks │
+	 *     ├───────────────┼─────────────────┤
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     │               │                 │
+	 *     ├───────────────┼─────────────────┤
+ 	 *     │ Total Buckets │                 │
+ 	 *     │ with Overflow │                 │
+	 *     │    Blocks     │                 │
+	 *     └───────────────┴─────────────────┘
+	 */
 	printf("       ┌───────────────┬─────────────────┐\n");
 	printf("       │   Bucket ID   │ Overflow Blocks │\n");
 	printf("       ├───────────────┼─────────────────┤\n");
