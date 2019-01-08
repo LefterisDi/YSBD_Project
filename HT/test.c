@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
     *info = *tmp_info;
 
-    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 10 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 100 , "file1");
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 

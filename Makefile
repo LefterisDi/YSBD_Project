@@ -13,21 +13,28 @@ PRIM_HEADER = ./HT/HT.h ./HT/HT_structs.h
 SEC_HEADER  = ./SHT/SHT.h ./SHT/SHT_structs.h
 
 OUT  	 	= index
+OUT2  	 	= test
 CC	 	 	= gcc -Wall
 FLAGS    	= -c
 DEBUG	 	= -g3
 
 # ------------------------------------------------- #
 
-all: $(OUT)
+all: $(OUT) $(OUT2)
 
 # Creating Executables
 index : $(OBJS) $(PRIM_OBJS) $(SEC_OBJS)
-	$(CC) $(DEBUG) -o index $(OBJS) $(PRIM_OBJS) $(SEC_OBJS) ./BF/BF_64.a -no-pie
+	$(CC) $(DEBUG) -o $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS) ./BF/BF_64.a -no-pie
+
+test : $(AUXOBJ) ./HT/ht_main_test.o $(PRIM_OBJS) $(SEC_OBJS)
+	$(CC) $(DEBUG) -o $(OUT2) $(AUXOBJ) ./HT/ht_main_test.o $(PRIM_OBJS) $(SEC_OBJS) ./BF/BF_64.a -no-pie
 
 # ------------------------------------------------- #
 
 # Creating Object Files
+./HT/ht_main_test.o : ./HT/ht_main_test.c
+	$(CC) $(DEBUG) -o ./HT/ht_main_test.o   $(FLAGS) ./HT/ht_main_test.c
+
 ./HT/test.o : ./HT/test.c
 	$(CC) $(DEBUG) -o ./HT/test.o           $(FLAGS) ./HT/test.c
 

@@ -10,7 +10,7 @@
 *		Change the naming  of your files according to this example  main .
 *		Example  compile: gcc -std=c99 -o ht_main_test ht_main_test.c ht.c BF_64.a
 *		Assumes that your implementation is placed in ht.c and your header  is HT.h
-* PARAMETERS: 
+* PARAMETERS:
 *		1) Number of records for test.
 *		2) Proportion for deletes.
 * EXAMPLE:
@@ -21,9 +21,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdlib.h>
-#include "BF.h"
-#include "HT.h"
 
+#include "../BF/BF.h"
+#include "../HT/HT.h"
+#include "../SHT/SHT.h"
 
 
 int main(char argc,char** argv)
@@ -43,16 +44,16 @@ int main(char argc,char** argv)
 	/*
 	Index parameters.
 	*/
-	char* fileName="primary.index";
-	char attrType='i';
-	char* attrName="id";
-	int attrLength=4;
-	int buckets=10;
-	char* sfileName="secondary.index";
-	char sAttrType='c';
-	char* sAttrName="name";
-	int sAttrLength=20;
-	int sBuckets=10;
+	char* fileName    = "primary.index";
+	char  attrType    = 'i';
+	char* attrName    = "id";
+	int   attrLength  = 4;
+	int   buckets     = 10;
+	char* sfileName   = "secondary.index";
+	char  sAttrType   = 'c';
+	char* sAttrName   = "name";
+	int   sAttrLength = 15;
+	int   sBuckets    = 10;
 	/*
 	C1: Create the  index.
 	*/
@@ -310,4 +311,4 @@ int main(char argc,char** argv)
 	printf("Statistics:SHT\n");
 	HashStatistics(sfileName);
 	return 0;
-}   
+}
