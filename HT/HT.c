@@ -280,7 +280,7 @@ int HT_PrintStats(HT_info info)
     printf("├─────────────────┼─────────────────────────────┤\n");
     printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
     printf("└─────────────────┴─────────────────────────────┘\n");
-    
+
 	/*
 	 *     ┌───────────────┬─────────────────┐
 	 *     │   Bucket ID   │ Overflow Blocks │
@@ -956,10 +956,10 @@ int HT_GetAllEntries(HT_info header_info, void* value)
             // if (block->rec[i]->id == pkey)
             if (foundEntry)
             {
-                // printf("     ID: %d\n", block->rec[i]->id);
-                // printf("   Name: %s\n", block->rec[i]->name);
-                // printf("Surname: %s\n", block->rec[i]->surname);
-                // printf("Address: %s\n", block->rec[i]->address);
+                printf("     ID: %d\n", block->rec[i]->id);
+                printf("   Name: %s\n", block->rec[i]->name);
+                printf("Surname: %s\n", block->rec[i]->surname);
+                printf("Address: %s\n", block->rec[i]->address);
 
                 return numOfBlocks;
             } // if
