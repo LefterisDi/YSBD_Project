@@ -533,8 +533,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
     int    blockID;
     unsigned int pkey;
 
-    printf("REC = %d\n", record.id);
-    printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
+    // printf("REC = %d\n", record.id);
+    // printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
     switch (header_info.attrType)
     {
         case 'c':
@@ -544,7 +544,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         break;
 
         case 'i':
-            printf("INTEGER SELECTED\n");
+            // printf("INTEGER SELECTED\n");
             pkey = record.id;
         break;
 
@@ -554,7 +554,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         return -1;
     }
 
-    printf("PKEY = %u\n", pkey);
+    // printf("PKEY = %u\n", pkey);
 
     blockID = HashFunc(pkey, header_info.numBuckets) + 1;
     // printf("ENTRIES = %d\n",entries);
@@ -987,10 +987,10 @@ int HT_GetAllEntries(HT_info header_info, void* value)
             // if (block->rec[i]->id == pkey)
             if (foundEntry)
             {
-                printf("     ID: %d\n", block->rec[i]->id);
-                printf("   Name: %s\n", block->rec[i]->name);
-                printf("Surname: %s\n", block->rec[i]->surname);
-                printf("Address: %s\n", block->rec[i]->address);
+                // printf("     ID: %d\n", block->rec[i]->id);
+                // printf("   Name: %s\n", block->rec[i]->name);
+                // printf("Surname: %s\n", block->rec[i]->surname);
+                // printf("Address: %s\n", block->rec[i]->address);
 
                 return numOfBlocks;
             } // if
