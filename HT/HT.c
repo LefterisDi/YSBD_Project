@@ -100,7 +100,7 @@ int HT_PrintStats(HT_info info)
         totalEntries += bucketEntries[i];
     }
 
-    double meanNumOfEntries = (double)totalEntries / info.numBuckets;
+    double avgNumOfEntries = (double)totalEntries / info.numBuckets;
 
 
     minNumOfBlocks = maxNumOfBlocks = overflowBuckets[0];
@@ -114,21 +114,31 @@ int HT_PrintStats(HT_info info)
             maxNumOfBlocks = overflowBuckets[i];
     }
 
-    double meanNumOfBlocks = (double)totalBlocks / info.numBuckets - 1.0;
+	/*
+	 * We only count the overflow blocks as 'blocks'
+	 * for calculating the average number of blocks
+	 * that each bucket has.
+	 * --------------------------------------------
+	 * totalBlocks - numBuckets     totalBlocks
+	 * ────────────────────────  =  ─────────── - 1
+	 *        numBuckets            numBuckets
+	 */
+    double avgNumOfBlocks = (double)totalBlocks / info.numBuckets - 1.0;
 
-    // ┌─────────────────┬─────────┬─────────┬────────┐
-    // │      Stats      │   Min   │   Max   │  Mean  │
-    // ├─────────────────┼─────────┼─────────┼────────┤
-    // │     Entries     │         │         │        │
-    // ├─────────────────┼─────────┼─────────┼────────┤
-    // │     Blocks      │         │         │        │
-    // ├─────────────────┼─────────┴─────────┴────────┤
-    // │  Total Blocks   │                            │
-    // └─────────────────┴────────────────────────────┘
-
-    printf("┌─────────────────┬─────────┬─────────┬────────┐\n");
-    printf("│      Stats      │   Min   │   Max   │  Mean  │\n");
-    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+    /*
+     * ┌─────────────────┬─────────┬─────────┬─────────┐
+     * │      Stats      │   Min   │   Max   │ Average │
+     * ├─────────────────┼─────────┼─────────┼─────────┤
+     * │     Entries     │         │         │         │
+     * ├─────────────────┼─────────┼─────────┼─────────┤
+     * │     Blocks      │         │         │         │
+     * ├─────────────────┼─────────┴─────────┴─────────┤
+     * │  Total Blocks   │                             │
+     * └─────────────────┴─────────────────────────────┘
+     */
+    printf("┌─────────────────┬─────────┬─────────┬─────────┐\n");
+    printf("│      Stats      │   Min   │   Max   │ Average │\n");
+    printf("├─────────────────┼─────────┼─────────┼─────────┤\n");
     printf("│     Entries     │");
 
     if (minNumOfEntries < 10)
@@ -169,18 +179,32 @@ int HT_PrintStats(HT_info info)
     else
         printf("%u│", maxNumOfEntries);
 
-    if (meanNumOfEntries < 10)
-        printf("  %.2f  │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 100)
-        printf("  %.2f │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 1000)
-        printf(" %.2f │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 10000)
-        printf(" %.2f│\n", meanNumOfEntries);
-    else
-        printf("%.2f│\n", meanNumOfEntries);
 
-    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+    if (avgNumOfEntries < 10)
+        printf("   %.2f  │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 100)
+        printf("  %.2f  │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 1000)
+        printf("  %.2f │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 10000)
+        printf(" %.2f │\n", avgNumOfEntries);
+	else if (avgNumOfEntries < 100000)
+		printf(" %.2f│\n", avgNumOfEntries);
+    else
+        printf("%.2f│\n", avgNumOfEntries);
+
+    // if (avgNumOfEntries < 10)
+    //     printf("  %.2f  │\n", avgNumOfEntries);
+    // else if (avgNumOfEntries < 100)
+    //     printf("  %.2f │\n", avgNumOfEntries);
+    // else if (avgNumOfEntries < 1000)
+    //     printf(" %.2f │\n", avgNumOfEntries);
+    // else if (avgNumOfEntries < 10000)
+    //     printf(" %.2f│\n", avgNumOfEntries);
+    // else
+    //     printf("%.2f│\n", avgNumOfEntries);
+
+    printf("├─────────────────┼─────────┼─────────┼─────────┤\n");
     printf("│     Blocks      │");
 
     if (minNumOfBlocks < 10)
@@ -221,20 +245,33 @@ int HT_PrintStats(HT_info info)
     else
         printf("%u│", maxNumOfBlocks);
 
-    if (meanNumOfBlocks < 10)
-        printf("  %.2f  │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 100)
-        printf("  %.2f │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 1000)
-        printf(" %.2f │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 10000)
-        printf(" %.2f│\n", meanNumOfBlocks);
+    if (avgNumOfBlocks < 10)
+        printf("   %.2f  │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 100)
+        printf("  %.2f  │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 1000)
+        printf("  %.2f │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 10000)
+        printf(" %.2f │\n", avgNumOfBlocks);
+	else if (avgNumOfBlocks < 100000)
+		printf(" %.2f│\n", avgNumOfBlocks);
     else
-        printf("%.2f│\n", meanNumOfBlocks);
+        printf("%.2f│\n", avgNumOfBlocks);
+    //
+    // if (avgNumOfBlocks < 10)
+    //     printf("  %.2f  │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 100)
+    //     printf("  %.2f │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 1000)
+    //     printf(" %.2f │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 10000)
+    //     printf(" %.2f│\n", avgNumOfBlocks);
+    // else
+    //     printf("%.2f│\n", avgNumOfBlocks);
 
-    printf("├─────────────────┼─────────┴─────────┴────────┤\n");
-    printf("│  Total Blocks   │             %-15u│\n",totalBlocks);
-    printf("└─────────────────┴────────────────────────────┘\n");
+    printf("├─────────────────┼─────────┴─────────┴─────────┤\n");
+    printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
+    printf("└─────────────────┴─────────────────────────────┘\n");
 
     return 0;
 }
@@ -691,7 +728,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 currBlock->rec[j-1] = NULL;
 
                 /*
-                 * If moved entry was the only one in the block, means that
+                 * If moved entry was the only one in the block, avgs that
                  * it is now empty and should be removed only if it is not
                  * the first block.
                  */
@@ -731,7 +768,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         blockID = block->nextBlock;
     } // for
 
-    return -1;  /* As soon as we reach this point, means that the requested entry doesn't exist in the Table */
+    return -1;  /* As soon as we reach this point, avgs that the requested entry doesn't exist in the Table */
 }
 
 int HT_GetAllEntries(HT_info header_info, void* value)

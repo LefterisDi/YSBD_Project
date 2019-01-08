@@ -88,7 +88,7 @@ int SHT_PrintStats(SHT_info sec_info)
         totalEntries += bucketEntries[i];
     }
 
-    double meanNumOfEntries = (double)totalEntries / sec_info.numBuckets;
+    double avgNumOfEntries = (double)totalEntries / sec_info.numBuckets;
 
 
     minNumOfBlocks = maxNumOfBlocks = overflowBuckets[0];
@@ -102,21 +102,31 @@ int SHT_PrintStats(SHT_info sec_info)
             maxNumOfBlocks = overflowBuckets[i];
     }
 
-    double meanNumOfBlocks = (double)totalBlocks / sec_info.numBuckets - 1.0;
+	/*
+	 * We only count the overflow blocks as 'blocks'
+	 * for calculating the average number of blocks
+	 * that each bucket has.
+	 * --------------------------------------------
+	 * totalBlocks - numBuckets     totalBlocks
+	 * ────────────────────────  =  ─────────── - 1
+	 *        numBuckets            numBuckets
+	 */
+	double avgNumOfBlocks = (double)totalBlocks / sec_info.numBuckets - 1.0;
 
-    // ┌─────────────────┬─────────┬─────────┬────────┐
-    // │      Stats      │   Min   │   Max   │  Mean  │
-    // ├─────────────────┼─────────┼─────────┼────────┤
-    // │     Entries     │         │         │        │
-    // ├─────────────────┼─────────┼─────────┼────────┤
-    // │     Blocks      │         │         │        │
-    // ├─────────────────┼─────────┴─────────┴────────┤
-    // │  Total Blocks   │                            │
-    // └─────────────────┴────────────────────────────┘
-
-    printf("┌─────────────────┬─────────┬─────────┬────────┐\n");
-    printf("│      Stats      │   Min   │   Max   │  Mean  │\n");
-    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+	/*
+     * ┌─────────────────┬─────────┬─────────┬─────────┐
+     * │      Stats      │   Min   │   Max   │ Average │
+     * ├─────────────────┼─────────┼─────────┼─────────┤
+     * │     Entries     │         │         │         │
+     * ├─────────────────┼─────────┼─────────┼─────────┤
+     * │     Blocks      │         │         │         │
+     * ├─────────────────┼─────────┴─────────┴─────────┤
+     * │  Total Blocks   │                             │
+     * └─────────────────┴─────────────────────────────┘
+	 */
+    printf("┌─────────────────┬─────────┬─────────┬─────────┐\n");
+    printf("│      Stats      │   Min   │   Max   │ Average │\n");
+    printf("├─────────────────┼─────────┼─────────┼─────────┤\n");
     printf("│     Entries     │");
 
     if (minNumOfEntries < 10)
@@ -157,18 +167,20 @@ int SHT_PrintStats(SHT_info sec_info)
     else
         printf("%u│", maxNumOfEntries);
 
-    if (meanNumOfEntries < 10)
-        printf("  %.2f  │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 100)
-        printf("  %.2f │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 1000)
-        printf(" %.2f │\n", meanNumOfEntries);
-    else if (meanNumOfEntries < 10000)
-        printf(" %.2f│\n", meanNumOfEntries);
+    if (avgNumOfEntries < 10)
+        printf("   %.2f  │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 100)
+        printf("  %.2f  │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 1000)
+        printf("  %.2f │\n", avgNumOfEntries);
+    else if (avgNumOfEntries < 10000)
+        printf(" %.2f │\n", avgNumOfEntries);
+	else if (avgNumOfEntries < 100000)
+		printf(" %.2f│\n", avgNumOfEntries);
     else
-        printf("%.2f│\n", meanNumOfEntries);
+        printf("%.2f│\n", avgNumOfEntries);
 
-    printf("├─────────────────┼─────────┼─────────┼────────┤\n");
+    printf("├─────────────────┼─────────┼─────────┼─────────┤\n");
     printf("│     Blocks      │");
 
     if (minNumOfBlocks < 10)
@@ -209,21 +221,34 @@ int SHT_PrintStats(SHT_info sec_info)
     else
         printf("%u│", maxNumOfBlocks);
 
-    if (meanNumOfBlocks < 10)
-        printf("  %.2f  │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 100)
-        printf("  %.2f │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 1000)
-        printf(" %.2f │\n", meanNumOfBlocks);
-    else if (meanNumOfBlocks < 10000)
-        printf(" %.2f│\n", meanNumOfBlocks);
+    if (avgNumOfBlocks < 10)
+        printf("   %.2f  │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 100)
+        printf("  %.2f  │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 1000)
+        printf("  %.2f │\n", avgNumOfBlocks);
+    else if (avgNumOfBlocks < 10000)
+        printf(" %.2f │\n", avgNumOfBlocks);
+	else if (avgNumOfBlocks < 100000)
+		printf(" %.2f│\n", avgNumOfBlocks);
     else
-        printf("%.2f│\n", meanNumOfBlocks);
+        printf("%.2f│\n", avgNumOfBlocks);
 
-    printf("│     Blocks      │         │         │        │\n");
-    printf("├─────────────────┼─────────┴─────────┴────────┤\n");
-    printf("│  Total Blocks   │             %-15u│\n",totalBlocks);
-    printf("└─────────────────┴────────────────────────────┘\n");
+    // if (avgNumOfBlocks < 10)
+    //     printf("  %.2f  │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 100)
+    //     printf("  %.2f │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 1000)
+    //     printf(" %.2f │\n", avgNumOfBlocks);
+    // else if (avgNumOfBlocks < 10000)
+    //     printf(" %.2f│\n", avgNumOfBlocks);
+    // else
+    //     printf("%.2f│\n", avgNumOfBlocks);
+
+    printf("│     Blocks      │         │         │         │\n");
+    printf("├─────────────────┼─────────┴─────────┴─────────┤\n");
+    printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
+    printf("└─────────────────┴─────────────────────────────┘\n");
 
     return 0;
 }
