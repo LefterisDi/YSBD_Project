@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
     }
     fclose(gen_fp);
 
-    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 100 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 10 , "file1");
     SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
 
     *sinfo = *tmp_sinfo;
@@ -178,15 +178,20 @@ int main(int argc, char* argv[])
     }
     fclose(gen_fp2);
 
-    printf("SECONDARY GETALL: %d\n\n", SHT_GetAllEntries(*sinfo,*info,"Honolulu"));
-
-    printf("SECONDARY BLOCK DELETE = %d\n", SHTBlockDelete(sinfo));
-    printf("BLOCK DELETE = %d\n", BlockDelete(info));
-
+    printf("SECONDARY GETALL: %d\n\n", SHT_SecondaryGetAllEntries(*sinfo,*info,"Honolulu"));
 
     printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
     printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
 
+    
+    HashStatistics("file1");
+    HashStatistics("sfile");
+
+    printf("SECONDARY BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
+    printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
+
     free(line);
+    free(info);
+    free(sinfo);
     return 0;
 }
