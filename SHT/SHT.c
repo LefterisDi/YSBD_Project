@@ -23,7 +23,7 @@ int SHT_PrintStats(SHT_info sec_info)
 	unsigned int bucketEntries     [sec_info.numBuckets];
 	unsigned int overflowBlocks    [sec_info.numBuckets];
 
-	int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+	int entries = MAX_SEC_RECS;
 
 	for (int i = 0; i < sec_info.numBuckets; i++)
     {
@@ -57,7 +57,7 @@ int SHT_PrintStats(SHT_info sec_info)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (sblock->rec[j] == NULL)
+                if (sblock->rec[j].record.name[0] == '\0')
                     break;
 
                 bucketEntries[i-1]++;
@@ -472,7 +472,7 @@ int SHT_CloseSecondaryIndex(SHT_info* header_info)
 int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 {
     SecondaryBlock* sblock;
-    int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+    int entries = MAX_SEC_RECS;
 	unsigned int pkey = 0;
 	// printf("PKEY = %d\n", pkey);
 
@@ -513,7 +513,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
         for (i = 0 ; i < entries ; i++)
         {
 			// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-            if (sblock->rec[i] == NULL)
+            if (sblock->rec[i].record.name[0] == '\0')
             {
 				// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
                 availablePos = true;
@@ -577,11 +577,11 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 	// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
     int index = i % entries;
 
-    sblock->rec[index] = (SecondaryRecord *)malloc(sizeof(SecondaryRecord));
-	if (sblock->rec[index] == NULL) {
-		perror("Cannot allocate memory");
-		return -1;
-	}
+    // sblock->rec[index] = (SecondaryRecord *)malloc(sizeof(SecondaryRecord));
+	// if (sblock->rec[index] == NULL) {
+	// 	perror("Cannot allocate memory");
+	// 	return -1;
+	// }
 	// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
 
 	// printf("SECONDARY ID = %d\n", secRec.record.id);
@@ -589,17 +589,17 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 	// printf("SECONDARY SURNAME = %s\n", secRec.record.surname);
 	// printf("SECONDARY ADDRESS = %s\n", secRec.record.address);
 
-    sblock->rec[index]->blockId   = secRec.blockId;
-    sblock->rec[index]->record.id = secRec.record.id;
+    sblock->rec[index].blockId   = secRec.blockId;
+    sblock->rec[index].record = secRec.record;
+    // sblock->rec[index].record.id = secRec.record.id;
+    // strcpy(sblock->rec[index].record.name    , secRec.record.name);
+    // strcpy(sblock->rec[index].record.surname , secRec.record.surname);
+    // strcpy(sblock->rec[index].record.address , secRec.record.address);
 
-    strcpy(sblock->rec[index]->record.name    , secRec.record.name);
-    strcpy(sblock->rec[index]->record.surname , secRec.record.surname);
-    strcpy(sblock->rec[index]->record.address , secRec.record.address);
-
-	// printf("SECONDARY 2 ID = %d\n", sblock->rec[index]->record.id);
-	// printf("SECONDARY 2 NAME = %s\n", sblock->rec[index]->record.name);
-	// printf("SECONDARY 2 SURNAME = %s\n", sblock->rec[index]->record.surname);
-	// printf("SECONDARY 2 ADDRESS = %s\n", sblock->rec[index]->record.address);
+	// printf("SECONDARY 2 ID = %d\n", sblock->rec[index].record.id);
+	// printf("SECONDARY 2 NAME = %s\n", sblock->rec[index].record.name);
+	// printf("SECONDARY 2 SURNAME = %s\n", sblock->rec[index].record.surname);
+	// printf("SECONDARY 2 ADDRESS = %s\n", sblock->rec[index].record.address);
 	// sleep(1);
 	// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 18\n");
 
@@ -617,7 +617,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
-    int    entries     		   = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
+    int    entries     		   = MAX_SEC_RECS;
     int    totalSearchedBlocks = 0;
     // int    currSearchedBlocks  = 0;
 	bool   foundEntry  		   = false;
@@ -673,7 +673,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 				return -1;
 			}
 
-            if (sblock->rec[i] == NULL)
+            if (sblock->rec[i].record.name[0] == '\0')
 			{
 				if (foundEntry)
                 	return totalSearchedBlocks;
@@ -681,9 +681,9 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
                 	return -1;
 			}
 
-				 if (!strcmp(header_info_sht.attrName , "Name"))    { if (!strcmp(sblock->rec[i]->record.name    , (char *)value))  displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "Surname")) { if (!strcmp(sblock->rec[i]->record.surname , (char *)value))  displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "Address")) { if (!strcmp(sblock->rec[i]->record.address , (char *)value))  displayEntry = true; }
+				 if (!strcmp(header_info_sht.attrName , "Name"))    { if (!strcmp(sblock->rec[i].record.name    , (char *)value))  displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Surname")) { if (!strcmp(sblock->rec[i].record.surname , (char *)value))  displayEntry = true; }
+			else if (!strcmp(header_info_sht.attrName , "Address")) { if (!strcmp(sblock->rec[i].record.address , (char *)value))  displayEntry = true; }
 
             if (displayEntry)
             {
@@ -692,10 +692,10 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 				// totalSearchedBlocks += currSearchedBlocks;
 				// currSearchedBlocks = 0;
 
-                printf("     ID: %d\n", sblock->rec[i]->record.id);
-                printf("   Name: %s\n", sblock->rec[i]->record.name);
-                printf("Surname: %s\n", sblock->rec[i]->record.surname);
-                printf("Address: %s\n\n", sblock->rec[i]->record.address);
+                printf("     ID: %d\n",   sblock->rec[i].record.id);
+                printf("   Name: %s\n",   sblock->rec[i].record.name);
+                printf("Surname: %s\n",   sblock->rec[i].record.surname);
+                printf("Address: %s\n\n", sblock->rec[i].record.address);
 				// sleep(1);
             }
         } // for

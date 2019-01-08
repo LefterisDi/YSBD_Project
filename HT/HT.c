@@ -21,9 +21,9 @@ int HT_PrintStats(HT_info info)
     unsigned int maxNumOfEntries           = 0;
     unsigned int maxNumOfBlocks            = 0;
     unsigned int overflowBlocks [info.numBuckets];
-    unsigned int bucketEntries   [info.numBuckets];
+    unsigned int bucketEntries  [info.numBuckets];
 
-    int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int entries = MAX_PRIM_RECS;
 
     for (int i = 0 ; i < info.numBuckets ; i++)
     {
@@ -64,7 +64,7 @@ int HT_PrintStats(HT_info info)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (block->rec[j] == NULL)
+                if (block->rec[j].name[0] == '\0')
                     break;
 
                 bucketEntries[i-1]++;
@@ -166,6 +166,7 @@ int HT_PrintStats(HT_info info)
     else
         printf("%u│", minNumOfEntries);
 
+
     if (maxNumOfEntries < 10)
         printf("    %u    │", maxNumOfEntries);
     else if (maxNumOfEntries < 100)
@@ -232,6 +233,7 @@ int HT_PrintStats(HT_info info)
     else
         printf("%u│", minNumOfBlocks);
 
+
     if (maxNumOfBlocks < 10)
         printf("    %u    │", maxNumOfBlocks);
     else if (maxNumOfBlocks < 100)
@@ -250,6 +252,7 @@ int HT_PrintStats(HT_info info)
         printf("%u │", maxNumOfBlocks);
     else
         printf("%u│", maxNumOfBlocks);
+
 
     if (avgNumOfBlocks < 10)
         printf("   %.2f  │\n", avgNumOfBlocks);
@@ -320,6 +323,7 @@ int HT_PrintStats(HT_info info)
 	        printf("       │ %d       ", i);
 	    else
 	        printf("       │%d       ", i);
+
 
 	    if (overflowBlocks[i-1] < 10)
 			printf("│        %u        │\n", overflowBlocks[i-1]);
@@ -529,7 +533,7 @@ int HT_CloseIndex(HT_info* header_info)
 int HT_InsertEntry(HT_info header_info, Record record)
 {
     Block* block;
-    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    entries = MAX_PRIM_RECS;
     int    blockID;
     unsigned int pkey;
 
@@ -578,7 +582,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         for (i = 0 ; i < entries ; i++)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-            if (block->rec[i] == NULL)
+            if (block->rec[i].name[0] == '\0')
             {
                 // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
                 entryExists = false;
@@ -590,30 +594,30 @@ int HT_InsertEntry(HT_info header_info, Record record)
                 case 'c':
                     if (!strcmp(header_info.attrName , "Name"))
                     {
-                        if (!strcmp(block->rec[i]->name    , record.name))
+                        if (!strcmp(block->rec[i].name    , record.name))
                             return -1;
                     }
                     else if (!strcmp(header_info.attrName , "Surname"))
                     {
-                        if (!strcmp(block->rec[i]->surname , record.surname))
+                        if (!strcmp(block->rec[i].surname , record.surname))
                             return -1;
                     }
                     else if (!strcmp(header_info.attrName , "Address"))
                     {
-                        if (!strcmp(block->rec[i]->address , record.address))
+                        if (!strcmp(block->rec[i].address , record.address))
                             return -1;
                     }
                 break;
 
                 case 'i':
-                    if (block->rec[i]->id == pkey)
+                    if (block->rec[i].id == pkey)
                         return -1;
                 break;
             }
 
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 6\n");
 
-            // if (block->rec[i]->id == record.id)
+            // if (block->rec[i].id == record.id)
             // {
             //     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 7\n");
             //     return -1;
@@ -696,18 +700,19 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     int index = i % entries;
 
-    block->rec[index] = (Record *)malloc(sizeof(Record));
-    if (block->rec[index] == NULL) {
-		perror("Cannot allocate memory");
-		return -1;
-	}
+    // block->rec[index] = (Record *)malloc(sizeof(Record));
+    // if (block->rec[index] == NULL) {
+	// 	perror("Cannot allocate memory");
+	// 	return -1;
+	// }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 20\n");
 
-    block->rec[index]->id = record.id;
-    strcpy(block->rec[index]->name    , record.name);
-    strcpy(block->rec[index]->surname , record.surname);
-    strcpy(block->rec[index]->address , record.address);
+    block->rec[index] = record;
+    // block->rec[index].id = record.id;
+    // strcpy(block->rec[index].name    , record.name);
+    // strcpy(block->rec[index].surname , record.surname);
+    // strcpy(block->rec[index].address , record.address);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 21\n");
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
@@ -743,7 +748,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 int HT_DeleteEntry(HT_info header_info, void* value)
 {
     Block* block;
-    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    entries = MAX_PRIM_RECS;
     int    blockID;
     unsigned int pkey;
 
@@ -774,31 +779,19 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
         for (int i = 0 ; i < entries ; i++)
         {
-            if (block->rec[i] == NULL)
+            if (block->rec[i].name[0] == '\0')
                 return -1;
 
             switch (header_info.attrType)
             {
                 case 'c':
-                    if (!strcmp(header_info.attrName , "Name"))
-                    {
-                         if (!strcmp(block->rec[i]->name    , (char *)value))
-                            foundEntry = true;
-                    }
-                    else if (!strcmp(header_info.attrName , "Surname"))
-                    {
-                        if (!strcmp(block->rec[i]->surname , (char *)value))
-                            foundEntry = true;
-                    }
-                    else if (!strcmp(header_info.attrName , "Address"))
-                    {
-                        if (!strcmp(block->rec[i]->address , (char *)value))
-                            foundEntry = true;
-                    }
+                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
                 break;
 
                 case 'i':
-                    if (block->rec[i]->id == pkey)
+                    if (block->rec[i].id == pkey)
                         foundEntry = true;
                 break;
             }
@@ -811,8 +804,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 int    entryIndex  = i + 1;
                 // int    currBlockID = blockID;
 
-                free(block->rec[i]);
-                block->rec[i] = NULL;
+                // free(block->rec[i]);
+                // block->rec[i] = NULL;
+                block->rec[i].name[0] = '\0';
 
                 // if (block->nextBlock == -1 && blockIndex != 0)
                 // {
@@ -847,20 +841,25 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                 int j;
                 for (j = entryIndex ; j < entries ; j++)
-                    if (currBlock->rec[j] == NULL)
+                    if (currBlock->rec[j].name[0] == '\0')
                         break;
 
                 block->rec[i] = currBlock->rec[j-1];
-
+                //
                 // if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
                 //     BF_PrintError("Error writing block back");
                 //     return -1;
                 // }
 
-                currBlock->rec[j-1] = NULL;
+                currBlock->rec[j-1].name[0] = '\0';
+
+                if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+                    BF_PrintError("Error writing block back");
+                    return -1;
+                }
 
                 /*
-                 * If moved entry was the only one in the block, avgs that
+                 * If moved entry was the only one in the block, means that
                  * it is now empty and should be removed only if it is not
                  * the first block.
                  */
@@ -884,7 +883,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                             return -1;
                         }
                     }
-                    free(currBlock->rec);
+                    // free(currBlock->rec);
                 }
 
                 if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
@@ -906,7 +905,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 int HT_GetAllEntries(HT_info header_info, void* value)
 {
     Block* block;
-    int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    entries     = MAX_PRIM_RECS;
     int    numOfBlocks = 0;
     int    blockID;
     unsigned int pkey;
@@ -966,31 +965,31 @@ int HT_GetAllEntries(HT_info header_info, void* value)
         for (int i = 0 ; i < entries ; i++)
         {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-            if (block->rec[i] == NULL)
+            if (block->rec[i].name[0] == '\0')
                 return -1;
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
             switch (header_info.attrType)
             {
                 case 'c':
-                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i]->name    , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i]->surname , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i]->address , (char *)value))  foundEntry = true; }
+                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
                 break;
 
                 case 'i':
-                    if (block->rec[i]->id == pkey)
+                    if (block->rec[i].id == pkey)
                         foundEntry = true;
                 break;
             }
 
-            // if (block->rec[i]->id == pkey)
+            // if (block->rec[i].id == pkey)
             if (foundEntry)
             {
-                // printf("     ID: %d\n", block->rec[i]->id);
-                // printf("   Name: %s\n", block->rec[i]->name);
-                // printf("Surname: %s\n", block->rec[i]->surname);
-                // printf("Address: %s\n", block->rec[i]->address);
+                // printf("     ID: %d\n", block->rec[i].id);
+                // printf("   Name: %s\n", block->rec[i].name);
+                // printf("Surname: %s\n", block->rec[i].surname);
+                // printf("Address: %s\n", block->rec[i].address);
 
                 return numOfBlocks;
             } // if
