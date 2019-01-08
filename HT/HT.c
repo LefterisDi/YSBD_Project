@@ -534,6 +534,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     unsigned int pkey;
 
     printf("REC = %d\n", record.id);
+    printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
     switch (header_info.attrType)
     {
         case 'c':
