@@ -1,17 +1,29 @@
-AUXOBJ   = ./AuxFuncs/auxFuncs.o
-OBJS     = $(AUXOBJ) ./HT/test.o ./HT/HT.o ./SHT/SHT.o
-SOURCE	 = ./HT/test.c ./HT/HT.c ./SHT/SHT.c ./AuxFuncs/auxFuncs.c
-HEADER   = ./HT/HT.h ./HT/HT_structs.h ./SHT/SHT.h ./SHT/SHT_structs.h ./AuxFuncs/auxFuncs.h
-OUT  	 = index
-CC	 	 = gcc -Wall
-FLAGS    = -c
-DEBUG	 = -g3
+AUXOBJ      = ./AuxFuncs/auxFuncs.o
+
+OBJS        = $(AUXOBJ) ./HT/test.o
+PRIM_OBJS   = ./HT/HT.o
+SEC_OBJS    = ./SHT/SHT.o
+
+SOURCE	    = ./AuxFuncs/auxFuncs.c ./HT/test.c
+PRIM_SOURCE = ./HT/HT.c
+SEC_SOURCE  = ./SHT/SHT.c
+
+HEADER      = ./AuxFuncs/auxFuncs.h
+PRIM_HEADER = ./HT/HT.h ./HT/HT_structs.h
+SEC_HEADER  = ./SHT/SHT.h ./SHT/SHT_structs.h
+
+OUT  	 	= index
+CC	 	 	= gcc -Wall
+FLAGS    	= -c
+DEBUG	 	= -g3
+
+# ------------------------------------------------- #
 
 all: $(OUT)
 
 # Creating Executables
-index : $(OBJS)
-	$(CC) $(DEBUG) -o index $(OBJS) ./BF/BF_64.a -no-pie
+index : $(OBJS) $(PRIM_OBJS) $(SEC_OBJS)
+	$(CC) $(DEBUG) -o index $(OBJS) $(PRIM_OBJS) $(SEC_OBJS) ./BF/BF_64.a -no-pie
 
 # ------------------------------------------------- #
 
@@ -32,10 +44,10 @@ index : $(OBJS)
 
 # Cleaning Files
 clean:
-	rm -f $(OUT) $(OBJS)
+	rm -f $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS)
 
 # ------------------------------------------------- #
 
 # Counting Files
 count:
-	wc $(SOURCE) $(HEADER)
+	wc $(SOURCE) $(PRIM_SOURCE) $(SEC_SOURCE) $(HEADER) $(PRIM_HEADER) $(PRIM_SOURCE)
