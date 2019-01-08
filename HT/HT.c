@@ -21,12 +21,12 @@ int HT_PrintStats(HT_info info)
     unsigned int minNumOfBlocks            = 0;
     unsigned int maxNumOfEntries           = 0;
     unsigned int maxNumOfBlocks            = 0;
-    unsigned int overflowBuckets [info.numBuckets];
+    unsigned int overflowBlocks [info.numBuckets];
     unsigned int bucketEntries   [info.numBuckets];
 
     for (int i = 0 ; i < info.numBuckets ; i++)
     {
-        overflowBuckets[i] = 0;
+        overflowBlocks[i] = 0;
         bucketEntries[i] = 0;
     }
 
@@ -51,13 +51,15 @@ int HT_PrintStats(HT_info info)
                 return -1;
             }
 
-            if (blockID == i)
-            {
-                if (block->nextBlock == -1)
-                    bucketsWithOverflowBlocks++;
-            }
-            else
-                overflowBuckets[i-1]++;
+            // if (blockID == i)
+            // {
+            //     if (block->nextBlock == -1)
+            //         bucketsWithOverflowBlocks++;
+            // }
+            // else
+            //     overflowBlocks[i-1]++;
+            if (blockID != i)
+                overflowBlocks[i-1]++;
 
             for (int j = 0 ; j < entries ; j++)
             {
@@ -103,15 +105,18 @@ int HT_PrintStats(HT_info info)
     double avgNumOfEntries = (double)totalEntries / info.numBuckets;
 
 
-    minNumOfBlocks = maxNumOfBlocks = overflowBuckets[0];
+    minNumOfBlocks = maxNumOfBlocks = overflowBlocks[0];
 
     for (int i = 0 ; i < info.numBuckets ; i++)
     {
-        if (overflowBuckets[i] < minNumOfBlocks)
-            minNumOfBlocks = overflowBuckets[i];
+        if (overflowBlocks[i] < minNumOfBlocks)
+            minNumOfBlocks = overflowBlocks[i];
 
-        if (overflowBuckets[i] > maxNumOfBlocks)
-            maxNumOfBlocks = overflowBuckets[i];
+        if (overflowBlocks[i] > maxNumOfBlocks)
+            maxNumOfBlocks = overflowBlocks[i];
+
+		if (overflowBlocks[i] != 0)
+			bucketsWithOverflowBlocks++;
     }
 
 	/*
@@ -270,8 +275,77 @@ int HT_PrintStats(HT_info info)
     //     printf("%.2f│\n", avgNumOfBlocks);
 
     printf("├─────────────────┼─────────┴─────────┴─────────┤\n");
+    printf("│  Total Entries  │             %-16u│\n",totalEntries);
+    printf("├─────────────────┼─────────────────────────────┤\n");
     printf("│  Total Blocks   │             %-16u│\n",totalBlocks);
     printf("└─────────────────┴─────────────────────────────┘\n");
+
+	printf("       ┌───────────────┬─────────────────┐\n");
+	printf("       │   Bucket ID   │ Overflow Blocks │\n");
+	printf("       ├───────────────┼─────────────────┤\n");
+
+	for (int i = 1; i <= info.numBuckets; i++)
+	{
+	    if (i < 10)
+	        printf("       │       %d       ", i);
+	    else if (i < 100)
+	        printf("       │      %d       ", i);
+	    else if (i < 1000)
+	        printf("       │     %d       ", i);
+	    else if (i < 10000)
+	        printf("       │    %d       ", i);
+	    else if (i < 100000)
+	        printf("       │   %d       ", i);
+	    else if (i < 1000000)
+	        printf("       │  %d       ", i);
+	    else if (i < 10000000)
+	        printf("       │ %d       ", i);
+	    else
+	        printf("       │%d       ", i);
+
+	    if (overflowBlocks[i-1] < 10)
+			printf("│        %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 100)
+	        printf("│       %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 1000)
+	        printf("│      %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 10000)
+	        printf("│     %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 100000)
+	        printf("│    %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 1000000)
+	        printf("│   %u        │\n", overflowBlocks[i-1]);
+	    else if (overflowBlocks[i-1] < 10000000)
+	        printf("│  %u        │\n", overflowBlocks[i-1]);
+	    else
+	        printf("│ %u        │\n", overflowBlocks[i-1]);
+	}
+
+	printf("       ├───────────────┼─────────────────┤\n");
+	printf("       │ Total Buckets │                 │\n");
+	printf("       │ with Overflow │");
+
+	if (bucketsWithOverflowBlocks < 10)
+		printf("        %u        │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 100)
+		printf("       %u        │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 1000)
+		printf("       %u       │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 10000)
+		printf("      %u       │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 100000)
+		printf("      %u      │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 1000000)
+		printf("     %u      │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 10000000)
+		printf("     %u     │\n", bucketsWithOverflowBlocks);
+	else if (bucketsWithOverflowBlocks < 100000000)
+		printf("    %u     │\n", bucketsWithOverflowBlocks);
+	else
+		printf("    %u    │\n", bucketsWithOverflowBlocks);
+
+	printf("       │    Blocks     │                 │\n");
+	printf("       └───────────────┴─────────────────┘\n");
 
     return 0;
 }
@@ -428,7 +502,7 @@ int HT_CloseIndex(HT_info* header_info)
 	}
 
     free(header_info->attrName);
-    
+
     header_info->attrName = NULL;
 
     return 0;

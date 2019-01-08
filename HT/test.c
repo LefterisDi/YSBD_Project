@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "Id" , 2 , 100);
+    HT_CreateIndex("file1" , 'i' , "Id" , 2 , 10);
     HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;
