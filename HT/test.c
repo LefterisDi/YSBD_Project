@@ -51,7 +51,6 @@ int main(int argc, char* argv[])
 
     printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
 
-
     // info->fileDesc   = tmp_info->fileDesc;
     // info->attrType   = tmp_info->attrType;
     // info->attrName   = tmp_info->attrName;
@@ -142,7 +141,7 @@ int main(int argc, char* argv[])
 
         secRec.blockId = HT_InsertEntry(*info,rec);
         printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
-        
+
         // secRec.blockId = 0;
 
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
@@ -241,8 +240,8 @@ int main(int argc, char* argv[])
 
 
     free(line);
-    free(info);
-    free(sinfo);
+    // free(info);
+    // free(sinfo);
 
     return 0;
 }

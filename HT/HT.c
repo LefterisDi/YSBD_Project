@@ -374,35 +374,37 @@ int HT_PrintStats(HT_info info)
 
 int HashStatistics(char* filename)
 {
-    HT_info  info;
-    SHT_info sinfo;
+    HT_info*  info;
+    SHT_info* sinfo;
 
-    HT_info* tmp_info = HT_OpenIndex(filename);
-    if (tmp_info != NULL)
+    info = HT_OpenIndex(filename);
+    if (info != NULL)
     {
-        info = *tmp_info;
-        printf("FILEDESC = %d\n", info.fileDesc);
-        HT_PrintStats(info);
-        printf("FILEDESC = %d\n", info.fileDesc);
+        printf("FILEDESC = %d\n", info->fileDesc);
+        HT_PrintStats(*info);
+        printf("FILEDESC = %d\n", info->fileDesc);
 
-        if (BF_CloseFile(info.fileDesc) < 0) {
-    		BF_PrintError("Error closing file");
-    		return -1;
-    	}
+        HT_CloseIndex(info);
+
+        // if (BF_CloseFile(info->fileDesc) < 0) {
+    	// 	BF_PrintError("Error closing file");
+    	// 	return -1;
+    	// }
 
         return 0;
     }
 
-    SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex(filename);
-    if (tmp_sinfo != NULL)
+    sinfo = SHT_OpenSecondaryIndex(filename);
+    if (sinfo != NULL)
     {
-        sinfo = *tmp_sinfo;
-        SHT_PrintStats(sinfo);
+        SHT_PrintStats(*sinfo);
 
-        if (BF_CloseFile(sinfo.sfileDesc) < 0) {
-    		BF_PrintError("Error closing file");
-    		return -1;
-    	}
+        SHT_CloseSecondaryIndex(sinfo);
+
+        // if (BF_CloseFile(sinfo->sfileDesc) < 0) {
+    	// 	BF_PrintError("Error closing file");
+    	// 	return -1;
+    	// }
 
         return 0;
     }
@@ -414,7 +416,6 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 {
     int   fileDesc;
     Info* infoBlock;
-    // HT_info info;
 
 	if (BF_CreateFile(fileName) < 0) {
 		BF_PrintError("Error creating file");
@@ -436,36 +437,26 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
-    // info.fileDesc   = file;
-    // info.attrName   = attrName;
-    // info.attrLength = attrLength;
-    // info.attrType   = attrType;
-    // info.numBuckets = buckets;
-
-    // infoBlock->info->attrName   = attrName;
-
     infoBlock->hashFlag = 0;
 
     infoBlock->info.fileDesc   = -1;
     infoBlock->info.numBuckets = buckets;
     infoBlock->info.attrLength = attrLength;
     infoBlock->info.attrType   = attrType;
-    infoBlock->info.attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
+    infoBlock->info.attrName   = attrName;
+    // infoBlock->info.attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
+    //
+    // if (infoBlock->info.attrName == NULL) {
+    //     perror("Cannot allocate memory");
+    //
+    //     if (BF_CloseFile(fileDesc) < 0) {
+    // 		BF_PrintError("Error closing file");
+    // 	}
+    //
+    //     return -1;
+    // }
 
-    if (infoBlock->info.attrName == NULL) {
-        perror("Cannot allocate memory");
-
-        if (BF_CloseFile(fileDesc) < 0) {
-    		BF_PrintError("Error closing file");
-    	}
-
-        return -1;
-    }
-
-    strcpy(infoBlock->info.attrName,attrName);
-
-    //copy content to the block
-	// memcpy(block, &info, sizeof(HT_info));
+    // strcpy(infoBlock->info.attrName,attrName);
 
     if (BF_WriteBlock(fileDesc , 0 /*BF_GetBlockCounter(fileDesc) - 1*/) < 0) {
 		BF_PrintError("Error writing block back");
@@ -488,8 +479,9 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
 HT_info* HT_OpenIndex(char* fileName)
 {
-    Info* infoBlock;
-    int fileDesc;
+    Info*    infoBlock;
+    HT_info* info;
+    int      fileDesc;
 
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
 		BF_PrintError("Error opening file");
@@ -510,10 +502,24 @@ HT_info* HT_OpenIndex(char* fileName)
         return NULL;
     }
 
-    infoBlock->info.fileDesc = fileDesc;
-    printf("INFOBLOCK = %d\n",infoBlock->info.fileDesc );
+    info = (HT_info *)malloc(sizeof(HT_info));
+    if (info == NULL) {
+        perror("Cannot allocate memory");
 
-    return &(infoBlock->info);
+        if (BF_CloseFile(fileDesc) < 0) {
+            BF_PrintError("Error closing file");
+        }
+
+        return NULL;
+    }
+
+    memcpy(info, &infoBlock->info, sizeof(infoBlock->info));
+
+    // infoBlock->info.fileDesc = fileDesc;
+    info->fileDesc = fileDesc;
+    printf("INFOBLOCK = %d\n",info->fileDesc);
+
+    return info;
 }
 
 int HT_CloseIndex(HT_info* header_info)
@@ -525,9 +531,9 @@ int HT_CloseIndex(HT_info* header_info)
 		return -1;
 	}
 
-    free(header_info->attrName);
+    free(header_info);
 
-    header_info->attrName = NULL;
+    // header_info->attrName = NULL;
 
     return 0;
 }

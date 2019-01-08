@@ -270,7 +270,6 @@ int SHTBlockInit(const int fileDesc)
         block->rec[i].record.name   [0] = '\0';
         block->rec[i].record.surname[0] = '\0';
         block->rec[i].record.address[0] = '\0';
-
     }
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
