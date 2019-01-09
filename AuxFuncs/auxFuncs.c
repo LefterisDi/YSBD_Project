@@ -94,6 +94,8 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 	}
 
     // initialBlock->nextBlock = -1;
+    // memset(block, 0, BLOCK_SIZE);
+
     block->nextBlock = -1;
 
     int entries = MAX_PRIM_RECS;
@@ -104,6 +106,8 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     //     perror("Cannot allocate memory");
     //     return -1;
     // }
+
+    // block->rec = {};
 
     for (int i = 0 ; i < entries ; i++)
     {
@@ -242,32 +246,21 @@ int SHTBlockInit(const int fileDesc)
 	SecondaryBlock* block = NULL;
     int blockID;
 
-    printf("!!!!!!!!!!!! SHT_BLOCK_INIT\n");
-
     if (BF_AllocateBlock(fileDesc) < 0) {
         BF_PrintError("Error allocating block");
         return -1;
     }
-    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 1\n");
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
-    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 2\n");
 
 	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
-    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 3\n");
 
     block->nextBlock = -1;
 
 	int entries = MAX_SEC_RECS;
-
-    // block->rec = (SecondaryRecord **)malloc(entries * sizeof(SecondaryRecord *));
-	// if (block->rec == NULL) {
-	// 	perror("Cannot allocate memory");
-	// 	return -1;
-	// }
 
     for (int i = 0 ; i < entries ; i++)
     {
@@ -278,22 +271,10 @@ int SHTBlockInit(const int fileDesc)
         block->rec[i].record.address[0] = '\0';
     }
 
-    printf("SECONDARY BLOCKID = %d\n", blockID);
-    if (blockID == 99)
-    {
-        printf("NEXTBLOCK = %d\n", block->nextBlock);
-        printf("NEXTBLOCK = %d\n", block->rec[0].blockId);
-        printf("NEXTBLOCK = %d\n", block->rec[0].record.id);
-        printf("NEXTBLOCK = %s\n", block->rec[0].record.name);
-        printf("NEXTBLOCK = %s\n", block->rec[0].record.surname);
-        printf("NEXTBLOCK = %s\n", block->rec[0].record.address);
-    }
-
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }
-    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 4\n");
 
     return blockID;
 }

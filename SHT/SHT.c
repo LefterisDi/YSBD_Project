@@ -368,7 +368,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		BF_PrintError("Error getting block");
 		return -1;
 	}
-
+    
 	infoBlock->hashFlag = 1;
 
 	infoBlock->sec_info.sfileDesc  = -1;
@@ -376,36 +376,6 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 	infoBlock->sec_info.attrLength = attrLength;
 	infoBlock->sec_info.attrName   = attrName;
 	infoBlock->sec_info.fileName   = primFileName;
-	// strcpy(infoBlock->sec_info.attrName , attrName);
-	// strcpy(infoBlock->sec_info.fileName , primFileName);
-	// infoBlock->sec_info.fileName   = (char *)malloc((sizeof(primFileName) + 1) * sizeof(char));
-
-	// if (infoBlock->sec_info.fileName == NULL) {
-	// 	perror("Cannot allocate memory");
-    //
-	// 	if (BF_CloseFile(fileDesc) < 0) {
-	// 		BF_PrintError("Error closing file");
-	// 	}
-    //
-	// 	return -1;
-	// }
-    //
-	// infoBlock->sec_info.attrName = (char *)malloc((attrLength + 1) * sizeof(char));
-    //
-	// if (infoBlock->sec_info.attrName == NULL) {
-	// 	perror("Cannot allocate memory");
-    //
-	// 	if (BF_CloseFile(fileDesc) < 0) {
-	// 		BF_PrintError("Error closing file");
-	// 	}
-    //
-	// 	free(infoBlock->sec_info.fileName);
-    //
-	// 	return -1;
-	// }
-    //
-	// strcpy(infoBlock->sec_info.fileName,primFileName);
-	// strcpy(infoBlock->sec_info.attrName,attrName);
 
     if (BF_WriteBlock(fileDesc , 0 ) < 0) {
 		BF_PrintError("Error writing block back");
@@ -668,9 +638,11 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 
 	// int secFileDesc = header_info_sht.sfileDesc;
 
-		 if (!strcmp(header_info_sht.attrName , "name"))    pkey = strtoi((char *)value);
-	else if (!strcmp(header_info_sht.attrName , "surname")) pkey = strtoi((char *)value);
-	else if (!strcmp(header_info_sht.attrName , "address")) pkey = strtoi((char *)value);
+	// 	 if (!strcmp(header_info_sht.attrName , "name"))    pkey = strtoi((char *)value);
+	// else if (!strcmp(header_info_sht.attrName , "surname")) pkey = strtoi((char *)value);
+	// else if (!strcmp(header_info_sht.attrName , "address")) pkey = strtoi((char *)value);
+
+    pkey = strtoi((char *)value);
 
 	// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
 	// 	BF_PrintError("Error getting block");

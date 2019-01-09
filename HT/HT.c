@@ -438,6 +438,8 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
+    // memset(infoBlock, 0, BLOCK_SIZE);
+
     infoBlock->hashFlag = 0;
 
     infoBlock->info.fileDesc   = -1;
