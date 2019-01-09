@@ -45,12 +45,11 @@ int main(int argc, char* argv[])
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "Id" , 2 , 10);
+    HT_CreateIndex("file1" , 'i' , "id" , 2 , 10);
     // HT_info* tmp_info = HT_OpenIndex("file1");
     info = HT_OpenIndex("file1");
 
     printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
-
 
     // info->fileDesc   = tmp_info->fileDesc;
     // info->attrType   = tmp_info->attrType;
@@ -60,7 +59,7 @@ int main(int argc, char* argv[])
 
     // *info = *tmp_info;
 
-    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 100 , "file1");
+    SHT_CreateSecondaryIndex("sfile" , "address" , 10 , 100 , "file1");
     // SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
@@ -142,7 +141,7 @@ int main(int argc, char* argv[])
 
         secRec.blockId = HT_InsertEntry(*info,rec);
         printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
-        
+
         // secRec.blockId = 0;
 
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
@@ -241,8 +240,8 @@ int main(int argc, char* argv[])
 
 
     free(line);
-    free(info);
-    free(sinfo);
+    // free(info);
+    // free(sinfo);
 
     return 0;
 }
