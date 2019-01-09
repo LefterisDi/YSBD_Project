@@ -114,6 +114,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     }
 
 	// memcpy(block , initialBlock , sizeof(Block));
+    printf("PRIMARY BLOCKID = %d\n", blockID);
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
@@ -241,6 +242,8 @@ int SHTBlockInit(const int fileDesc)
 	SecondaryBlock* block;
     int blockID;
 
+    printf("!!!!!!!!!!!! SHT_BLOCK_INIT\n");
+
     if (BF_AllocateBlock(fileDesc) < 0) {
         BF_PrintError("Error allocating block");
         return -1;
@@ -272,7 +275,7 @@ int SHTBlockInit(const int fileDesc)
         block->rec[i].record.address[0] = '\0';
     }
 
-    printf("BLOCKID = %d\n", blockID);
+    printf("SECONDARY BLOCKID = %d\n", blockID);
     if (blockID == 99)
     {
         printf("NEXTBLOCK = %d\n", block->nextBlock);
