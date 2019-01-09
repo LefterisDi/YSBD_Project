@@ -20,15 +20,15 @@ int HT_PrintStats(HT_info info)
     unsigned int minNumOfBlocks            = 0;
     unsigned int maxNumOfEntries           = 0;
     unsigned int maxNumOfBlocks            = 0;
-    unsigned int overflowBlocks [info.numBuckets];
     unsigned int bucketEntries  [info.numBuckets];
+    unsigned int overflowBlocks [info.numBuckets];
 
     int entries = MAX_PRIM_RECS;
 
     for (int i = 0 ; i < info.numBuckets ; i++)
     {
+        bucketEntries[i]  = 0;
         overflowBlocks[i] = 0;
-        bucketEntries[i] = 0;
     }
 
     for (int i = 1 ; i <= info.numBuckets ; i++)
@@ -395,6 +395,7 @@ int HashStatistics(char* filename)
     }
 
     sinfo = SHT_OpenSecondaryIndex(filename);
+    printf("ADDRESS FROM HASHSTATICTICS= %p\n", sinfo);
     if (sinfo != NULL)
     {
         SHT_PrintStats(*sinfo);
@@ -546,13 +547,13 @@ int HT_InsertEntry(HT_info header_info, Record record)
     unsigned int pkey;
 
     // printf("REC = %d\n", record.id);
-    printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
+    // printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
     switch (header_info.attrType)
     {
         case 'c':
-                if (!strcmp(header_info.attrName , "Name"))    pkey = strtoi(record.name);
-           else if (!strcmp(header_info.attrName , "Surname")) pkey = strtoi(record.surname);
-           else if (!strcmp(header_info.attrName , "Address")) pkey = strtoi(record.address);
+                if (!strcmp(header_info.attrName , "name"))    pkey = strtoi(record.name);
+           else if (!strcmp(header_info.attrName , "surname")) pkey = strtoi(record.surname);
+           else if (!strcmp(header_info.attrName , "address")) pkey = strtoi(record.address);
         break;
 
         case 'i':
@@ -600,17 +601,17 @@ int HT_InsertEntry(HT_info header_info, Record record)
             switch (header_info.attrType)
             {
                 case 'c':
-                    if (!strcmp(header_info.attrName , "Name"))
+                    if (!strcmp(header_info.attrName , "name"))
                     {
                         if (!strcmp(block->rec[i].name    , record.name))
                             return -1;
                     }
-                    else if (!strcmp(header_info.attrName , "Surname"))
+                    else if (!strcmp(header_info.attrName , "surname"))
                     {
                         if (!strcmp(block->rec[i].surname , record.surname))
                             return -1;
                     }
-                    else if (!strcmp(header_info.attrName , "Address"))
+                    else if (!strcmp(header_info.attrName , "address"))
                     {
                         if (!strcmp(block->rec[i].address , record.address))
                             return -1;
@@ -793,9 +794,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             switch (header_info.attrType)
             {
                 case 'c':
-                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
+                         if (!strcmp(header_info.attrName , "name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
                 break;
 
                 case 'i':
@@ -980,9 +981,9 @@ int HT_GetAllEntries(HT_info header_info, void* value)
             switch (header_info.attrType)
             {
                 case 'c':
-                         if (!strcmp(header_info.attrName , "Name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
-                    else if (!strcmp(header_info.attrName , "Address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
+                         if (!strcmp(header_info.attrName , "name"))    { if (!strcmp(block->rec[i].name    , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "surname")) { if (!strcmp(block->rec[i].surname , (char *)value))  foundEntry = true; }
+                    else if (!strcmp(header_info.attrName , "address")) { if (!strcmp(block->rec[i].address , (char *)value))  foundEntry = true; }
                 break;
 
                 case 'i':

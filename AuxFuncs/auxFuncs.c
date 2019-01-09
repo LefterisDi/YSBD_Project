@@ -272,6 +272,17 @@ int SHTBlockInit(const int fileDesc)
         block->rec[i].record.address[0] = '\0';
     }
 
+    printf("BLOCKID = %d\n", blockID);
+    if (blockID == 99)
+    {
+        printf("NEXTBLOCK = %d\n", block->nextBlock);
+        printf("NEXTBLOCK = %d\n", block->rec[0].blockId);
+        printf("NEXTBLOCK = %d\n", block->rec[0].record.id);
+        printf("NEXTBLOCK = %s\n", block->rec[0].record.name);
+        printf("NEXTBLOCK = %s\n", block->rec[0].record.surname);
+        printf("NEXTBLOCK = %s\n", block->rec[0].record.address);
+    }
+
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
