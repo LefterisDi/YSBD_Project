@@ -239,7 +239,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 
 int SHTBlockInit(const int fileDesc)
 {
-	SecondaryBlock* block;
+	SecondaryBlock* block = NULL;
     int blockID;
 
     printf("!!!!!!!!!!!! SHT_BLOCK_INIT\n");
@@ -248,13 +248,16 @@ int SHTBlockInit(const int fileDesc)
         BF_PrintError("Error allocating block");
         return -1;
     }
+    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 1\n");
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
+    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 2\n");
 
 	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
+    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 3\n");
 
     block->nextBlock = -1;
 
@@ -290,6 +293,7 @@ int SHTBlockInit(const int fileDesc)
         BF_PrintError("Error writing block back");
         return -1;
     }
+    printf("!!!!!!!!!!!!!!!!!!!!!! CKECKPOINT 4\n");
 
     return blockID;
 }
