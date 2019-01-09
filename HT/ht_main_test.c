@@ -54,46 +54,46 @@ int main(int argc,char** argv)
 	char* sAttrName="name";
 	int sAttrLength=15;
 	int sBuckets=10;
-	// /*
-	// C1: Create the  index.
-	// */
-	// printf("@Checkpoint 1: Create Index\n");
-	// int createNumCode=HT_CreateIndex(fileName,attrType,attrName,attrLength,buckets);
-	// if (createNumCode==0)
-	// {
-	// 	printf("Checkpoint Result 1: SUCCESS\n");
-	// }
-	// else
-	// {
-	// 	printf("Checkpoint Result 1: FAIL\n");
-	// }
-	// HT_info* hi;
-	// /*
-	// C2: Open index.
-	// */
-	// printf("@Checkpoint 2: Open Index\n");
-	// hi=HT_OpenIndex(fileName);
-	// if(hi!=NULL && hi->attrType==attrType && strcmp(hi->attrName,attrName)==0)
-	// {
-	// 	printf("Checkpoint Result 2: SUCCESS\n");
-	// }
-	// else
-	// {
-	// 	printf("Checkpoint Result 2: FAIL\n");
-	// }
-	// /*
-	// C3: Insert records.
-	// */
-	// printf("@Checkpoint 3: Insert Records\n");
-	// for (int i=0;i<testRecordsNumber;i++)
-	// {
-	// 	Record record;
-	// 	record.id=i;
-	// 	sprintf(record.name,"name_%d",i);
-	// 	sprintf(record.surname,"surname_%d",i);
-	// 	sprintf(record.address,"address_%d",i);
-	// 	HT_InsertEntry(*hi,record);
-	// }
+	/*
+	C1: Create the  index.
+	*/
+	printf("@Checkpoint 1: Create Index\n");
+	int createNumCode=HT_CreateIndex(fileName,attrType,attrName,attrLength,buckets);
+	if (createNumCode==0)
+	{
+		printf("Checkpoint Result 1: SUCCESS\n");
+	}
+	else
+	{
+		printf("Checkpoint Result 1: FAIL\n");
+	}
+	HT_info* hi;
+	/*
+	C2: Open index.
+	*/
+	printf("@Checkpoint 2: Open Index\n");
+	hi=HT_OpenIndex(fileName);
+	if(hi!=NULL && hi->attrType==attrType && strcmp(hi->attrName,attrName)==0)
+	{
+		printf("Checkpoint Result 2: SUCCESS\n");
+	}
+	else
+	{
+		printf("Checkpoint Result 2: FAIL\n");
+	}
+	/*
+	C3: Insert records.
+	*/
+	printf("@Checkpoint 3: Insert Records\n");
+	for (int i=0;i<testRecordsNumber;i++)
+	{
+		Record record;
+		record.id=i;
+		sprintf(record.name,"name_%d",i);
+		sprintf(record.surname,"surname_%d",i);
+		sprintf(record.address,"address_%d",i);
+		HT_InsertEntry(*hi,record);
+	}
 	// /*
 	// C4: Get all entries.
 	// */
