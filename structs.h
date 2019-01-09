@@ -5,9 +5,6 @@
 
 #include <stdbool.h>
 
-#include "./BF/BF.h"
-
-
 typedef struct {
     int  id;
     char name[15];
@@ -15,11 +12,9 @@ typedef struct {
     char address[40];
 } Record;
 
-#define MAX_PRIM_RECS ((BLOCK_SIZE - sizeof(int)) / sizeof(Record))
-
 typedef struct {
-    int    nextBlock;
-    Record rec[MAX_PRIM_RECS];
+    int      nextBlock;
+    Record** rec;
 } Block;
 
 typedef struct {
@@ -37,11 +32,9 @@ typedef struct {
     Record record;
 } SecondaryRecord;
 
-#define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryRecord))
-
 typedef struct {
-    int             nextBlock;
-    SecondaryRecord rec[MAX_SEC_RECS];
+    int               nextBlock;
+    SecondaryRecord** rec;
 } SecondaryBlock;
 
 typedef struct sec_info {

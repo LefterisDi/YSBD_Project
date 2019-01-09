@@ -27,29 +27,26 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
-    // info = (HT_info *)malloc(sizeof(HT_info));
-    // if (info == NULL) {
-    //     perror("Cannot allocate memory");
-    //     fclose(gen_fp);
-    //     exit(EXIT_FAILURE);
-    // }
-    //
-    // sinfo = (SHT_info *)malloc(sizeof(SHT_info));
-    // if (sinfo == NULL) {
-    //     perror("Cannot allocate memory");
-    //     // free(info);
-    //     fclose(gen_fp);
-    //     exit(EXIT_FAILURE);
-    // }
+    info = (HT_info *)malloc(sizeof(HT_info));
+    if (info == NULL) {
+        perror("Cannot allocate memory");
+        fclose(gen_fp);
+        exit(EXIT_FAILURE);
+    }
+
+    sinfo = (SHT_info *)malloc(sizeof(SHT_info));
+    if (sinfo == NULL) {
+        perror("Cannot allocate memory");
+        // free(info);
+        fclose(gen_fp);
+        exit(EXIT_FAILURE);
+    }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
-    HT_CreateIndex("file1" , 'i' , "id" , 2 , 10);
-    // HT_info* tmp_info = HT_OpenIndex("file1");
-    info = HT_OpenIndex("file1");
-
-    printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
+    HT_CreateIndex("file1" , 'i' , "Id" , 2 , 10);
+    HT_info* tmp_info = HT_OpenIndex("file1");
 
     // info->fileDesc   = tmp_info->fileDesc;
     // info->attrType   = tmp_info->attrType;
@@ -57,11 +54,10 @@ int main(int argc, char* argv[])
     // info->attrLength = tmp_info->attrLength;
     // info->numBuckets = tmp_info->numBuckets;
 
-    // *info = *tmp_info;
+    *info = *tmp_info;
 
-    SHT_CreateSecondaryIndex("sfile" , "address" , 10 , 100 , "file1");
-    // SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
-    sinfo = SHT_OpenSecondaryIndex("sfile");
+    SHT_CreateSecondaryIndex("sfile" , "Address" , 10 , 100 , "file1");
+    SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
     // SHT_info* secInfo = SHT_OpenSecondaryIndex("file1");
@@ -86,7 +82,7 @@ int main(int argc, char* argv[])
     // sinfo->attrLength = tmp_sinfo->attrLength;
     // sinfo->numBuckets = tmp_sinfo->numBuckets;
 
-    // *sinfo = *tmp_sinfo;
+    *sinfo = *tmp_sinfo;
 
     char* line = NULL;
     size_t len = 0;
@@ -137,11 +133,7 @@ int main(int argc, char* argv[])
 	    // }
 
         secRec.record = rec;
-        printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
-
         secRec.blockId = HT_InsertEntry(*info,rec);
-        printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
-
         // secRec.blockId = 0;
 
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
@@ -216,14 +208,14 @@ int main(int argc, char* argv[])
    // *sinfo = *(SHT_OpenSecondaryIndex("sfile"));
    // printf("FILEDESC FROM MAIN 1 = %d\n", sinfo->sfileDesc);
 
-    // printf("BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
+    printf("BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
    //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
    //     BF_PrintError("Error getting block");
    //     return -1;
    // }
    // *info = *(HT_OpenIndex("file1"));
    // printf("FILEDESC FROM MAIN 2 = %d\n", info->fileDesc);
-    // printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
+    printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
 
     // printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
     // printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
@@ -240,8 +232,8 @@ int main(int argc, char* argv[])
 
 
     free(line);
-    // free(info);
-    // free(sinfo);
+    free(info);
+    free(sinfo);
 
     return 0;
 }
