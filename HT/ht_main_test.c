@@ -97,7 +97,11 @@ int main(int argc,char** argv)
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
-		sprintf(record.address,"address_%d",i);
+		sprintf(record.address,"address	_%d",i);
+		printf("\nCHECKPOINT 3 INSERT:      ID = %d\n", i);
+		printf("CHECKPOINT 3 INSERT:    NAME = %s\n", record.name);
+		printf("CHECKPOINT 3 INSERT: SURNAME = %s\n", record.surname);
+		printf("CHECKPOINT 3 INSERT: ADDRESS = %s\n", record.address);
 		printf("\nRECORD ID = %d\n", record.id);
 		// printf("INSERTED = %d\n", HT_InsertEntry(*hi,record));
 		HT_InsertEntry(*hi,record);
@@ -167,6 +171,10 @@ int main(int argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+		printf("\nCHECKPOINT 6 DELETE:      ID = %d\n", i);
+		printf("CHECKPOINT 6 DELETE:    NAME = %s\n", record.name);
+		printf("CHECKPOINT 6 DELETE: SURNAME = %s\n", record.surname);
+		printf("CHECKPOINT 6 DELETE: ADDRESS = %s\n", record.address);
 		printf("\nFIRST ID %d\n",record.id);
 		int err=HT_DeleteEntry(*hi,(void*)&record.id);
 		printf("\nSECOND ID %d\n",record.id);
@@ -248,6 +256,10 @@ int main(int argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+		printf("\nCHECKPOINT 9 INSERT:      ID = %d\n", i);
+		printf("CHECKPOINT 9 INSERT:    NAME = %s\n", record.name);
+		printf("CHECKPOINT 9 INSERT: SURNAME = %s\n", record.surname);
+		printf("CHECKPOINT 9 INSERT: ADDRESS = %s\n", record.address);
 		/*
 		We need to do two inserts:
 			* One in the HT.
@@ -286,7 +298,16 @@ int main(int argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+		printf("\nCHECKPOINT 10 GETALLENTRIES:      ID = %d\n", i);
+		printf("CHECKPOINT 10 GETALLENTRIES:    NAME = %s\n", record.name);
+		printf("CHECKPOINT 10 GETALLENTRIES: SURNAME = %s\n", record.surname);
+		printf("CHECKPOINT 10 GETALLENTRIES: ADDRESS = %s\n", record.address);
+		printf("\nFIRST ID %d\n\n",record.id);
 		int err=SHT_SecondaryGetAllEntries(*shi,*hi,(void*)record.name);
+		printf("\nERR = %d\n", err);
+		printf("SECOND ID %d\n",record.id);
+		getchar();
+
 		if (err<0)
 		{
 			ch10+=1;
