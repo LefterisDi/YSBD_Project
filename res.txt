@@ -1,0 +1,171 @@
+@Checkpoint 1: Create Index
+PRIMARY BLOCKID = 1
+PRIMARY BLOCKID = 2
+PRIMARY BLOCKID = 3
+PRIMARY BLOCKID = 4
+PRIMARY BLOCKID = 5
+PRIMARY BLOCKID = 6
+PRIMARY BLOCKID = 7
+PRIMARY BLOCKID = 8
+PRIMARY BLOCKID = 9
+PRIMARY BLOCKID = 10
+FROM HT_CREATE INDEX ATTRTYPE = i
+Checkpoint Result 1: SUCCESS
+@Checkpoint 2: Open Index
+INFOBLOCK = 0
+Checkpoint Result 2: SUCCESS
+@Checkpoint 3: Insert Records
+@Checkpoint 4: Get all entries (Expecting greater than zero return code)
+Checkpoint Result 4: SUCCESS
+@Checkpoint 5: Get all entries (Expecting -1 return code, records do not exist)
+Checkpoint Result 5: SUCCESS
+@Checkpoint 6: Delete some entries
+
+FIRST ID 0
+Record Test ID: 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE
+Rec ID : 0
+ENTRYINDEX    = 1
+CURR BLOCK ID = 1
+J = 1
+BLOCKINDEX = 0
+BLOCKID    = 1
+PREVBLOCK  = 1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE
+
+SECOND ID 0
+Checkpoint Result 6: SUCCESS
+@Checkpoint 7: Get all entries (1 should not exist)
+1 1
+Checkpoint Result 7: SUCCESS
+@Checkpoint 8: Create Secondary/ Open Index
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FROM MAIN
+SIZEOF = 508
+ADDRESS FROM OPEN SECONDARY = 0x5239540
+S_INFOBLOCK = 1
+Checkpoint Result 8 SUCCESS
+@Checkpoint 9: Insert Records Secondary
+Checkpoint Result 9: SUCCESS
+@Checkpoint 10: SHT Get all entries (All should exist except the deleted)
+     ID: 10
+   Name: name_10
+Surname: surname_10
+Address: address_10
+
+     ID: 11
+   Name: name_11
+Surname: surname_11
+Address: address_11
+
+     ID: 12
+   Name: name_12
+Surname: surname_12
+Address: address_12
+
+     ID: 13
+   Name: name_13
+Surname: surname_13
+Address: address_13
+
+     ID: 14
+   Name: name_14
+Surname: surname_14
+Address: address_14
+
+     ID: 15
+   Name: name_15
+Surname: surname_15
+Address: address_15
+
+     ID: 16
+   Name: name_16
+Surname: surname_16
+Address: address_16
+
+     ID: 17
+   Name: name_17
+Surname: surname_17
+Address: address_17
+
+     ID: 18
+   Name: name_18
+Surname: surname_18
+Address: address_18
+
+     ID: 19
+   Name: name_19
+Surname: surname_19
+Address: address_19
+
+Checkpoint Result 10: FAIL
+@Checkpoint 11
+Checkpoint Result 11: SUCCESS
+Statistics:HT
+INFOBLOCK = 0
+FILEDESC = 0
+┌─────────────────┬─────────┬─────────┬─────────┐
+│      Stats      │   Min   │   Max   │ Average │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Entries     │    1    │    2    │   1.90  │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Blocks      │    0    │    0    │   0.00  │
+├─────────────────┼─────────┴─────────┴─────────┤
+│  Total Entries  │             19              │
+├─────────────────┼─────────────────────────────┤
+│  Total Blocks   │             10              │
+└─────────────────┴─────────────────────────────┘
+       ┌───────────────┬─────────────────┐
+       │   Bucket ID   │ Overflow Blocks │
+       ├───────────────┼─────────────────┤
+       │       1       │        0        │
+       │       2       │        0        │
+       │       3       │        0        │
+       │       4       │        0        │
+       │       5       │        0        │
+       │       6       │        0        │
+       │       7       │        0        │
+       │       8       │        0        │
+       │       9       │        0        │
+       │      10       │        0        │
+       ├───────────────┼─────────────────┤
+       │ Total Buckets │                 │
+       │ with Overflow │        0        │
+       │    Blocks     │                 │
+       └───────────────┴─────────────────┘
+FILEDESC = 0
+Statistics:SHT
+SIZEOF = 508
+ADDRESS FROM OPEN SECONDARY = 0x523d570
+S_INFOBLOCK = 0
+ADDRESS FROM HASHSTATICTICS= 0x523d570
+┌─────────────────┬─────────┬─────────┬─────────┐
+│      Stats      │   Min   │   Max   │ Average │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Entries     │    1    │    1    │   1.00  │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Blocks      │    0    │    0    │   0.00  │
+├─────────────────┼─────────┴─────────┴─────────┤
+│  Total Entries  │             10              │
+├─────────────────┼─────────────────────────────┤
+│  Total Blocks   │             10              │
+└─────────────────┴─────────────────────────────┘
+       ┌───────────────┬─────────────────┐
+       │   Bucket ID   │ Overflow Blocks │
+       ├───────────────┼─────────────────┤
+       │       1       │        0        │
+       │       2       │        0        │
+       │       3       │        0        │
+       │       4       │        0        │
+       │       5       │        0        │
+       │       6       │        0        │
+       │       7       │        0        │
+       │       8       │        0        │
+       │       9       │        0        │
+       │      10       │        0        │
+       ├───────────────┼─────────────────┤
+       │ Total Buckets │                 │
+       │ with Overflow │        0        │
+       │    Blocks     │                 │
+       └───────────────┴─────────────────┘
