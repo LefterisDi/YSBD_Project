@@ -20,8 +20,8 @@ int SHT_PrintStats(SHT_info sec_info)
     unsigned int minNumOfBlocks  		   = 0;
 	unsigned int maxNumOfEntries 		   = 0;
     unsigned int maxNumOfBlocks  		   = 0;
-	unsigned int bucketEntries     [sec_info.numBuckets];
-	unsigned int overflowBlocks    [sec_info.numBuckets];
+	unsigned int bucketEntries  [sec_info.numBuckets];
+	unsigned int overflowBlocks [sec_info.numBuckets];
 
 	int entries = (BLOCK_SIZE - sizeof(SecondaryBlock)) / sizeof(SecondaryRecord);
 

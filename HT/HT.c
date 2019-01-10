@@ -23,7 +23,7 @@ int HT_PrintStats(HT_info info)
     unsigned int maxNumOfEntries           = 0;
     unsigned int maxNumOfBlocks            = 0;
     unsigned int overflowBlocks [info.numBuckets];
-    unsigned int bucketEntries   [info.numBuckets];
+    unsigned int bucketEntries  [info.numBuckets];
 
     int entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
 
