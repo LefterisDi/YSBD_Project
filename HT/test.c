@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     //     fclose(gen_fp);
     //     exit(EXIT_FAILURE);
     // }
-
+    //
     // sinfo = (SHT_info *)malloc(sizeof(SHT_info));
     // if (sinfo == NULL) {
     //     perror("Cannot allocate memory");
@@ -46,7 +46,10 @@ int main(int argc, char* argv[])
     BF_Init();
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
     HT_CreateIndex("file1" , 'i' , "id" , 2 , 10);
+    // HT_info* tmp_info = HT_OpenIndex("file1");
     info = HT_OpenIndex("file1");
+
+    printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
 
     // info->fileDesc   = tmp_info->fileDesc;
     // info->attrType   = tmp_info->attrType;
@@ -57,6 +60,7 @@ int main(int argc, char* argv[])
     // *info = *tmp_info;
 
     SHT_CreateSecondaryIndex("sfile" , "address" , 10 , 100 , "file1");
+    // SHT_info* tmp_sinfo = SHT_OpenSecondaryIndex("sfile");
     sinfo = SHT_OpenSecondaryIndex("sfile");
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
@@ -133,7 +137,11 @@ int main(int argc, char* argv[])
 	    // }
 
         secRec.record = rec;
+        printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
+
         secRec.blockId = HT_InsertEntry(*info,rec);
+        printf("FROM MAIN INDEX ATTRTYPE = %c\n", info->attrType);
+
         // secRec.blockId = 0;
 
         printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
@@ -208,14 +216,14 @@ int main(int argc, char* argv[])
    // *sinfo = *(SHT_OpenSecondaryIndex("sfile"));
    // printf("FILEDESC FROM MAIN 1 = %d\n", sinfo->sfileDesc);
 
-    printf("BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
+    // printf("BLOCK DELETE = %d\n", SHTBlockDelete("sfile"));
    //  if (BF_ReadBlock(primFileDesc , 0 , (void **)&info) < 0) {
    //     BF_PrintError("Error getting block");
    //     return -1;
    // }
    // *info = *(HT_OpenIndex("file1"));
    // printf("FILEDESC FROM MAIN 2 = %d\n", info->fileDesc);
-    printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
+    // printf("BLOCK DELETE = %d\n", BlockDelete("file1"));
 
     // printf("CLOSING INDEX = %d\n" , HT_CloseIndex(info));
     // printf("CLOSING SECONDARY INDEX = %d\n" , SHT_CloseSecondaryIndex(sinfo));
