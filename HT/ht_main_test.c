@@ -156,7 +156,7 @@ int main(int argc,char** argv)
 	for (int i=0;i<deletesTest;i++)
 	{
 		Record record;
-		record.id=i*10;
+		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
