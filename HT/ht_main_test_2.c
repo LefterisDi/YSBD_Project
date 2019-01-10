@@ -21,10 +21,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdlib.h>
+
 #include "../BF/BF.h"
 #include "../HT/HT.h"
 #include "../SHT/SHT.h"
-
 
 
 int main(int argc,char** argv)
@@ -44,16 +44,16 @@ int main(int argc,char** argv)
 	/*
 	Index parameters.
 	*/
-	char* fileName="primary.index";
-	char attrType='i';
-	char* attrName="id";
-	int attrLength=4;
-	int buckets=10;
-	char* sfileName="secondary.index";
-	char sAttrType='c';
-	char* sAttrName="name";
-	int sAttrLength=15;
-	int sBuckets=10;
+	char* fileName    = "primary.index";
+	char  attrType    = 'i';
+	char* attrName    = "id";
+	int   attrLength  = 4;
+	int   buckets     = 10;
+	char* sfileName   = "secondary.index";
+	// char  sAttrType   = 'c';
+	char* sAttrName   = "name";
+	int   sAttrLength = 15;
+	int   sBuckets    = 10;
 	/*
 	C1: Create the  index.
 	*/
@@ -67,12 +67,16 @@ int main(int argc,char** argv)
 	{
 		printf("Checkpoint Result 1: FAIL\n");
 	}
-	HT_info* hi;
+	HT_info* hi = (HT_info *)malloc(sizeof(HT_info));
+	if (hi == NULL)
+	{
+		return -1;
+	}
 	/*
 	C2: Open index.
 	*/
 	printf("@Checkpoint 2: Open Index\n");
-	hi=HT_OpenIndex(fileName);
+	*hi = *(HT_OpenIndex(fileName));
 	if(hi!=NULL && hi->attrType==attrType && strcmp(hi->attrName,attrName)==0)
 	{
 		printf("Checkpoint Result 2: SUCCESS\n");
@@ -92,6 +96,8 @@ int main(int argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+		// printf("\nRECORD ID = %d\n", record.id);
+		// printf("INSERTED = %d\n", HT_InsertEntry(*hi,record));
 		HT_InsertEntry(*hi,record);
 	}
 	/*
@@ -152,20 +158,14 @@ int main(int argc,char** argv)
 	printf("@Checkpoint 6: Delete some entries\n");
 	int ch6=0;
 	int deletesTest=(int)testDeleteRecords;
-	printf("DELETETEST = %d\n", deletesTest);
 	for (int i=0;i<deletesTest;i++)
 	{
 		Record record;
-		record.id=i*10;
+		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
-		printf("\nFIRST ID %d\n",record.id);
 		int err=HT_DeleteEntry(*hi,(void*)&record.id);
-		printf("ERR = %d\n", err);
-		printf("\nSECOND ID %d\n",record.id);
-		getchar();
-
 		if (err!=0)
 		{
 			ch6+=1;
@@ -219,8 +219,6 @@ int main(int argc,char** argv)
 		printf("Checkpoint Result 8: FAILED\n");
 		return -1;
 	}
-	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! FROM MAIN\n");
-	// return -1;
 	SHT_info* shi=SHT_OpenSecondaryIndex(sfileName);
 	if(shi!=NULL)
 	{
@@ -269,7 +267,7 @@ int main(int argc,char** argv)
 	}
 	else
 	{
-		printf("Checkpoint Result 9: Fail\n");
+		printf("Checkpoint Result 10: Fail\n");
 	}
 	/*
 	C10: Get all entries using secondary the  index.
@@ -318,5 +316,7 @@ int main(int argc,char** argv)
 	HashStatistics(fileName);
 	printf("Statistics:SHT\n");
 	HashStatistics(sfileName);
+
+	free(hi);
 	return 0;
 }
