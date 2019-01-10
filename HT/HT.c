@@ -778,6 +778,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
     }
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
+    int prevBlockID = blockID;
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -792,6 +793,8 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         {
             if (block->rec[i].name[0] == '\0')
                 return -1;
+
+            printf("Record Test ID: %d\n" , block->rec[i].id);
 
             switch (header_info.attrType)
             {
@@ -809,9 +812,51 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
             if (foundEntry)
             {
+                {
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE\n");
+                    int newBlockID = HashFunc(pkey , header_info.numBuckets) + 1;
+
+                    bool leave = false;
+                    FILE* tmp_fp;
+                    tmp_fp = fopen("res1.txt", "w");
+
+                    while (newBlockID != -1)
+                    {
+                        Block* tmp_block;
+
+                        if (BF_ReadBlock(header_info.fileDesc , newBlockID , (void **)&tmp_block) < 0) {
+                            BF_PrintError("Error getting block");
+                            fclose(tmp_fp);
+                            return -1;
+                        }
+
+                        fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
+
+                        for (int i = 0 ; i < entries ; i++)
+                        {
+                            if (tmp_block->rec[i].name[0] == '\0')
+                            {
+                                leave = true;
+                                break;
+                            }
+                            fprintf(tmp_fp,"PRINTING ID = %d\n", tmp_block->rec[i].id);
+                        }
+
+                        if (leave)
+                            break;
+
+                        newBlockID = tmp_block->nextBlock;
+                    }
+                    fclose(tmp_fp);
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE\n");
+                }
+
+                printf("Rec ID : %d\n",block->rec[i].id);
+
                 Block* currBlock   = block;
-                int    currBlockID = block->nextBlock;
-                int    prevBlockID = blockID;
+                // int    currBlockID = block->nextBlock;
+                int    currBlockID = blockID;
+                // int    prevBlockID = blockID;
                 int    entryIndex  = i + 1;
                 // int    currBlockID = blockID;
 
@@ -828,8 +873,11 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                  * We first check if there is only one block, which we
                  * shouldn't delete and then, we search for the last block.
                  */
-                if (currBlockID != -1)
+                if (currBlock->nextBlock != -1)
                 {
+                    prevBlockID = currBlockID;
+                    currBlockID = currBlock->nextBlock;
+
                     while(1)
                     {
                         if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
@@ -851,9 +899,23 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 } // if
 
                 int j;
+                printf("ENTRYINDEX    = %d\n", entryIndex);
+                printf("CURR BLOCK ID = %d\n", currBlockID);
+
                 for (j = entryIndex ; j < entries ; j++)
+                {
+                    printf("J = %d\n", j);
                     if (currBlock->rec[j].name[0] == '\0')
                         break;
+
+                    printf("CURR BLOCK[j] = %d\n", currBlock->rec[j].id);
+                }
+
+                if (j-1 < 0) {
+                        /* code */
+                    printf("CURRBLOCK = %d\n", j-1);
+                    sleep(2);
+                }
 
                 block->rec[i] = currBlock->rec[j-1];
                 //
@@ -874,38 +936,82 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                  * it is now empty and should be removed only if it is not
                  * the first block.
                  */
-                if (j == 1 && blockIndex != 0)
+                 printf("BLOCKINDEX = %d\n", blockIndex);
+                 printf("BLOCKID    = %d\n", blockID);
+                 printf("PREVBLOCK  = %d\n", prevBlockID);
+                if (j == 1 &&  prevBlockID != currBlockID)
                 {
-                    if (prevBlockID == blockID)
-                        block->nextBlock = -1;
-                    else
-                    {
-                        Block* tmpBlock;
+                    Block* tmpBlock;
 
-                        if (BF_ReadBlock(header_info.fileDesc , prevBlockID , (void **)&tmpBlock) < 0) {
-                            BF_PrintError("Error getting block");
-                            return -1;
-                        }
-
-                        tmpBlock->nextBlock = -1;
-
-                        if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
-                            BF_PrintError("Error writing block back");
-                            return -1;
-                        }
+                    if (BF_ReadBlock(header_info.fileDesc , prevBlockID , (void **)&tmpBlock) < 0) {
+                        BF_PrintError("Error getting block");
+                        return -1;
                     }
+
+                    tmpBlock->nextBlock = -1;
+
+                    if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
+                        BF_PrintError("Error writing block back");
+                        return -1;
+                    }
+                    printf("PREVBLOCK = %d\n", prevBlockID);
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DELETED ID = %d\n", currBlockID);
+
+
                     // free(currBlock->rec);
                 }
+                else if (prevBlockID == currBlockID)
+                    block->nextBlock = -1;
 
                 if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
                     BF_PrintError("Error writing block back");
                     return -1;
                 }
 
+                {
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE\n");
+
+                    int newBlockID = HashFunc(pkey , header_info.numBuckets) + 1;
+
+                    bool leave = false;
+                    FILE* tmp_fp;
+                    tmp_fp = fopen("res2.txt", "w");
+
+                    while (newBlockID != -1)
+                    {
+                        Block* tmp_block;
+
+                        if (BF_ReadBlock(header_info.fileDesc , newBlockID , (void **)&tmp_block) < 0) {
+                            BF_PrintError("Error getting block");
+                            fclose(tmp_fp);
+                            return -1;
+                        }
+
+                        fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
+
+                        for (int i = 0 ; i < entries ; i++)
+                        {
+                            if (tmp_block->rec[i].name[0] == '\0')
+                            {
+                                leave = true;
+                                break;
+                            }
+                            fprintf(tmp_fp,"PRINTING ID = %d\n", tmp_block->rec[i].id);
+                        }
+
+                        if (leave)
+                            break;
+
+                        newBlockID = tmp_block->nextBlock;
+                    }
+                    fclose(tmp_fp);
+                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE\n");
+                }
                 return 0;
 
             } // if
         } // for
+        prevBlockID = blockID;
 
         blockID = block->nextBlock;
     } // for

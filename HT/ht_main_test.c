@@ -152,6 +152,7 @@ int main(int argc,char** argv)
 	printf("@Checkpoint 6: Delete some entries\n");
 	int ch6=0;
 	int deletesTest=(int)testDeleteRecords;
+	printf("DELETETEST = %d\n", deletesTest);
 	for (int i=0;i<deletesTest;i++)
 	{
 		Record record;
@@ -159,7 +160,12 @@ int main(int argc,char** argv)
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
 		sprintf(record.address,"address_%d",i);
+		printf("\nFIRST ID %d\n",record.id);
 		int err=HT_DeleteEntry(*hi,(void*)&record.id);
+		printf("ERR = %d\n", err);
+		printf("\nSECOND ID %d\n",record.id);
+		getchar();
+
 		if (err!=0)
 		{
 			ch6+=1;
