@@ -719,5 +719,10 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 		// printf("BLOCKID INSIDE = %d\n", blockID);
     } // while
 
-    return totalSearchedBlocks;
+    printf("END OF GET_ALL\n");
+
+    if (foundEntry)
+        return totalSearchedBlocks;
+    else
+        return -1;
 }
