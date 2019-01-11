@@ -448,10 +448,21 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
             for (int j = 0 ; j < entries ; j++)
             {
+                printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
+                printf("     ID: %d\n", block->rec[j].id);
+                printf("   Name: %s\n", block->rec[j].name);
+                printf("Surname: %s\n", block->rec[j].surname);
+                printf("Address: %s\n", block->rec[j].address);
                 if (block->rec[j].name[0] == '\0')
                     break;
 
                 secRec.record  = block->rec[j];
+
+                printf("!!!!!!!!!!!!!!!!!!!!!!!! RECORD TO BE INSERTED AND SYNCHRONIZED\n");
+                printf("     ID: %d\n", secRec.record.id);
+                printf("   Name: %s\n", secRec.record.name);
+                printf("Surname: %s\n", secRec.record.surname);
+                printf("Address: %s\n", secRec.record.address);
 
                 SHT_SecondaryInsertEntry(sec_info , secRec);
             } // for
@@ -718,6 +729,12 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
     strcpy(sblock->rec[index].record.name    , secRec.record.name);
     strcpy(sblock->rec[index].record.surname , secRec.record.surname);
     strcpy(sblock->rec[index].record.address , secRec.record.address);
+
+    printf("!!!!!!!!!!!!!!!!!!!!!!!! SECONDARY INSERTION\n");
+    printf("     ID: %d\n", sblock->rec[i].record.id);
+    printf("   Name: %s\n", sblock->rec[i].record.name);
+    printf("Surname: %s\n", sblock->rec[i].record.surname);
+    printf("Address: %s\n\n", sblock->rec[i].record.address);
 
 	// printf("SECONDARY 2 ID = %d\n", sblock->rec[index]->record.id);
 	// printf("SECONDARY 2 NAME = %s\n", sblock->rec[index]->record.name);

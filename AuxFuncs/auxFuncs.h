@@ -17,4 +17,6 @@ int BlockSearch(HT_info header_info, const int id);
 int SHTBlockInit(const int fileDesc);
 int SHTBlockDelete(char* filename);
 
+void DispayPrimaryIndex(char* filename);
+
 #endif // __AUX_FUNCS__

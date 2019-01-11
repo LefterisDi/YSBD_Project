@@ -284,6 +284,54 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 // }
 
 
+void DispayPrimaryIndex(char* filename)
+{
+	HT_info*  info;
+
+    info = HT_OpenIndex(filename);
+
+	Block* block;
+
+    int entries = MAX_PRIM_RECS;
+
+	FILE* index_fp;
+	index_fp = fopen("index.txt", "w");
+
+	for (int i = 1 ; i <= info->numBuckets ; i++)
+    {
+        // unsigned int totalEntries = 0;
+        int blockID = i;
+
+        while (blockID != -1)
+        {
+            if (BF_ReadBlock(info->fileDesc , blockID , (void **)&block) < 0) {
+                BF_PrintError("Error getting block");
+				fclose(index_fp);
+                return;
+            }
+
+			fprintf(index_fp,"\nBLOCK ID = %d\n", blockID);
+
+            for (int j = 0 ; j < entries ; j++)
+            {
+                if (block->rec[j].name[0] == '\0')
+                    break;
+
+				fprintf(index_fp,"     ID: %d\n", block->rec[i].id);
+                fprintf(index_fp,"   Name: %s\n", block->rec[i].name);
+                fprintf(index_fp,"Surname: %s\n", block->rec[i].surname);
+                fprintf(index_fp,"Address: %s\n\n", block->rec[i].address);
+
+            } // for
+
+            blockID = block->nextBlock;
+        } // while
+    } // for
+	fclose(index_fp);
+
+	HT_CloseIndex(info);
+}
+
 int SHTBlockInit(const int fileDesc)
 {
 	SecondaryBlock* block;

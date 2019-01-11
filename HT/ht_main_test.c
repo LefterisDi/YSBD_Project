@@ -27,7 +27,6 @@
 #include "../SHT/SHT.h"
 #include "../AuxFuncs/auxFuncs.h"
 
-
 int main(int argc,char** argv)
 {
 	/*
@@ -106,6 +105,9 @@ int main(int argc,char** argv)
 		// printf("INSERTED = %d\n", HT_InsertEntry(*hi,record));
 		HT_InsertEntry(*hi,record);
 	}
+	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
+	DispayPrimaryIndex(fileName);
+	getchar();
 	/*
 	C4: Get all entries.
 	*/
@@ -132,6 +134,9 @@ int main(int argc,char** argv)
 	{
 		printf("Checkpoint Result 4: SUCCESS\n");
 	}
+	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
+	DispayPrimaryIndex(fileName);
+	getchar();
 	printf("@Checkpoint 5: Get all entries (Expecting -1 return code, records do not exist)\n");
 	int ch5=0;
 	/*
@@ -158,6 +163,9 @@ int main(int argc,char** argv)
 	{
 		printf("Checkpoint Result 5: SUCCESS\n");
 	}
+	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
+	DispayPrimaryIndex(fileName);
+	getchar();
 	/*
 	C6: Delete entries.
 	*/
@@ -192,6 +200,9 @@ int main(int argc,char** argv)
 	{
 		printf("Checkpoint Result 6: SUCCESS\n");
 	}
+	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
+	DispayPrimaryIndex(fileName);
+	getchar();
 	/*
 	C7: Get all entries.
 	*/
@@ -219,6 +230,9 @@ int main(int argc,char** argv)
 	{
 		printf("Checkpoint Result 7: SUCCESS\n");
 	}
+	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
+	DispayPrimaryIndex(fileName);
+	getchar();
 	/*
 	Secondary index part.
 	*/
