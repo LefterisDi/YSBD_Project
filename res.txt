@@ -1,1 +1,543 @@
 @Checkpoint 1: Create Index
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 3
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 4
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 5
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 6
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 7
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 8
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 9
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = 10
+Checkpoint Result 1: SUCCESS
+@Checkpoint 2: Open Index
+INFOBLOCK = 0
+Checkpoint Result 2: SUCCESS
+@Checkpoint 3: Insert Records
+
+CHECKPOINT 3 INSERT:      ID = 0
+CHECKPOINT 3 INSERT:    NAME = name_0
+CHECKPOINT 3 INSERT: SURNAME = surname_0
+CHECKPOINT 3 INSERT: ADDRESS = address_0
+
+RECORD ID = 0
+
+CHECKPOINT 3 INSERT:      ID = 1
+CHECKPOINT 3 INSERT:    NAME = name_1
+CHECKPOINT 3 INSERT: SURNAME = surname_1
+CHECKPOINT 3 INSERT: ADDRESS = address_1
+
+RECORD ID = 1
+
+CHECKPOINT 3 INSERT:      ID = 2
+CHECKPOINT 3 INSERT:    NAME = name_2
+CHECKPOINT 3 INSERT: SURNAME = surname_2
+CHECKPOINT 3 INSERT: ADDRESS = address_2
+
+RECORD ID = 2
+
+CHECKPOINT 3 INSERT:      ID = 3
+CHECKPOINT 3 INSERT:    NAME = name_3
+CHECKPOINT 3 INSERT: SURNAME = surname_3
+CHECKPOINT 3 INSERT: ADDRESS = address_3
+
+RECORD ID = 3
+
+CHECKPOINT 3 INSERT:      ID = 4
+CHECKPOINT 3 INSERT:    NAME = name_4
+CHECKPOINT 3 INSERT: SURNAME = surname_4
+CHECKPOINT 3 INSERT: ADDRESS = address_4
+
+RECORD ID = 4
+
+CHECKPOINT 3 INSERT:      ID = 5
+CHECKPOINT 3 INSERT:    NAME = name_5
+CHECKPOINT 3 INSERT: SURNAME = surname_5
+CHECKPOINT 3 INSERT: ADDRESS = address_5
+
+RECORD ID = 5
+
+CHECKPOINT 3 INSERT:      ID = 6
+CHECKPOINT 3 INSERT:    NAME = name_6
+CHECKPOINT 3 INSERT: SURNAME = surname_6
+CHECKPOINT 3 INSERT: ADDRESS = address_6
+
+RECORD ID = 6
+
+CHECKPOINT 3 INSERT:      ID = 7
+CHECKPOINT 3 INSERT:    NAME = name_7
+CHECKPOINT 3 INSERT: SURNAME = surname_7
+CHECKPOINT 3 INSERT: ADDRESS = address_7
+
+RECORD ID = 7
+
+CHECKPOINT 3 INSERT:      ID = 8
+CHECKPOINT 3 INSERT:    NAME = name_8
+CHECKPOINT 3 INSERT: SURNAME = surname_8
+CHECKPOINT 3 INSERT: ADDRESS = address_8
+
+RECORD ID = 8
+
+CHECKPOINT 3 INSERT:      ID = 9
+CHECKPOINT 3 INSERT:    NAME = name_9
+CHECKPOINT 3 INSERT: SURNAME = surname_9
+CHECKPOINT 3 INSERT: ADDRESS = address_9
+
+RECORD ID = 9
+@Checkpoint 4: Get all entries (Expecting greater than zero return code)
+Checkpoint Result 4: SUCCESS
+@Checkpoint 5: Get all entries (Expecting -1 return code, records do not exist)
+Checkpoint Result 5: SUCCESS
+@Checkpoint 6: Delete some entries
+
+CHECKPOINT 6 DELETE:      ID = 0
+CHECKPOINT 6 DELETE:    NAME = name_0
+CHECKPOINT 6 DELETE: SURNAME = surname_0
+CHECKPOINT 6 DELETE: ADDRESS = address_0
+
+FIRST ID 0
+Record Test ID: 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE
+Rec ID : 0
+ENTRYINDEX    = 1
+CURR BLOCK ID = 1
+J = 1
+BLOCKINDEX = 0
+BLOCKID    = 1
+PREVBLOCK  = 1
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE
+
+SECOND ID 0
+Checkpoint Result 6: SUCCESS
+@Checkpoint 7: Get all entries (1 should not exist)
+1 1
+Checkpoint Result 7: SUCCESS
+@Checkpoint 8: Create Secondary/ Open Index
+INFOBLOCK = 2
+Checkpoint Result 8 SUCCESS
+@Checkpoint 9: Insert Records Secondary
+
+CHECKPOINT 9 INSERT:      ID = 10
+CHECKPOINT 9 INSERT:    NAME = name_10
+CHECKPOINT 9 INSERT: SURNAME = surname_10
+CHECKPOINT 9 INSERT: ADDRESS = address_10
+
+CHECKPOINT 9 INSERT:      ID = 11
+CHECKPOINT 9 INSERT:    NAME = name_11
+CHECKPOINT 9 INSERT: SURNAME = surname_11
+CHECKPOINT 9 INSERT: ADDRESS = address_11
+
+CHECKPOINT 9 INSERT:      ID = 12
+CHECKPOINT 9 INSERT:    NAME = name_12
+CHECKPOINT 9 INSERT: SURNAME = surname_12
+CHECKPOINT 9 INSERT: ADDRESS = address_12
+
+CHECKPOINT 9 INSERT:      ID = 13
+CHECKPOINT 9 INSERT:    NAME = name_13
+CHECKPOINT 9 INSERT: SURNAME = surname_13
+CHECKPOINT 9 INSERT: ADDRESS = address_13
+
+CHECKPOINT 9 INSERT:      ID = 14
+CHECKPOINT 9 INSERT:    NAME = name_14
+CHECKPOINT 9 INSERT: SURNAME = surname_14
+CHECKPOINT 9 INSERT: ADDRESS = address_14
+
+CHECKPOINT 9 INSERT:      ID = 15
+CHECKPOINT 9 INSERT:    NAME = name_15
+CHECKPOINT 9 INSERT: SURNAME = surname_15
+CHECKPOINT 9 INSERT: ADDRESS = address_15
+
+CHECKPOINT 9 INSERT:      ID = 16
+CHECKPOINT 9 INSERT:    NAME = name_16
+CHECKPOINT 9 INSERT: SURNAME = surname_16
+CHECKPOINT 9 INSERT: ADDRESS = address_16
+
+CHECKPOINT 9 INSERT:      ID = 17
+CHECKPOINT 9 INSERT:    NAME = name_17
+CHECKPOINT 9 INSERT: SURNAME = surname_17
+CHECKPOINT 9 INSERT: ADDRESS = address_17
+
+CHECKPOINT 9 INSERT:      ID = 18
+CHECKPOINT 9 INSERT:    NAME = name_18
+CHECKPOINT 9 INSERT: SURNAME = surname_18
+CHECKPOINT 9 INSERT: ADDRESS = address_18
+
+CHECKPOINT 9 INSERT:      ID = 19
+CHECKPOINT 9 INSERT:    NAME = name_19
+CHECKPOINT 9 INSERT: SURNAME = surname_19
+CHECKPOINT 9 INSERT: ADDRESS = address_19
+Checkpoint Result 9: SUCCESS
+@Checkpoint 10: SHT Get all entries (All should exist except the deleted)
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 0
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_0
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_0
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_0
+
+FIRST ID 0
+
+
+ERR = -1
+SECOND ID 0
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 1
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_1
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_1
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_1
+
+FIRST ID 1
+
+     ID: 1
+   Name: name_1
+Surname: surname_1
+Address: address_1
+
+
+ERR = 1
+SECOND ID 1
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 2
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_2
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_2
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_2
+
+FIRST ID 2
+
+
+ERR = -1
+SECOND ID 2
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 3
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_3
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_3
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_3
+
+FIRST ID 3
+
+     ID: 3
+   Name: name_3
+Surname: surname_3
+Address: address_3
+
+
+ERR = 1
+SECOND ID 3
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 4
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_4
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_4
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_4
+
+FIRST ID 4
+
+     ID: 4
+   Name: name_4
+Surname: surname_4
+Address: address_4
+
+
+ERR = 1
+SECOND ID 4
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 5
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_5
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_5
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_5
+
+FIRST ID 5
+
+     ID: 5
+   Name: name_5
+Surname: surname_5
+Address: address_5
+
+
+ERR = 1
+SECOND ID 5
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 6
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_6
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_6
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_6
+
+FIRST ID 6
+
+     ID: 6
+   Name: name_6
+Surname: surname_6
+Address: address_6
+
+
+ERR = 1
+SECOND ID 6
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 7
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_7
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_7
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_7
+
+FIRST ID 7
+
+     ID: 7
+   Name: name_7
+Surname: surname_7
+Address: address_7
+
+
+ERR = 1
+SECOND ID 7
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 8
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_8
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_8
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_8
+
+FIRST ID 8
+
+     ID: 8
+   Name: name_8
+Surname: surname_8
+Address: address_8
+
+
+ERR = 1
+SECOND ID 8
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 9
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_9
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_9
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_9
+
+FIRST ID 9
+
+
+ERR = -1
+SECOND ID 9
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 10
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_10
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_10
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_10
+
+FIRST ID 10
+
+     ID: 10
+   Name: name_10
+Surname: surname_10
+Address: address_10
+
+
+ERR = 1
+SECOND ID 10
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 11
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_11
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_11
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_11
+
+FIRST ID 11
+
+     ID: 11
+   Name: name_11
+Surname: surname_11
+Address: address_11
+
+
+ERR = 1
+SECOND ID 11
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 12
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_12
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_12
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_12
+
+FIRST ID 12
+
+     ID: 12
+   Name: name_12
+Surname: surname_12
+Address: address_12
+
+
+ERR = 1
+SECOND ID 12
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 13
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_13
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_13
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_13
+
+FIRST ID 13
+
+     ID: 13
+   Name: name_13
+Surname: surname_13
+Address: address_13
+
+
+ERR = 1
+SECOND ID 13
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 14
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_14
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_14
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_14
+
+FIRST ID 14
+
+     ID: 14
+   Name: name_14
+Surname: surname_14
+Address: address_14
+
+
+ERR = 1
+SECOND ID 14
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 15
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_15
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_15
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_15
+
+FIRST ID 15
+
+     ID: 15
+   Name: name_15
+Surname: surname_15
+Address: address_15
+
+
+ERR = 1
+SECOND ID 15
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 16
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_16
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_16
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_16
+
+FIRST ID 16
+
+     ID: 16
+   Name: name_16
+Surname: surname_16
+Address: address_16
+
+
+ERR = 1
+SECOND ID 16
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 17
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_17
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_17
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_17
+
+FIRST ID 17
+
+     ID: 17
+   Name: name_17
+Surname: surname_17
+Address: address_17
+
+
+ERR = 1
+SECOND ID 17
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 18
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_18
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_18
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_18
+
+FIRST ID 18
+
+     ID: 18
+   Name: name_18
+Surname: surname_18
+Address: address_18
+
+
+ERR = 1
+SECOND ID 18
+
+CHECKPOINT 10 GETALLENTRIES:      ID = 19
+CHECKPOINT 10 GETALLENTRIES:    NAME = name_19
+CHECKPOINT 10 GETALLENTRIES: SURNAME = surname_19
+CHECKPOINT 10 GETALLENTRIES: ADDRESS = address_19
+
+FIRST ID 19
+
+     ID: 19
+   Name: name_19
+Surname: surname_19
+Address: address_19
+
+
+ERR = 1
+SECOND ID 19
+Checkpoint Result 10: FAIL
+@Checkpoint 11
+Checkpoint Result 11: SUCCESS
+Statistics:HT
+INFOBLOCK = 0
+FILEDESC = 0
+┌─────────────────┬─────────┬─────────┬─────────┐
+│      Stats      │   Min   │   Max   │ Average │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Entries     │    1    │    2    │   1.70  │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Blocks      │    0    │    0    │   0.00  │
+├─────────────────┼─────────┴─────────┴─────────┤
+│  Total Entries  │             17              │
+├─────────────────┼─────────────────────────────┤
+│  Total Blocks   │             10              │
+└─────────────────┴─────────────────────────────┘
+       ┌───────────────┬─────────────────┐
+       │   Bucket ID   │ Overflow Blocks │
+       ├───────────────┼─────────────────┤
+       │       1       │        0        │
+       │       2       │        0        │
+       │       3       │        0        │
+       │       4       │        0        │
+       │       5       │        0        │
+       │       6       │        0        │
+       │       7       │        0        │
+       │       8       │        0        │
+       │       9       │        0        │
+       │      10       │        0        │
+       ├───────────────┼─────────────────┤
+       │ Total Buckets │                 │
+       │ with Overflow │        0        │
+       │    Blocks     │                 │
+       └───────────────┴─────────────────┘
+FILEDESC = 0
+Statistics:SHT
+┌─────────────────┬─────────┬─────────┬─────────┐
+│      Stats      │   Min   │   Max   │ Average │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Entries     │    1    │    2    │   1.70  │
+├─────────────────┼─────────┼─────────┼─────────┤
+│     Blocks      │    0    │    0    │   0.00  │
+├─────────────────┼─────────┴─────────┴─────────┤
+│  Total Entries  │             17              │
+├─────────────────┼─────────────────────────────┤
+│  Total Blocks   │             10              │
+└─────────────────┴─────────────────────────────┘
+       ┌───────────────┬─────────────────┐
+       │   Bucket ID   │ Overflow Blocks │
+       ├───────────────┼─────────────────┤
+       │       1       │        0        │
+       │       2       │        0        │
+       │       3       │        0        │
+       │       4       │        0        │
+       │       5       │        0        │
+       │       6       │        0        │
+       │       7       │        0        │
+       │       8       │        0        │
+       │       9       │        0        │
+       │      10       │        0        │
+       ├───────────────┼─────────────────┤
+       │ Total Buckets │                 │
+       │ with Overflow │        0        │
+       │    Blocks     │                 │
+       └───────────────┴─────────────────┘

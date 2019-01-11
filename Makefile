@@ -14,7 +14,7 @@ SEC_HEADER  = ./SHT/SHT.h ./SHT/SHT_structs.h
 
 OUT  	 	= index
 OUT2  	 	= test
-CC	 	 	= gcc -Wall -std=c99
+CC	 	 	= gcc -Wall
 FLAGS    	= -c
 DEBUG	 	= -g3
 

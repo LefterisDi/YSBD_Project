@@ -94,7 +94,6 @@ int main(int argc,char** argv)
 	for (int i=0;i<testRecordsNumber;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -115,7 +114,6 @@ int main(int argc,char** argv)
 	for (int i=0;i<testRecordsNumber;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -142,7 +140,6 @@ int main(int argc,char** argv)
 	for (int i=testRecordsNumber;i<testRecordsNumber*2;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -170,7 +167,6 @@ int main(int argc,char** argv)
 	for (int i=0;i<deletesTest;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -204,7 +200,6 @@ int main(int argc,char** argv)
 	for (int i=0;i<testRecordsNumber;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -257,7 +252,6 @@ int main(int argc,char** argv)
 	for (int i=testRecordsNumber;i<testRecordsNumber*2;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
@@ -275,7 +269,6 @@ int main(int argc,char** argv)
 		if (blockId>0)
 		{
 			SecondaryRecord sRecord;
-			memset(&sRecord, 0, sizeof(SecondaryRecord));
 			sRecord.record=record;
 			sRecord.blockId=blockId;
 			int sInsertError=SHT_SecondaryInsertEntry(*shi,sRecord);
@@ -301,7 +294,6 @@ int main(int argc,char** argv)
 	for (int i=0;i<testRecordsNumber*2;i++)
 	{
 		Record record;
-		memset(&record, 0, sizeof(Record));
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);

@@ -767,11 +767,10 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 20\n");
 
-    block->rec[index] = record;
-    // block->rec[index].id = record.id;
-    // strcpy(block->rec[index].name    , record.name);
-    // strcpy(block->rec[index].surname , record.surname);
-    // strcpy(block->rec[index].address , record.address);
+    block->rec[index].id = record.id;
+    strcpy(block->rec[index].name    , record.name);
+    strcpy(block->rec[index].surname , record.surname);
+    strcpy(block->rec[index].address , record.address);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 21\n");
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
@@ -1088,7 +1087,8 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 int HT_GetAllEntries(HT_info header_info, void* value)
 {
     Block* block;
-    int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    // int    entries     = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+    int    entries     = MAX_PRIM_RECS;
     int    numOfBlocks = 0;
     int    blockID;
     unsigned int pkey;
