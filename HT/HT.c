@@ -650,7 +650,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         }
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
+        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
         DispayPrimaryIndex("primary.index");
         getchar();
 
