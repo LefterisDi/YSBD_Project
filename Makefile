@@ -14,7 +14,7 @@ SEC_HEADER  = ./SHT/SHT.h ./SHT/SHT_structs.h
 
 OUT  	 	= index
 OUT2  	 	= test
-CC	 	 	= gcc -Wall
+CC	 	 	= gcc -Wall -std=c99
 FLAGS    	= -c
 DEBUG	 	= -g3
 
@@ -51,7 +51,7 @@ test : $(AUXOBJ) ./HT/ht_main_test.o $(PRIM_OBJS) $(SEC_OBJS)
 
 # Cleaning Files
 clean:
-	rm -f $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS)
+	rm -f $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS) ./HT/ht_main_test.o test
 
 # ------------------------------------------------- #
 
