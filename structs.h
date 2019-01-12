@@ -51,10 +51,16 @@ typedef struct sec_info {
     char*    fileName;   /* Name of the primary index                          */
 } SHT_info;
 
+union info_types {
+    HT_info  ht_info;
+    SHT_info sht_info;
+};
+
 typedef struct {
-    bool     hashFlag;        /* This flag indicates the hashing that was used for a file */
-    HT_info  info;
-    SHT_info sec_info;
+    bool             hash_type;        /* This flag indicates the hashing that was used for a file */
+    union info_types info;
+    // HT_info  info;
+    // SHT_info sec_info;
 } Info;
 
 // typedef struct {

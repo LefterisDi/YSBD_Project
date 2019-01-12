@@ -451,13 +451,13 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
     // infoBlock->info->attrName   = attrName;
 
-    infoBlock->hashFlag = 0;
+    infoBlock->hash_type = 0;
 
-    infoBlock->info.fileDesc   = -1;
-    infoBlock->info.numBuckets = buckets;
-    infoBlock->info.attrLength = attrLength;
-    infoBlock->info.attrType   = attrType;
-    infoBlock->info.attrName   = attrName;
+    infoBlock->info.ht_info.fileDesc   = -1;
+    infoBlock->info.ht_info.numBuckets = buckets;
+    infoBlock->info.ht_info.attrLength = attrLength;
+    infoBlock->info.ht_info.attrType   = attrType;
+    infoBlock->info.ht_info.attrName   = attrName;
 
     // infoBlock->info.attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
     //
@@ -555,7 +555,7 @@ HT_info* HT_OpenIndex(char* fileName)
 		return NULL;
 	}
 
-	if (infoBlock->hashFlag != 0)
+	if (infoBlock->hash_type != 0)
     {
         if (BF_CloseFile(fileDesc) < 0) {
             BF_PrintError("Error closing file");
@@ -575,7 +575,7 @@ HT_info* HT_OpenIndex(char* fileName)
         return NULL;
     }
 
-    memcpy(info, &infoBlock->info, sizeof(infoBlock->info));
+    memcpy(info, &infoBlock->info.ht_info, sizeof(infoBlock->info.ht_info));
 
     // infoBlock->info.fileDesc = fileDesc;
     info->fileDesc = fileDesc;
