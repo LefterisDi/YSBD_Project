@@ -42,6 +42,11 @@ Address: address_9
 
 
 BLOCK ID = 7
+     ID: 0
+   Name: name_0
+Surname: surname_0
+Address: address_0
+
 
 BLOCK ID = 8
      ID: 1

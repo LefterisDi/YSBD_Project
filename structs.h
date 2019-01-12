@@ -37,15 +37,16 @@ typedef struct {
 } SecondaryRecord;
 
 typedef struct {
-    int    blockId; /* The block to which the record was inserted in the primary index */
-    Record record;
-} SecondaryRecord;
+    int  blockId; /* The block to which the record was inserted in the primary index */
+    int  id;
+    char secHashKey[40];
+} SecondaryEntry;
 
-#define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryRecord))
+#define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryEntry))
 
 typedef struct {
     int               nextBlock;
-    SecondaryRecord rec[MAX_SEC_RECS];
+    SecondaryEntry rec[MAX_SEC_RECS];
 } SecondaryBlock;
 
 typedef struct sec_info {

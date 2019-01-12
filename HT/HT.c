@@ -904,7 +904,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
 
-                        for (int i = 0 ; i < entries ; i++)
+                        for (i = 0 ; i < entries ; i++)
                         {
                             if (tmp_block->rec[i].name[0] == '\0')
                             {
@@ -1088,7 +1088,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
 
-                        for (int i = 0 ; i < entries ; i++)
+                        for (i = 0 ; i < entries ; i++)
                         {
                             if (tmp_block->rec[i].name[0] == '\0')
                             {
@@ -1150,7 +1150,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
 
         case 'i':
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
-            pkey = *(int *)value;
+            pkey = *(unsigned int *)value;
             // printf("GIVEN ID INT = %d\n", *(int *)value);
         break;
 
