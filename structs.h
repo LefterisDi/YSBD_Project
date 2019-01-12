@@ -36,6 +36,11 @@ typedef struct {
     Record record;
 } SecondaryRecord;
 
+typedef struct {
+    int    blockId; /* The block to which the record was inserted in the primary index */
+    Record record;
+} SecondaryRecord;
+
 #define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryRecord))
 
 typedef struct {
