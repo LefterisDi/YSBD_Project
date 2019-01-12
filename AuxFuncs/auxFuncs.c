@@ -290,6 +290,8 @@ void DispayPrimaryIndex(char* filename)
 
     info = HT_OpenIndex(filename);
 
+    printf("\033[1;34m!!!!!!!!!!!!! FILEDESC FROM DISPLAY PRIMARY = %d\033[0m\n", info->fileDesc);
+
 	Block* block;
 
     int entries = MAX_PRIM_RECS;
@@ -337,6 +339,8 @@ void DispaySecondaryIndex(char* filename)
 	SHT_info*  info;
 
     info = SHT_OpenSecondaryIndex(filename);
+
+    printf("\033[1;34m!!!!!!!!!!!!! FILEDESC FROM DISPLAY SECONDARY = %d\033[0m\n", info->sfileDesc);
 
 	SecondaryBlock* block;
 

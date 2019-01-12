@@ -418,6 +418,9 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 	}
 
 
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
+    DispayPrimaryIndex("primary.index");
+    getchar();
     /* Synchronization of the two Hashing Indexes */
     HT_info* prim_info = HT_OpenIndex(primFileName);
     if (prim_info == NULL) {
@@ -448,6 +451,8 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
         	DispaySecondaryIndex("secondary.index");
         	getchar();
 
+            printf("!!!!!!!!!!!!!! PRINTING BLOCKID FROM SEC CREATE = %d\n", blockID);
+            getchar();
             secRec.blockId = blockID;
 
             for (int j = 0 ; j < entries ; j++)
@@ -457,6 +462,14 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("   Name: %s\n", block->rec[j].name);
                 printf("Surname: %s\n", block->rec[j].surname);
                 printf("Address: %s\n", block->rec[j].address);
+                printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
+                printf("     FD: %d\n", infoBlock->sec_info.sfileDesc);
+                printf("   Name: %s\n", infoBlock->sec_info.attrName);
+                printf(" Length: %d\n", infoBlock->sec_info.attrLength);
+                printf("NumBuck: %ld\n", infoBlock->sec_info.numBuckets);
+                printf("FileNam: %s\n", infoBlock->sec_info.fileName);
+                getchar();
+
                 if (block->rec[j].name[0] == '\0')
                     break;
 
@@ -467,6 +480,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("   Name: %s\n", secRec.record.name);
                 printf("Surname: %s\n", secRec.record.surname);
                 printf("Address: %s\n", secRec.record.address);
+                printf("!!!!!!!!!!!!!!!!!!!!!!!! RECORD TO BE INSERTED AND SYNCHRONIZED\n");
+                printf("     FD: %d\n", sec_info.sfileDesc);
+                printf("   Name: %s\n", sec_info.attrName);
+                printf(" Length: %d\n", sec_info.attrLength);
+                printf("NumBuck: %ld\n", sec_info.numBuckets);
+                printf("FileNam: %s\n", sec_info.fileName);
+                getchar();
 
                 SHT_SecondaryInsertEntry(sec_info , secRec);
             } // for

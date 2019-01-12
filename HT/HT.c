@@ -650,9 +650,9 @@ int HT_InsertEntry(HT_info header_info, Record record)
         }
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 3\n");
 
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
-        DispayPrimaryIndex("primary.index");
-        getchar();
+        // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
+        // DispayPrimaryIndex("primary.index");
+        // getchar();
 
         for (i = 0 ; i < entries ; i++)
         {
@@ -793,9 +793,9 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT AFTER INSERTION\n");
-    DispayPrimaryIndex("primary.index");
-    getchar();
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT AFTER INSERTION\n");
+    // DispayPrimaryIndex("primary.index");
+    // getchar();
 
     return blockID;
 
@@ -841,6 +841,10 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
     int prevBlockID = blockID;
+
+    printf("\033[1;33m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE FOR DEBUGGING\033[0m\n");
+    DispayPrimaryIndex("primary.index");
+    getchar();
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -1117,9 +1121,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
         blockID = block->nextBlock;
     } // for
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
-    DispayPrimaryIndex("primary.index");
-    getchar();
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
+    // DispayPrimaryIndex("primary.index");
+    // getchar();
 
     return -1;  /* As soon as we reach this point, avgs that the requested entry doesn't exist in the Table */
 }
