@@ -444,6 +444,10 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 return -1;
             }
 
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE BEFORE SYNCH\n");
+        	DispaySecondaryIndex("secondary.index");
+        	getchar();
+
             secRec.blockId = blockID;
 
             for (int j = 0 ; j < entries ; j++)
@@ -472,6 +476,11 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     } // for
 
     HT_CloseIndex(prim_info);
+
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
+    DispaySecondaryIndex("secondary.index");
+    getchar();
+
 
     if (BF_CloseFile(fileDesc) < 0) {
 		BF_PrintError("Error closing file");

@@ -18,5 +18,6 @@ int SHTBlockInit(const int fileDesc);
 int SHTBlockDelete(char* filename);
 
 void DispayPrimaryIndex(char* filename);
+void DispaySecondaryIndex(char* filename);
 
 #endif // __AUX_FUNCS__
