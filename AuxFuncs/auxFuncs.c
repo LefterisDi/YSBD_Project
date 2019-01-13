@@ -41,6 +41,8 @@ int BlockInit(const int fileDesc)
     int blockID;
     void* voidBlock;
 
+    memset((void *)&block, 0 , sizeof(Block));
+
 
     if (BF_AllocateBlock(fileDesc) < 0) {
         BF_PrintError("Error allocating block");
@@ -52,9 +54,11 @@ int BlockInit(const int fileDesc)
 		return -1;
 	}
 
+	memcpy(block , *voidBlock , sizeof(Block));
+
     int entries = MAX_PRIM_RECS;
 
-    block->nextBlock = -1;
+    block.nextBlock = -1;
 
     for (int i = 0 ; i < entries ; i++)
     {
@@ -64,7 +68,6 @@ int BlockInit(const int fileDesc)
         block.rec[i].address[0] = '\0';
     }
 
-	memcpy(block , *voidBlock , sizeof(Block));
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
@@ -179,7 +182,10 @@ void DispaySecondaryIndex(char* filename)
 int SHTBlockInit(const int fileDesc)
 {
 	SecondaryBlock block;
+    void* voidBlock;
     int blockID;
+
+    memset((void *)&block, 0 , sizeof(Block));
 
     if (BF_AllocateBlock(fileDesc) < 0) {
         BF_PrintError("Error allocating block");
@@ -188,22 +194,24 @@ int SHTBlockInit(const int fileDesc)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
-	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , &block) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-    block->nextBlock = -1;
+	memcpy(block , *voidBlock , sizeof(Block));
+
+    block.nextBlock = -1;
 
 	int entries = MAX_SEC_RECS;
 
     for (int i = 0 ; i < entries ; i++)
     {
-        block->rec[i].blockId           = -1;
-        block->rec[i].record.id         = -1;
-        block->rec[i].record.name   [0] = '\0';
-        block->rec[i].record.surname[0] = '\0';
-        block->rec[i].record.address[0] = '\0';
+        block.rec[i].blockId           = -1;
+        block.rec[i].record.id         = -1;
+        block.rec[i].record.name   [0] = '\0';
+        block-.rec[i].record.surname[0] = '\0';
+        block.rec[i].record.address[0] = '\0';
     }
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
