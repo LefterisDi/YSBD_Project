@@ -447,9 +447,9 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 return -1;
             }
 
-            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE BEFORE SYNCH\n");
-        	DispaySecondaryIndex("secondary.index");
-        	getchar();
+            // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE BEFORE SYNCH\n");
+        	// DispaySecondaryIndex("secondary.index");
+        	// getchar();
 
             printf("!!!!!!!!!!!!!! PRINTING BLOCKID FROM SEC CREATE = %d\n", blockID);
             getchar();
@@ -462,12 +462,12 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("   Name: %s\n", block->rec[j].name);
                 printf("Surname: %s\n", block->rec[j].surname);
                 printf("Address: %s\n", block->rec[j].address);
-                printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
-                printf("     FD: %d\n", infoBlock->info.sht_info.sfileDesc);
-                printf("   Name: %s\n", infoBlock->info.sht_info.attrName);
-                printf(" Length: %d\n", infoBlock->info.sht_info.attrLength);
-                printf("NumBuck: %ld\n", infoBlock->info.sht_info.numBuckets);
-                printf("FileNam: %s\n", infoBlock->info.sht_info.fileName);
+                // printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
+                // printf("     FD: %d\n", infoBlock->sec_info.sfileDesc);
+                // printf("   Name: %s\n", infoBlock->sec_info.attrName);
+                // printf(" Length: %d\n", infoBlock->sec_info.attrLength);
+                // printf("NumBuck: %ld\n", infoBlock->sec_info.numBuckets);
+                // printf("FileNam: %s\n", infoBlock->sec_info.fileName);
                 getchar();
 
                 if (block->rec[j].name[0] == '\0')
@@ -497,9 +497,9 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
     HT_CloseIndex(prim_info);
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
-    DispaySecondaryIndex("secondary.index");
-    getchar();
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
+    // DispaySecondaryIndex("secondary.index");
+    // getchar();
 
 
     if (BF_CloseFile(fileDesc) < 0) {
