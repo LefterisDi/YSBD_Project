@@ -74,7 +74,8 @@ unsigned int strtoi(const char* str)
 int HTBlockInit(const int fileDesc/*, const int blockID*/)
 {
 	// Block* initialBlock;
-	Block* block;
+	void* tmpBlock;
+	Block block;
     int blockID;
 
 	// initialBlock = (Block*)malloc(sizeof(Block));
@@ -91,29 +92,33 @@ int HTBlockInit(const int fileDesc/*, const int blockID*/)
 
     // printf("BLOCKID FROM HTBlockInit = %d\n",blockID);
 
-	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , &tmpBlock) < 0) {
 		BF_PrintError("Error getting block");
         // free(initialBlock);
 		return -1;
 	}
+
+    memset((void *)&block, 0 , sizeof(Block));
+
+    memcpy(&block, tmpBlock , sizeof(Block));
 
     // initialBlock->nextBlock = -1;
 
     int entries = MAX_PRIM_RECS;
 
     // initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
-    block->nextBlock    = -1;
-    block->availablePos = true;
+    block.nextBlock    = -1;
+    block.availablePos = true;
 
     for (int i = 0 ; i < entries ; i++)
     {
-        block->rec[i].id = -1;
-        block->rec[i].name   [0] = '\0';
-        block->rec[i].surname[0] = '\0';
-        block->rec[i].address[0] = '\0';
+        block.rec[i].id = -1;
+        block.rec[i].name   [0] = '\0';
+        block.rec[i].surname[0] = '\0';
+        block.rec[i].address[0] = '\0';
     }
 
-	// memcpy(block , initialBlock , sizeof(Block));
+    memcpy(tmpBlock, (void *)&block , sizeof(Block));
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
@@ -386,7 +391,8 @@ void DispaySecondaryIndex(char* filename)
 
 int SHTBlockInit(const int fileDesc)
 {
-	SecondaryBlock* sblock;
+	void*          tmpBlock;
+    SecondaryBlock sblock;
     int blockID;
 
     if (BF_AllocateBlock(fileDesc) < 0) {
@@ -396,24 +402,30 @@ int SHTBlockInit(const int fileDesc)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
-	if (BF_ReadBlock(fileDesc , blockID , (void **)&sblock) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , &tmpBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-    sblock->nextBlock    = -1;
-    sblock->availablePos = true;
+    memset((void *)&sblock, 0 , sizeof(SecondaryBlock));
+
+    memcpy(&sblock, tmpBlock , sizeof(SecondaryBlock));
+
+    sblock.nextBlock    = -1;
+    sblock.availablePos = true;
 
 	int entries = MAX_SEC_RECS;
 
     for (int i = 0 ; i < entries ; i++)
     {
-        sblock->rec[i].blockId       = -1;
-        sblock->rec[i].id            = -1;
-        sblock->rec[i].secHashKey[0] = '\0';
+        sblock.rec[i].blockId       = -1;
+        sblock.rec[i].id            = -1;
+        sblock.rec[i].secHashKey[0] = '\0';
         // block->rec[i].record.surname[0] = '\0';
         // block->rec[i].record.address[0] = '\0';
     }
+
+    memcpy(tmpBlock, (void *)&sblock , sizeof(SecondaryBlock));
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
