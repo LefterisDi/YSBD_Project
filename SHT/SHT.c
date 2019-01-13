@@ -672,8 +672,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 	 	 if (!strcmp(header_info.attrName , "name"))    pkey = strtoi(secRec.record.name);
 	else if (!strcmp(header_info.attrName , "surname")) pkey = strtoi(secRec.record.surname);
 	else if (!strcmp(header_info.attrName , "address")) pkey = strtoi(secRec.record.address);
-    else
-        return -1;
+    else return -1;
 	// printf("PKEY = %u\n", pkey);
 	// printf("BUCKETS BEFORE = %ld\n", header_info.numBuckets);
 	int blockID = HashFunc(pkey, header_info.numBuckets) + 1;

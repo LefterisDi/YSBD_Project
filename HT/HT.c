@@ -794,7 +794,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT AFTER INSERTION\n");
-    DispayPrimaryIndex("primary.index");
+    // DispayPrimaryIndex("primary.index");
     // getchar();
 
     return blockID;
