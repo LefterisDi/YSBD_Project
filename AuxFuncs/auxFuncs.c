@@ -344,7 +344,7 @@ void DispaySecondaryIndex(char* filename)
 
 	SecondaryBlock* block;
 
-    int entries = MAX_PRIM_RECS;
+    int entries = MAX_SEC_RECS;
 
 	FILE* index_fp;
 	index_fp = fopen("secondaryindex.txt", "w");
