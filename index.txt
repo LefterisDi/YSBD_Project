@@ -9,11 +9,6 @@ Address: address_1
 
 
 BLOCK ID = 3
-     ID: 2
-   Name: name_2
-Surname: surname_2
-Address: address_2
-
 
 BLOCK ID = 4
      ID: 3
@@ -58,8 +53,3 @@ Address: address_8
 
 
 BLOCK ID = 10
-     ID: 9
-   Name: name_9
-Surname: surname_9
-Address: address_9
-

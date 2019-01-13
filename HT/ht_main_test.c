@@ -107,7 +107,7 @@ int main(int argc,char** argv)
 		// getchar();
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
-	DispayPrimaryIndex(fileName);
+	// DispayPrimaryIndex(fileName);
 	getchar();
 	/*
 	C4: Get all entries.
