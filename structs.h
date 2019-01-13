@@ -17,6 +17,7 @@ typedef struct {
 #define MAX_PRIM_RECS ((BLOCK_SIZE - sizeof(int)) / sizeof(Record))
 
 typedef struct {
+    bool   availablePos;
     int    nextBlock;
     Record rec[MAX_PRIM_RECS];
 } Block;
@@ -36,17 +37,18 @@ typedef struct {
     Record record;
 } SecondaryRecord;
 
-// typedef struct {
-//     int  blockId; /* The block to which the record was inserted in the primary index */
-//     int  id;
-//     char secHashKey[40];
-// } SecondaryEntry;
+typedef struct {
+    int  blockId; /* The block to which the record was inserted in the primary index */
+    int  id;
+    char secHashKey[40];
+} SecondaryEntry;
 
-#define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryRecord))
+#define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryEntry))
 
 typedef struct {
-    int               nextBlock;
-    SecondaryRecord rec[MAX_SEC_RECS];
+    bool           availablePos;
+    int            nextBlock;
+    SecondaryEntry rec[MAX_SEC_RECS];
 } SecondaryBlock;
 
 typedef struct sec_info {

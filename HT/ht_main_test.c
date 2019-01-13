@@ -104,9 +104,10 @@ int main(int argc,char** argv)
 		printf("\nRECORD ID = %d\n", record.id);
 		// printf("INSERTED = %d\n", HT_InsertEntry(*hi,record));
 		HT_InsertEntry(*hi,record);
+		// getchar();
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
-	// DispayPrimaryIndex(fileName);
+	DispayPrimaryIndex(fileName);
 	getchar();
 	/*
 	C4: Get all entries.
@@ -136,7 +137,7 @@ int main(int argc,char** argv)
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
 	// DispayPrimaryIndex(fileName);
-	getchar();
+	// getchar();
 	printf("@Checkpoint 5: Get all entries (Expecting -1 return code, records do not exist)\n");
 	int ch5=0;
 	/*
@@ -165,7 +166,7 @@ int main(int argc,char** argv)
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
 	// DispayPrimaryIndex(fileName);
-	getchar();
+	// getchar();
 	/*
 	C6: Delete entries.
 	*/
@@ -186,7 +187,7 @@ int main(int argc,char** argv)
 		printf("\nFIRST ID %d\n",record.id);
 		int err=HT_DeleteEntry(*hi,(void*)&record.id);
 		printf("\nSECOND ID %d\n",record.id);
-		getchar();
+		// getchar();
 		if (err!=0)
 		{
 			ch6+=1;
@@ -202,7 +203,7 @@ int main(int argc,char** argv)
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
 	// DispayPrimaryIndex(fileName);
-	getchar();
+	// getchar();
 	/*
 	C7: Get all entries.
 	*/
@@ -232,7 +233,7 @@ int main(int argc,char** argv)
 	}
 	printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX\n");
 	// DispayPrimaryIndex(fileName);
-	getchar();
+	// getchar();
 	/*
 	Secondary index part.
 	*/
@@ -320,7 +321,7 @@ int main(int argc,char** argv)
 		int err=SHT_SecondaryGetAllEntries(*shi,*hi,(void*)record.name);
 		printf("\nERR = %d\n", err);
 		printf("SECOND ID %d\n",record.id);
-		getchar();
+		// getchar();
 
 		if (err<0)
 		{

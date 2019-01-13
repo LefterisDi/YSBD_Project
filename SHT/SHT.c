@@ -58,7 +58,7 @@ int SHT_PrintStats(SHT_info sec_info)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (sblock->rec[j].record.name[0] == '\0')
+                if (sblock->rec[j].secHashKey[0] == '\0')
                     break;
 
                 bucketEntries[i-1]++;
@@ -418,9 +418,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 	}
 
 
-    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
-    // DispayPrimaryIndex("primary.index");
-    // getchar();
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
+    DispayPrimaryIndex("primary.index");
+    getchar();
+    getchar();
+    getchar();
+    getchar();
+    getchar();
     /* Synchronization of the two Hashing Indexes */
     HT_info* prim_info = HT_OpenIndex(primFileName);
     if (prim_info == NULL) {
@@ -449,10 +453,10 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE BEFORE SYNCH\n");
         	// DispaySecondaryIndex("secondary.index");
-        	// getchar();
+        	// // getchar();
 
             printf("!!!!!!!!!!!!!! PRINTING BLOCKID FROM SEC CREATE = %d\n", blockID);
-            getchar();
+            // getchar();
             secRec.blockId = blockID;
 
             for (int j = 0 ; j < entries ; j++)
@@ -462,13 +466,18 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("   Name: %s\n", block->rec[j].name);
                 printf("Surname: %s\n", block->rec[j].surname);
                 printf("Address: %s\n", block->rec[j].address);
+                getchar();
+                getchar();
+                getchar();
+                getchar();
+                getchar();
                 // printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
                 // printf("     FD: %d\n", infoBlock->sec_info.sfileDesc);
                 // printf("   Name: %s\n", infoBlock->sec_info.attrName);
                 // printf(" Length: %d\n", infoBlock->sec_info.attrLength);
                 // printf("NumBuck: %ld\n", infoBlock->sec_info.numBuckets);
                 // printf("FileNam: %s\n", infoBlock->sec_info.fileName);
-                getchar();
+                // getchar();
 
                 if (block->rec[j].name[0] == '\0')
                     break;
@@ -486,7 +495,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf(" Length: %d\n", sec_info.attrLength);
                 printf("NumBuck: %ld\n", sec_info.numBuckets);
                 printf("FileNam: %s\n", sec_info.fileName);
-                getchar();
+                // getchar();
 
                 SHT_SecondaryInsertEntry(sec_info , secRec);
             } // for
@@ -499,7 +508,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
     // DispaySecondaryIndex("secondary.index");
-    // getchar();
+    // // getchar();
 
 
     if (BF_CloseFile(fileDesc) < 0) {
@@ -681,7 +690,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
         for (i = 0 ; i < entries ; i++)
         {
 			// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-            if (sblock->rec[i].record.name[0] == '\0')
+            if (sblock->rec[i].secHashKey[0] == '\0')
             {
 				// printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
                 availablePos = true;
@@ -753,17 +762,21 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 	// printf("SECONDARY ADDRESS = %s\n", secRec.record.address);
 
     sblock->rec[index].blockId   = secRec.blockId;
-    sblock->rec[index].record.id = secRec.record.id;
+    sblock->rec[index].id = secRec.record.id;
 
-    strcpy(sblock->rec[index].record.name    , secRec.record.name);
-    strcpy(sblock->rec[index].record.surname , secRec.record.surname);
-    strcpy(sblock->rec[index].record.address , secRec.record.address);
+         if (!strcmp(header_info.attrName , "name"))    strcpy(sblock->rec[index].secHashKey , secRec.record.name);
+    else if (!strcmp(header_info.attrName , "surname")) strcpy(sblock->rec[index].secHashKey , secRec.record.surname);
+    else if (!strcmp(header_info.attrName , "address")) strcpy(sblock->rec[index].secHashKey , secRec.record.address);
+
+    // strcpy(sblock->rec[index].secHashKey    , secRec.record.);
+    // strcpy(sblock->rec[index].record.surname , secRec.record.surname);
+    // strcpy(sblock->rec[index].record.address , secRec.record.address);
 
     printf("!!!!!!!!!!!!!!!!!!!!!!!! SECONDARY INSERTION\n");
-    printf("     ID: %d\n", sblock->rec[i].record.id);
-    printf("   Name: %s\n", sblock->rec[i].record.name);
-    printf("Surname: %s\n", sblock->rec[i].record.surname);
-    printf("Address: %s\n\n", sblock->rec[i].record.address);
+    printf("     ID: %d\n", sblock->rec[i].blockId);
+    printf("   Name: %d\n", sblock->rec[i].id);
+    printf("Surname: %s\n", sblock->rec[i].secHashKey);
+    // printf("Address: %s\n\n", sblock->rec[i].record.address);
 
 	// printf("SECONDARY 2 ID = %d\n", sblock->rec[index]->record.id);
 	// printf("SECONDARY 2 NAME = %s\n", sblock->rec[index]->record.name);
@@ -786,6 +799,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
+    Block*          block;
     int    entries     		   = MAX_SEC_RECS;
     int    totalSearchedBlocks = 0;
     // int    currSearchedBlocks  = 0;
@@ -844,7 +858,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 				return -1;
 			}
 
-            if (sblock->rec[i].record.name[0] == '\0')
+            if (sblock->rec[i].secHashKey[0] == '\0')
 			{
 				if (foundEntry)
                 	return totalSearchedBlocks;
@@ -852,9 +866,12 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
                 	return -1;
 			}
 
-				 if (!strcmp(header_info_sht.attrName , "name"))    { if (!strcmp(sblock->rec[i].record.name    , (char *)value))  displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "surname")) { if (!strcmp(sblock->rec[i].record.surname , (char *)value))  displayEntry = true; }
-			else if (!strcmp(header_info_sht.attrName , "address")) { if (!strcmp(sblock->rec[i].record.address , (char *)value))  displayEntry = true; }
+			// 	 if (!strcmp(header_info_sht.attrName , "name"))    { if (!strcmp(sblock->rec[i].record.name    , (char *)value))  displayEntry = true; }
+			// else if (!strcmp(header_info_sht.attrName , "surname")) { if (!strcmp(sblock->rec[i].record.surname , (char *)value))  displayEntry = true; }
+			// else if (!strcmp(header_info_sht.attrName , "address")) { if (!strcmp(sblock->rec[i].record.address , (char *)value))  displayEntry = true; }
+
+            if (!strcmp(sblock->rec[i].secHashKey , (char *)value))
+                displayEntry = true;
 
             if (displayEntry)
             {
@@ -863,10 +880,9 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 				// totalSearchedBlocks += currSearchedBlocks;
 				// currSearchedBlocks = 0;
 
-                printf("     ID: %d\n", sblock->rec[i].record.id);
-                printf("   Name: %s\n", sblock->rec[i].record.name);
-                printf("Surname: %s\n", sblock->rec[i].record.surname);
-                printf("Address: %s\n\n", sblock->rec[i].record.address);
+                printf("     ID: %d\n", sblock->rec[i].blockId);
+                printf("   Name: %d\n", sblock->rec[i].id);
+                printf("Surname: %s\n\n", sblock->rec[i].secHashKey);
 				// sleep(1);
             }
         } // for

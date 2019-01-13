@@ -71,7 +71,7 @@ unsigned int strtoi(const char* str)
 //     }
 // }
 
-int BlockInit(const int fileDesc/*, const int blockID*/)
+int HTBlockInit(const int fileDesc/*, const int blockID*/)
 {
 	// Block* initialBlock;
 	Block* block;
@@ -89,7 +89,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ALLOCATED ID = %d\n", blockID);
 
 
-    // printf("BLOCKID FROM BLOCKINIT = %d\n",blockID);
+    // printf("BLOCKID FROM HTBlockInit = %d\n",blockID);
 
 	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
 		BF_PrintError("Error getting block");
@@ -102,7 +102,8 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
     int entries = MAX_PRIM_RECS;
 
     // initialBlock->rec = (Record **)malloc(entries * sizeof(Record *));
-    block->nextBlock = -1;
+    block->nextBlock    = -1;
+    block->availablePos = true;
 
     for (int i = 0 ; i < entries ; i++)
     {
@@ -260,7 +261,7 @@ int BlockInit(const int fileDesc/*, const int blockID*/)
 //
 //             blockID = block->nextBlock;
 //         } // while
-//         getchar();
+//         // getchar();
 //
 //
 //         // if (BF_ReadBlock(primFileDesc , 0 , (void **)&header_info) < 0) {
@@ -344,7 +345,7 @@ void DispaySecondaryIndex(char* filename)
 
 	SecondaryBlock* block;
 
-    int entries = MAX_PRIM_RECS;
+    int entries = MAX_SEC_RECS;
 
 	FILE* index_fp;
 	index_fp = fopen("secondaryindex.txt", "w");
@@ -366,13 +367,12 @@ void DispaySecondaryIndex(char* filename)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (block->rec[j].record.name[0] == '\0')
+                if (block->rec[j].secHashKey[0] == '\0')
                     break;
 
-				fprintf(index_fp,"     ID: %d\n", block->rec[j].record.id);
-                fprintf(index_fp,"   Name: %s\n", block->rec[j].record.name);
-                fprintf(index_fp,"Surname: %s\n", block->rec[j].record.surname);
-                fprintf(index_fp,"Address: %s\n\n", block->rec[j].record.address);
+				fprintf(index_fp,"     ID: %d\n", block->rec[j].blockId);
+                fprintf(index_fp,"   Name: %d\n", block->rec[j].id);
+                fprintf(index_fp,"Surname: %s\n\n", block->rec[j].secHashKey);
 
             } // for
 
@@ -386,7 +386,7 @@ void DispaySecondaryIndex(char* filename)
 
 int SHTBlockInit(const int fileDesc)
 {
-	SecondaryBlock* block;
+	SecondaryBlock* sblock;
     int blockID;
 
     if (BF_AllocateBlock(fileDesc) < 0) {
@@ -396,22 +396,23 @@ int SHTBlockInit(const int fileDesc)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
-	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , (void **)&sblock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-    block->nextBlock = -1;
+    sblock->nextBlock    = -1;
+    sblock->availablePos = true;
 
 	int entries = MAX_SEC_RECS;
 
     for (int i = 0 ; i < entries ; i++)
     {
-        block->rec[i].blockId           = -1;
-        block->rec[i].record.id         = -1;
-        block->rec[i].record.name   [0] = '\0';
-        block->rec[i].record.surname[0] = '\0';
-        block->rec[i].record.address[0] = '\0';
+        sblock->rec[i].blockId       = -1;
+        sblock->rec[i].id            = -1;
+        sblock->rec[i].secHashKey[0] = '\0';
+        // block->rec[i].record.surname[0] = '\0';
+        // block->rec[i].record.address[0] = '\0';
     }
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {

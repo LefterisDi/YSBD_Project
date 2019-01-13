@@ -482,7 +482,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 	}
 
 	for (int i = 1 ; i <= buckets ; i++) {
-		BlockInit(fileDesc/*,i*/);
+		HTBlockInit(fileDesc/*,i*/);
 	}
 
     if (BF_CloseFile(fileDesc) < 0) {
@@ -635,8 +635,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // printf("ENTRIES = %d\n",entries);
     // printf("REC ID = %d\n", record.id);
     // printf("BLOCKID = %d\n",blockID);
-    int    i;
-    bool   entryExists = true;
+    int  i;
+    bool entryExists = true;
 
     // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
@@ -652,7 +652,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
         // DispayPrimaryIndex("primary.index");
-        // getchar();
+        // // getchar();
 
         for (i = 0 ; i < entries ; i++)
         {
@@ -741,7 +741,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         // Record* rec;
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
 
-        blockID = BlockInit(header_info.fileDesc);
+        blockID = HTBlockInit(header_info.fileDesc);
         // printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc) - 1);
         // sleep(1);
         block->nextBlock = blockID;
@@ -793,13 +793,13 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
-    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT AFTER INSERTION\n");
-    // DispayPrimaryIndex("primary.index");
+    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT AFTER INSERTION\n");
+    DispayPrimaryIndex("primary.index");
     // getchar();
 
     return blockID;
 
-    // // block->nextBlock = BlockInit(header_info.fileDesc);
+    // // block->nextBlock = HTBlockInit(header_info.fileDesc);
     // // blockID = block->nextBlock;
     //
     // if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
@@ -844,7 +844,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
     // printf("\033[1;33m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE FOR DEBUGGING\033[0m\n");
     // DispayPrimaryIndex("primary.index");
-    // getchar();
+    // // getchar();
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -857,7 +857,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE BEFORE DELETION\n");
         // DispayPrimaryIndex("primary.index");
-        // getchar();
+        // // getchar();
 
         for (int i = 0 ; i < entries ; i++)
         {
@@ -937,7 +937,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 printf("   Name: %s\n", block->rec[i].name);
                 printf("Surname: %s\n", block->rec[i].surname);
                 printf("Address: %s\n\n", block->rec[i].address);
-                getchar();
+                // getchar();
 
                 block->rec[i].name[0] = '\0';
 
@@ -1014,7 +1014,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     printf("   Name: %s\n", currBlock->rec[j-1].name);
                     printf("Surname: %s\n", currBlock->rec[j-1].surname);
                     printf("Address: %s\n\n", currBlock->rec[j-1].address);
-                    getchar();
+                    // getchar();
 
                     currBlock->rec[j-1].name[0] = '\0';
                 // }
@@ -1109,7 +1109,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                 // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
                 // DispayPrimaryIndex("primary.index");
-                // getchar();
+                // // getchar();
 
                 return 0;
 
@@ -1123,7 +1123,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
     // DispayPrimaryIndex("primary.index");
-    // getchar();
+    // // getchar();
 
     return -1;  /* As soon as we reach this point, avgs that the requested entry doesn't exist in the Table */
 }
