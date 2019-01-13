@@ -56,7 +56,7 @@ int HT_PrintStats(HT_info info)
                 return -1;
             }
 
-            memcpy(&block , voidBlock , sizeof(Block));
+            memcpy((void *)&block , voidBlock , sizeof(Block));
 
 
             // if (blockID == i)
@@ -449,6 +449,8 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
+    memset((void *)&infoBlock, 0 , sizeof(Info));
+
     memcpy(&infoBlock , voidBlock , sizeof(Info));
 
     // info.fileDesc   = file;
@@ -551,10 +553,11 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
 HT_info* HT_OpenIndex(char* fileName)
 {
-    Info    infoBlock;
-    void* voidBlock;
+    void*    voidBlock;
     HT_info* info;
+
     int      fileDesc;
+    Info     infoBlock;
 
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
 		BF_PrintError("Error opening file");
@@ -566,7 +569,7 @@ HT_info* HT_OpenIndex(char* fileName)
 		return NULL;
 	}
 
-    memcpy(&infoBlock , voidBlock , sizeof(Info));    
+    memcpy(&infoBlock , voidBlock , sizeof(Info));
 
 	if (infoBlock.hash_type != 0)
     {
@@ -588,10 +591,11 @@ HT_info* HT_OpenIndex(char* fileName)
         return NULL;
     }
 
+    infoBlock.info.ht_info.fileDesc = fileDesc;
+
     memcpy(info, &infoBlock.info.ht_info, sizeof(infoBlock.info.ht_info));
 
     // infoBlock->info.fileDesc = fileDesc;
-    info->fileDesc = fileDesc;
     printf("INFOBLOCK = %d\n",info->fileDesc);
 
     return info;
@@ -599,17 +603,12 @@ HT_info* HT_OpenIndex(char* fileName)
 
 int HT_CloseIndex(HT_info* header_info)
 {
-    // int temp = header_info->fileDesc;
-    // free(header_info->attrName);
     if (BF_CloseFile(header_info->fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
 	}
 
     free(header_info);
-
-    // header_info->attrName = NULL;
-
     return 0;
 }
 
@@ -662,6 +661,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
             BF_PrintError("Error getting block");
             return -1;
         }
+
+        memset((void *)&block, 0 , sizeof(Block));
 
         memcpy(&block , voidBlock , sizeof(Block));
 
@@ -764,7 +765,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         block.nextBlock = blockID;
         // printf("BLOCKID = %d\n",blockID);
 
-        memcpy(voidBlock , (void*)&block , sizeof(Block));    
+        memcpy(voidBlock , (void*)&block , sizeof(Block));
 
     	if (BF_WriteBlock(header_info.fileDesc , old_blockID) < 0) {
             BF_PrintError("Error writing block back");
@@ -778,6 +779,8 @@ int HT_InsertEntry(HT_info header_info, Record record)
         BF_PrintError("Error getting block");
         return -1;
     }
+
+    memset((void *)&block, 0 , sizeof(Block));
 
     memcpy(&block , voidBlock , sizeof(Block));
 
@@ -807,7 +810,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 21\n");
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
 
-    memcpy(voidBlock , (void*)&block , sizeof(Block));        
+    memcpy(voidBlock , (void *)&block , sizeof(Block));
 
     if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
@@ -880,6 +883,8 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             BF_PrintError("Error getting block");
             return -1;
         }
+
+        memset((void *)&block, 0 , sizeof(Block));
 
         memcpy(&block , voidBlock , sizeof(Block));
 
@@ -957,8 +962,13 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 }
 
                     printf("Rec ID : %d\n",block.rec[i].id);
-                Block currBlock   = block;
-                void* voidBlock;
+                Block currBlock;
+
+                memset((void *)&currBlock, 0 , sizeof(Block));
+
+                memcpy((void *)&currBlock , (void *)&block , sizeof(Block));
+
+                // void* voidBlock;
                 // int    currBlockID = block->nextBlock;
                 int    currBlockID = blockID;
                 // int    prevBlockID = blockID;
@@ -996,8 +1006,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                             return -1;
                         }
 
-                        memcpy(&currBlock , voidBlock , sizeof(Block));
+                        memset((void *)&currBlock, 0 , sizeof(Block));
 
+                        memcpy(&currBlock , voidBlock , sizeof(Block));
 
                         if (currBlock.nextBlock != -1)
                         {
@@ -1031,7 +1042,11 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 }
                 // if (currBlock == block)
                 // {
-                    block.rec[i] = currBlock.rec[j-1];
+
+                    memcpy((void *)&block.rec[i] , (void *)&currBlock.rec[j-1] , sizeof(Record));
+
+
+                    // block.rec[i] = currBlock.rec[j-1];
 
                     // if (block != currBlock)
                     // {
@@ -1083,13 +1098,13 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                         return -1;
                     }
 
-                    memcpy(&tmpBlock , voidBlock , sizeof(Block));
+                    memset((void *)&tmpBlock, 0 , sizeof(Block));
 
+                    memcpy(&tmpBlock , voidBlock , sizeof(Block));
 
                     tmpBlock.nextBlock = -1;
 
-                    memcpy(voidBlock , (void*)&tmpBlock , sizeof(Block));
-                    
+                    memcpy(voidBlock , (void *)&tmpBlock , sizeof(Block));
 
                     if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
                         BF_PrintError("Error writing block back");
@@ -1106,8 +1121,14 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 else if (prevBlockID == currBlockID)
                     block.nextBlock = -1;
 
-                
-                memcpy(voidBlock , (void*)&currBlock , sizeof(Block));
+                memcpy(voidBlock , (void *)&currBlock , sizeof(Block));
+
+                if (BF_WriteBlock(header_info.fileDesc , currBlockID) < 0) {
+                    BF_PrintError("Error writing block back");
+                    return -1;
+                }
+
+                memcpy(voidBlock , (void *)&block , sizeof(Block));
 
                 if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
                     BF_PrintError("Error writing block back");
