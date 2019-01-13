@@ -49,12 +49,12 @@ int BlockInit(const int fileDesc)
         return -1;
     }
 
-	if (BF_ReadBlock(fileDesc , blockID , &block) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , &voidBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-	memcpy(block , *voidBlock , sizeof(Block));
+	memcpy(&block , voidBlock , sizeof(Block));
 
     int entries = MAX_PRIM_RECS;
 
@@ -74,7 +74,7 @@ int BlockInit(const int fileDesc)
         return -1;
     }
 
-    printf("%d\n" , block->rec[i].id);
+    printf("%d\n" , block.rec[0].id);
 
     return blockID;
 }
@@ -194,12 +194,12 @@ int SHTBlockInit(const int fileDesc)
 
     blockID = BF_GetBlockCounter(fileDesc) - 1;
 
-	if (BF_ReadBlock(fileDesc , blockID , &block) < 0) {
+	if (BF_ReadBlock(fileDesc , blockID , &voidBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
 
-	memcpy(block , *voidBlock , sizeof(Block));
+	memcpy(&block , voidBlock , sizeof(SecondaryBlock));
 
     block.nextBlock = -1;
 
@@ -208,10 +208,8 @@ int SHTBlockInit(const int fileDesc)
     for (int i = 0 ; i < entries ; i++)
     {
         block.rec[i].blockId           = -1;
-        block.rec[i].record.id         = -1;
-        block.rec[i].record.name   [0] = '\0';
-        block-.rec[i].record.surname[0] = '\0';
-        block.rec[i].record.address[0] = '\0';
+        block.rec[i].id                = -1;
+        memset((void *)&block.rec[i].secHashKey , 0 , sizeof(block.rec[i].secHashKey));
     }
 
     if (BF_WriteBlock(fileDesc , blockID) < 0) {
