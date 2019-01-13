@@ -842,9 +842,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
     blockID = HashFunc(pkey , header_info.numBuckets) + 1;
     int prevBlockID = blockID;
 
-    printf("\033[1;33m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE FOR DEBUGGING\033[0m\n");
-    DispayPrimaryIndex("primary.index");
-    getchar();
+    // printf("\033[1;33m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE FOR DEBUGGING\033[0m\n");
+    // DispayPrimaryIndex("primary.index");
+    // getchar();
 
     for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
     {
@@ -855,9 +855,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             return -1;
         }
 
-        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE BEFORE DELETION\n");
-        DispayPrimaryIndex("primary.index");
-        getchar();
+        // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE BEFORE DELETION\n");
+        // DispayPrimaryIndex("primary.index");
+        // getchar();
 
         for (int i = 0 ; i < entries ; i++)
         {
@@ -904,7 +904,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
 
-                        for (i = 0 ; i < entries ; i++)
+                        for (int i = 0 ; i < entries ; i++)
                         {
                             if (tmp_block->rec[i].name[0] == '\0')
                             {
@@ -1088,7 +1088,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         fprintf(tmp_fp,"\nBLOCK ID = %d\n", newBlockID);
 
-                        for (i = 0 ; i < entries ; i++)
+                        for (int i = 0 ; i < entries ; i++)
                         {
                             if (tmp_block->rec[i].name[0] == '\0')
                             {
@@ -1107,9 +1107,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE\n");
                 }
 
-                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
-                DispayPrimaryIndex("primary.index");
-                getchar();
+                // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
+                // DispayPrimaryIndex("primary.index");
+                // getchar();
 
                 return 0;
 
