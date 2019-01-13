@@ -514,7 +514,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("FileNam: %s\n", infoBlock.info.sht_info.fileName);
                 // getchar();
 
-                SHT_SecondaryInsertEntry(infoBlock.info.sht_info , secRec);
+                // SHT_SecondaryInsertEntry(infoBlock.info.sht_info , secRec);
             } // for
 
             blockID = block.nextBlock;
