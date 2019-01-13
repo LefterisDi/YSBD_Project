@@ -97,7 +97,7 @@ int main(int argc,char** argv)
 		record.id=i;
 		sprintf(record.name,"name_%d",i);
 		sprintf(record.surname,"surname_%d",i);
-		sprintf(record.address,"address	_%d",i);
+		sprintf(record.address,"address_%d",i);
 		printf("\nCHECKPOINT 3 INSERT:      ID = %d\n", i);
 		printf("CHECKPOINT 3 INSERT:    NAME = %s\n", record.name);
 		printf("CHECKPOINT 3 INSERT: SURNAME = %s\n", record.surname);

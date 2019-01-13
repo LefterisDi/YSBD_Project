@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "SHT.h"
+#include "../HT/HT.h"
 #include "../BF/BF.h"
 #include "../AuxFuncs/auxFuncs.h"
 
@@ -416,6 +417,51 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 		SHTBlockInit(fileDesc);
 	}
 
+
+    /* Synchronization of the two Hashing Indexes */
+    HT_info* prim_info = HT_OpenIndex(primFileName);
+    if (prim_info == NULL) {
+        printf("Error: Not a Primary Hashing File\n");
+        return -1;
+    }
+
+    Block* block;
+    int    entries = (BLOCK_SIZE - sizeof(Block)) / sizeof(Record);
+
+    SecondaryRecord secRec;
+    SHT_info        sec_info = infoBlock->sec_info;
+
+    sec_info.sfileDesc = fileDesc;
+
+    for (int i = 1 ; i <= prim_info->numBuckets ; i++)
+    {
+        int blockID = i;
+
+        while (blockID != -1)
+        {
+            if (BF_ReadBlock(prim_info->fileDesc , blockID , (void **)&block) < 0) {
+                BF_PrintError("Error getting block");
+                return -1;
+            }
+
+            secRec.blockId = blockID;
+
+            for (int j = 0 ; j < entries ; j++)
+            {
+                if (block->rec[j] == NULL)
+                    break;
+
+                secRec.record  = *block->rec[j];
+
+                SHT_SecondaryInsertEntry(sec_info , secRec);
+            } // for
+
+            blockID = block->nextBlock;
+        } // while
+    } // for
+
+    HT_CloseIndex(prim_info);
+
     if (BF_CloseFile(fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
@@ -707,9 +753,11 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 
 	// int secFileDesc = header_info_sht.sfileDesc;
 
-		 if (!strcmp(header_info_sht.attrName , "name"))    pkey = strtoi((char *)value);
-	else if (!strcmp(header_info_sht.attrName , "surname")) pkey = strtoi((char *)value);
-	else if (!strcmp(header_info_sht.attrName , "address")) pkey = strtoi((char *)value);
+	// 	 if (!strcmp(header_info_sht.attrName , "name"))    pkey = strtoi((char *)value);
+	// else if (!strcmp(header_info_sht.attrName , "surname")) pkey = strtoi((char *)value);
+	// else if (!strcmp(header_info_sht.attrName , "address")) pkey = strtoi((char *)value);
+
+    pkey = strtoi((char *)value);
 
 	// if (BF_ReadBlock(secFileDesc , 0 , (void **)&header_info_sht) < 0) {
 	// 	BF_PrintError("Error getting block");
