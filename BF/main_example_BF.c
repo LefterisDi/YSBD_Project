@@ -9,26 +9,9 @@
 #define MAX_FILES  10
 #define MAX_BLOCKS 100
 
-//
-// typedef struct{
-//     int id;
-//     char name[15];
-//     char surname[20];
-//     char address[40];
-// } Record;
-
-
 int main(int argc, char** argv)
 {
-	// Block tmpblock;
-	// void* id = malloc(sizeof(int));
-	// char* type = "int *";
-	// *(int *)id = 4;
-	// printf("ID = %d\n", *(int *)id);
-	// int entries = sizeof(*(tmpblock.rec)) / sizeof(Record);
-	// printf("SIZE = %d\n",entries);
-	// free(id);
-	// return 0;
+
 	int bfs [MAX_FILES];
 	int i, j;
 	char filename [5];
