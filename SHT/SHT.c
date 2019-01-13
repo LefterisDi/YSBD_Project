@@ -426,13 +426,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 	}
 
 
-    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
-    DispayPrimaryIndex("primary.index");
-    getchar();
-    getchar();
-    getchar();
-    getchar();
-    getchar();
+    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
+    // DispayPrimaryIndex("primary.index");
+    // getchar();
+    // getchar();
+    // getchar();
+    // getchar();
+    // getchar();
     /* Synchronization of the two Hashing Indexes */
     HT_info* prim_info = HT_OpenIndex(primFileName);
     if (prim_info == NULL) {
@@ -450,7 +450,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
     infoBlock.info.sht_info.sfileDesc = sfileDesc;
 
-    for (int i = 1 ; i . prim_info->numBuckets ; i++)
+    for (int i = 1 ; i <= prim_info->numBuckets ; i++)
     {
         int blockID = i;
 

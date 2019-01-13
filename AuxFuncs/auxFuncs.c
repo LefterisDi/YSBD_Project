@@ -35,7 +35,7 @@ unsigned int strtoi(const char* str)
     return key;
 }
 
-int BlockInit(const int fileDesc)
+int HTBlockInit(const int fileDesc)
 {
 	Block block;
     int blockID;

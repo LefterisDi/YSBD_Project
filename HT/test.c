@@ -133,10 +133,10 @@ int main(int argc, char* argv[])
 	    // }
 
         secRec.record = rec;
-        secRec.blockId = HT_InsertEntry(*info,rec);
+        // secRec.blockId = HT_InsertEntry(*info,rec);
         // secRec.blockId = 0;
 
-        printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
+        // printf("INSERTED %d = %d\n" , cntr , secRec.blockId);
 
 
         // if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 		//     return -1;
 	    // }
 
-        printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
+        // printf("INSERTED SECONDARY %d = %d\n" , cntr , SHT_SecondaryInsertEntry(*sinfo , secRec));
 
         // printf("INFO FROM MAIN: FileDesc = %d\n", info->fileDesc);
         // printf("INFO FROM MAIN: AttrType = %c\n", info->attrType);
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
         //    return -1;
         // }
 
-        printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
+        // printf("ENTRY %d: %d\n\n", cntr , HT_GetAllEntries(*info, &rec.id));
 
 
 
@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
        //     return -1;
        // }
 
-    printf("SECONDARY GETALL: %d\n\n", SHT_SecondaryGetAllEntries(*sinfo,*info,"Bakersfield"));
+    // printf("SECONDARY GETALL: %d\n\n", SHT_SecondaryGetAllEntries(*sinfo,*info,"Bakersfield"));
 
 
    //  if (BF_ReadBlock(secFileDesc , 0 , (void **)&sinfo) < 0) {
