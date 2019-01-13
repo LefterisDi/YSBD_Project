@@ -49,7 +49,7 @@ int BlockInit(const int fileDesc)
         return -1;
     }
 
-    blockID = BF_GetBlockCounter(fileDesc);
+    blockID = BF_GetBlockCounter(fileDesc) - 1;
 
 	if (BF_ReadBlock(fileDesc , blockID , &voidBlock) < 0) {
 		BF_PrintError("Error getting block");
@@ -84,23 +84,23 @@ int BlockInit(const int fileDesc)
 // void DispayPrimaryIndex(char* filename)
 // {
 // 	HT_info*  info;
-
+//
 //     info = HT_OpenIndex(filename);
-
+//
 //     printf("\033[1;34m!!!!!!!!!!!!! FILEDESC FROM DISPLAY PRIMARY = %d\033[0m\n", info->fileDesc);
-
+//
 // 	Block* block;
-
+//
 //     int entries = MAX_PRIM_RECS;
-
+//
 // 	FILE* index_fp;
 // 	index_fp = fopen("index.txt", "w");
-
+//
 // 	for (int i = 1 ; i <= info->numBuckets ; i++)
 //     {
 //         // unsigned int totalEntries = 0;
 //         int blockID = i;
-
+//
 //         while (blockID != -1)
 //         {
 //             if (BF_ReadBlock(info->fileDesc , blockID , (void **)&block) < 0) {
@@ -108,49 +108,49 @@ int BlockInit(const int fileDesc)
 // 				fclose(index_fp);
 //                 return;
 //             }
-
+//
 // 			fprintf(index_fp,"\nBLOCK ID = %d\n", blockID);
-
+//
 //             for (int j = 0 ; j < entries ; j++)
 //             {
 //                 if (block->rec[j].name[0] == '\0')
 //                     break;
-
+//
 // 				fprintf(index_fp,"     ID: %d\n", block->rec[j].id);
 //                 fprintf(index_fp,"   Name: %s\n", block->rec[j].name);
 //                 fprintf(index_fp,"Surname: %s\n", block->rec[j].surname);
 //                 fprintf(index_fp,"Address: %s\n\n", block->rec[j].address);
-
+//
 //             } // for
-
+//
 //             blockID = block->nextBlock;
 //         } // while
 //     } // for
 // 	fclose(index_fp);
-
+//
 // 	HT_CloseIndex(info);
 // }
-
+//
 // void DispaySecondaryIndex(char* filename)
 // {
 // 	SHT_info*  info;
-
+//
 //     info = SHT_OpenSecondaryIndex(filename);
-
+//
 //     printf("\033[1;34m!!!!!!!!!!!!! FILEDESC FROM DISPLAY SECONDARY = %d\033[0m\n", info->sfileDesc);
-
+//
 // 	SecondaryBlock* block;
-
+//
 //     int entries = MAX_PRIM_RECS;
-
+//
 // 	FILE* index_fp;
 // 	index_fp = fopen("secondaryindex.txt", "w");
-
+//
 // 	for (int i = 1 ; i <= info->numBuckets ; i++)
 //     {
 //         // unsigned int totalEntries = 0;
 //         int blockID = i;
-
+//
 //         while (blockID != -1)
 //         {
 //             if (BF_ReadBlock(info->sfileDesc , blockID , (void **)&block) < 0) {
@@ -158,30 +158,30 @@ int BlockInit(const int fileDesc)
 // 				fclose(index_fp);
 //                 return;
 //             }
-
+//
 // 			fprintf(index_fp,"\nBLOCK ID = %d\n", blockID);
-
+//
 //             for (int j = 0 ; j < entries ; j++)
 //             {
 //                 if (block->rec[j].record.name[0] == '\0')
 //                     break;
-
+//
 // 				fprintf(index_fp,"     ID: %d\n", block->rec[j].record.id);
 //                 fprintf(index_fp,"   Name: %s\n", block->rec[j].record.name);
 //                 fprintf(index_fp,"Surname: %s\n", block->rec[j].record.surname);
 //                 fprintf(index_fp,"Address: %s\n\n", block->rec[j].record.address);
-
+//
 //             } // for
-
+//
 //             blockID = block->nextBlock;
 //         } // while
 //     } // for
 // 	fclose(index_fp);
-
+//
 // 	SHT_CloseSecondaryIndex(info);
 // }
 
-int SHTBlockInit(const int fileDesc)
+int SHTBlockInit(const int sfileDesc)
 {
 	SecondaryBlock block;
     void* voidBlock;
@@ -189,14 +189,14 @@ int SHTBlockInit(const int fileDesc)
 
     memset((void *)&block, 0 , sizeof(Block));
 
-    if (BF_AllocateBlock(fileDesc) < 0) {
+    if (BF_AllocateBlock(sfileDesc) < 0) {
         BF_PrintError("Error allocating block");
         return -1;
     }
 
-    blockID = BF_GetBlockCounter(fileDesc) - 1;
+    blockID = BF_GetBlockCounter(sfileDesc) - 1;
 
-	if (BF_ReadBlock(fileDesc , blockID , &voidBlock) < 0) {
+	if (BF_ReadBlock(sfileDesc , blockID , &voidBlock) < 0) {
 		BF_PrintError("Error getting block");
 		return -1;
 	}
@@ -214,7 +214,7 @@ int SHTBlockInit(const int fileDesc)
         memset((void *)&block.rec[i].secHashKey , 0 , sizeof(block.rec[i].secHashKey));
     }
 
-    if (BF_WriteBlock(fileDesc , blockID) < 0) {
+    if (BF_WriteBlock(sfileDesc , blockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }

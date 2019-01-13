@@ -600,7 +600,6 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
     return sinfo;
 }
 
-
 int SHT_CloseSecondaryIndex(SHT_info* header_info)
 {
     if (BF_CloseFile(header_info->sfileDesc) < 0) {
