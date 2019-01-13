@@ -46,7 +46,7 @@ typedef struct {
 #define MAX_SEC_RECS  ((BLOCK_SIZE - sizeof(int)) / sizeof(SecondaryEntry))
 
 typedef struct {
-    bool           availablePos;
+    // bool           availablePos;
     int            nextBlock;
     SecondaryEntry rec[MAX_SEC_RECS];
 } SecondaryBlock;
