@@ -555,7 +555,7 @@ HT_info* HT_OpenIndex(char* fileName)
 	}
 
 	if (infoBlock->hashFlag != 0)
-    {
+    {        
         if (BF_CloseFile(fileDesc) < 0) {
             BF_PrintError("Error closing file");
         }

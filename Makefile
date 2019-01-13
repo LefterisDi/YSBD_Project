@@ -51,7 +51,7 @@ test : $(AUXOBJ) ./HT/ht_main_test.o $(PRIM_OBJS) $(SEC_OBJS)
 
 # Cleaning Files
 clean:
-	rm -f $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS)
+	rm -f $(OUT) $(OBJS) $(PRIM_OBJS) $(SEC_OBJS) ./HT/ht_main_test.o test
 
 # ------------------------------------------------- #
 
