@@ -13,7 +13,8 @@
 
 int HT_PrintStats(HT_info info)
 {
-    Block* block;
+    void* tmpBlock;
+    Block block;
 
     unsigned int totalBlocks               = 0;
     unsigned int bucketsWithOverflowBlocks = 0;
@@ -49,14 +50,16 @@ int HT_PrintStats(HT_info info)
             // printf("INFO: %ld\n", info.numBuckets);
             // printf("INFO: %d\n", blockID);
 
-            if (BF_ReadBlock(info.fileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(info.fileDesc , blockID , &tmpBlock) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
 
+            memcpy((void *)&block, tmpBlock, sizeof(Block));
+
             // if (blockID == i)
             // {
-            //     if (block->nextBlock == -1)
+            //     if (block.nextBlock == -1)
             //         bucketsWithOverflowBlocks++;
             // }
             // else
@@ -66,7 +69,7 @@ int HT_PrintStats(HT_info info)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (block->rec[j].name[0] == '\0')
+                if (block.rec[j].name[0] == '\0')
                     break;
 
                 bucketEntries[i-1]++;
@@ -74,7 +77,7 @@ int HT_PrintStats(HT_info info)
 
             } // for
 
-            blockID = block->nextBlock;
+            blockID = block.nextBlock;
         } // while
 
         //
@@ -451,17 +454,17 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 
     // infoBlock->info->attrName   = attrName;
 
-    // memset((void *)&infoBlock, 0 , sizeof(Info));
+    memset((void *)&infoBlock, 0 , sizeof(Info));
 
-    // memcpy(&infoBlock, info , sizeof(Info));
+    memcpy(&infoBlock, info , sizeof(Info));
 
-    infoBlock->hash_type = 0;
+    infoBlock.hash_type = 0;
 
-    infoBlock->info.ht_info.fileDesc   = -1;
-    infoBlock->info.ht_info.numBuckets = buckets;
-    infoBlock->info.ht_info.attrLength = attrLength;
-    infoBlock->info.ht_info.attrType   = attrType;
-    infoBlock->info.ht_info.attrName   = attrName;
+    infoBlock.info.ht_info.fileDesc   = -1;
+    infoBlock.info.ht_info.numBuckets = buckets;
+    infoBlock.info.ht_info.attrLength = attrLength;
+    infoBlock.info.ht_info.attrType   = attrType;
+    infoBlock.info.ht_info.attrName   = attrName;
 
     // infoBlock->info.attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
     //
@@ -478,7 +481,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     // strcpy(infoBlock->info.attrName,attrName);
 
     //copy content to the block
-	// memcpy(block, &info, sizeof(HT_info));
+	memcpy(info, &infoBlock, sizeof(Info));
 
     if (BF_WriteBlock(fileDesc , 0 /*BF_GetBlockCounter(fileDesc) - 1*/) < 0) {
 		BF_PrintError("Error writing block back");
@@ -494,5 +497,66 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
 		return -1;
 	}
 
+    return 0;
+}
+
+HT_info* HT_OpenIndex(char* fileName)
+{
+    void*    generalInfo;
+    HT_info* info;
+
+    int      fileDesc;
+    Info     infoBlock;
+
+    if ((fileDesc = BF_OpenFile(fileName)) < 0) {
+		BF_PrintError("Error opening file");
+		return NULL;
+	}
+
+    if (BF_ReadBlock(fileDesc , 0 , &generalInfo) < 0) {
+		BF_PrintError("Error getting block");
+		return NULL;
+	}
+
+    memcpy(&infoBlock, generalInfo , sizeof(Info));
+
+	if (infoBlock.hash_type != 0)
+    {
+        if (BF_CloseFile(fileDesc) < 0) {
+            BF_PrintError("Error closing file");
+        }
+
+        return NULL;
+    }
+
+    info = (HT_info *)malloc(sizeof(HT_info));
+    if (info == NULL) {
+        perror("Cannot allocate memory");
+
+        if (BF_CloseFile(fileDesc) < 0) {
+            BF_PrintError("Error closing file");
+        }
+
+        return NULL;
+    }
+
+    infoBlock.info.ht_info.fileDesc = fileDesc;
+
+    memcpy(info, &infoBlock.info.ht_info, sizeof(infoBlock.info.ht_info));
+
+    // infoBlock->info.fileDesc = fileDesc;
+    printf("INFOBLOCK = %d\n",info->fileDesc);
+
+    return info;
+}
+
+int HT_CloseIndex(HT_info* header_info)
+{
+    if (BF_CloseFile(header_info->fileDesc) < 0) {
+		BF_PrintError("Error closing file");
+		return -1;
+	}
+
+    free(header_info);
     return 0;
 }
