@@ -1,4 +1,3 @@
-
 /* File: auxFuncs.c */
 
 #include <stdio.h>
