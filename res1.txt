@@ -1,3 +1,0 @@
-
-BLOCK ID = 1
-PRINTING ID = 0
