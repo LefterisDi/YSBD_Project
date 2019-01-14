@@ -121,6 +121,24 @@ int HTBlockInit(const int fileDesc/*, const int blockID*/)
         return -1;
     }
 
+	if (BF_ReadBlock(fileDesc , blockID , (void **)&block) < 0) {
+		BF_PrintError("Error getting block");
+        // free(initialBlock);
+		return -1;
+	}
+
+    printf("NEXT BLOCK = %d\n", block->nextBlock);
+    printf("AVAIL POS  = %d\n", block->availablePos);
+
+    for (int i = 0 ; i < entries ; i++)
+    {
+        printf("     ID = %d\n", block->rec[i].id);
+        printf("   NAME = %s\n", block->rec[i].name   );
+        printf("SURNAME = %s\n", block->rec[i].surname);
+        printf("ADDRESS = %s\n", block->rec[i].address);
+    }
+    getchar();
+
     // free(initialBlock);
     return blockID;
 }
