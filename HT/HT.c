@@ -11,6 +11,7 @@
 #include "../AuxFuncs/auxFuncs.h"
 
 int deletes = 0;
+extern int FILEDESC = -1;
 
 int HT_PrintStats(HT_info info)
 {
@@ -575,19 +576,54 @@ HT_info* HT_OpenIndex(char* fileName)
         return NULL;
     }
 
-    memcpy(info, &infoBlock->info.ht_info, sizeof(infoBlock->info.ht_info));
+    // if (infoBlock->info.ht_info.fileDesc == -1)
+    // {
+    //     infoBlock->info.ht_info.fileDesc = fileDesc;
+    //
+    // 	if (BF_WriteBlock(fileDesc , 0) < 0) {
+    //         BF_PrintError("Error writing block back");
+    //         free(info);
+    //         return NULL;
+    //     }
+    // }
+    // else
+    // {
+    //     if (BF_CloseFile(fileDesc) < 0) {
+    //         BF_PrintError("Error closing file");
+    //         free(info);
+    //         return NULL;
+    //     }
+    // }
+
+    memcpy(info, &infoBlock->info.ht_info, sizeof(HT_info));
 
     // infoBlock->info.fileDesc = fileDesc;
     info->fileDesc = fileDesc;
-    printf("INFOBLOCK = %d\n",info->fileDesc);
+    FILEDESC = fileDesc;
+    // printf("INFOBLOCK = %d\n",info->fileDesc);
 
     return info;
 }
 
 int HT_CloseIndex(HT_info* header_info)
 {
+    // Info* infoBlock;
+    //
+    // if (BF_ReadBlock(header_info->fileDesc , 0 , (void **)&infoBlock) < 0) {
+	// 	BF_PrintError("Error getting block");
+	// 	return NULL;
+	// }
+    //
+    // infoBlock->info.ht_info.fileDesc = -1;
+    //
+	// if (BF_WriteBlock(header_info->fileDesc , 0) < 0) {
+    //     BF_PrintError("Error writing block back");
+    //     return NULL;
+    // }
+
     // int temp = header_info->fileDesc;
     // free(header_info->attrName);
+    FILEDESC = -1;
     if (BF_CloseFile(header_info->fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
@@ -662,7 +698,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
             printf("Result:    Name: %s\n", block->rec[i].name);
             printf("Result: Surname: %s\n", block->rec[i].surname);
             printf("Result: Address: %s\n\n", block->rec[i].address);
-            getchar();
+            // getchar();
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
             if (block->rec[i].name[0] == '\0')
             {
@@ -815,7 +851,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
     printf("Result:    Name: %s\n", block->rec[index].name);
     printf("Result: Surname: %s\n", block->rec[index].surname);
     printf("Result: Address: %s\n\n", block->rec[index].address);
-    getchar();
+    // getchar();
 
 
     return blockID;
@@ -889,7 +925,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             printf("Result BLOCK 1:    Name: %s\n", block->rec[i].name);
             printf("Result BLOCK 1: Surname: %s\n", block->rec[i].surname);
             printf("Result BLOCK 1: Address: %s\n\n", block->rec[i].address);
-            getchar();
+            // getchar();
 
 
             if (block->rec[i].name[0] == '\0')
@@ -1032,7 +1068,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 printf("Result CURRBLOCK 1:    Name: %s\n", currBlock->rec[j-1].name);
                 printf("Result CURRBLOCK 1: Surname: %s\n", currBlock->rec[j-1].surname);
                 printf("Result CURRBLOCK 1: Address: %s\n\n", currBlock->rec[j-1].address);
-                getchar();
+                // getchar();
 
 
                     block->rec[i] = currBlock->rec[j-1];
@@ -1043,7 +1079,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 printf("Result BLOCK 2:    Name: %s\n", block->rec[i].name);
                 printf("Result BLOCK 2: Surname: %s\n", block->rec[i].surname);
                 printf("Result BLOCK 2: Address: %s\n\n", block->rec[i].address);
-                getchar();
+                // getchar();
 
 
 
@@ -1084,7 +1120,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     printf("Result CURRBLOCK 2:    Name: %s\n", currBlock->rec[j-1].name);
                     printf("Result CURRBLOCK 2: Surname: %s\n", currBlock->rec[j-1].surname);
                     printf("Result CURRBLOCK 2: Address: %s\n\n", currBlock->rec[j-1].address);
-                    getchar();
+                    // getchar();
 
 
                 // }
@@ -1267,7 +1303,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
             printf("Result:    Name: %s\n", block->rec[i].name);
             printf("Result: Surname: %s\n", block->rec[i].surname);
             printf("Result: Address: %s\n\n", block->rec[i].address);
-            getchar();
+            // getchar();
 
 
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");

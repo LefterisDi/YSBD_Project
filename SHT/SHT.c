@@ -10,6 +10,8 @@
 #include "../BF/BF.h"
 #include "../AuxFuncs/auxFuncs.h"
 
+extern int FILEDESC;
+
 int SHT_PrintStats(SHT_info sec_info)
 {
     SecondaryBlock* sblock;
@@ -421,11 +423,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM INSERT BEFORE INSERTION\n");
     // DispayPrimaryIndex("primary.index");
     /* Synchronization of the two Hashing Indexes */
-    HT_info* prim_info = HT_OpenIndex(primFileName);
-    if (prim_info == NULL) {
-        printf("Error: Not a Primary Hashing File\n");
-        return -1;
-    }
+    // HT_info* prim_info = HT_OpenIndex(primFileName);
+    // printf("FILEDESC = %d\n", prim_info->fileDesc);
+    // getchar();
+    // if (prim_info == NULL) {
+    //     printf("Error: Not a Primary Hashing File\n");
+    //     return -1;
+    // }
 
     Block* block;
     int    entries = MAX_PRIM_RECS;
@@ -434,14 +438,16 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     SHT_info        sec_info = infoBlock->info.sht_info;
 
     sec_info.sfileDesc = fileDesc;
+    printf("Checkpoint Result: FILEDESC = %d\n", FILEDESC);
+    getchar();
 
-    for (int i = 1 ; i <= prim_info->numBuckets ; i++)
+    for (int i = 1 ; i <= buckets ; i++)
     {
         int blockID = i;
 
         while (blockID != -1)
         {
-            if (BF_ReadBlock(prim_info->fileDesc , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(FILEDESC , blockID , (void **)&block) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
@@ -461,7 +467,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 printf("   Name: %s\n", block->rec[j].name);
                 printf("Surname: %s\n", block->rec[j].surname);
                 printf("Address: %s\n", block->rec[j].address);
-            
+
                 // printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
                 // printf("     FD: %d\n", infoBlock->sec_info.sfileDesc);
                 // printf("   Name: %s\n", infoBlock->sec_info.attrName);
@@ -495,7 +501,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
         } // while
     } // for
 
-    HT_CloseIndex(prim_info);
+    // HT_CloseIndex(prim_info);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
     // DispaySecondaryIndex("secondary.index");
@@ -595,12 +601,33 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
         return NULL;
     }
 
+    //
+    // if (infoBlock->info.sht_info.sfileDesc == -1)
+    // {
+    //     infoBlock->info.sht_info.sfileDesc = fileDesc;
+    //
+    // 	if (BF_WriteBlock(fileDesc , 0) < 0) {
+    //         BF_PrintError("Error writing block back");
+    //         free(sinfo);
+    //         return NULL;
+    //     }
+    // }
+    // else
+    // {
+    //     if (BF_CloseFile(fileDesc) < 0) {
+    //         BF_PrintError("Error closing file");
+    //         free(sinfo);
+    //         return NULL;
+    //     }
+    // }
+
+
     // sinfo->sfileDesc  = infoBlock->sec_info.sfileDesc;
     // sinfo->attrLength = infoBlock->sec_info.attrLength;
     // sinfo->attrName   = infoBlock->sec_info.attrName;
     // sinfo->fileName   = infoBlock->sec_info.fileName;
     // sinfo->numBuckets = infoBlock->sec_info.numBuckets;
-    memcpy(sinfo, &infoBlock->info.sht_info, sizeof(infoBlock->info.sht_info));
+    memcpy(sinfo, &infoBlock->info.sht_info, sizeof(SHT_info));
 
     // printf("SEC_INFO: %d\n", infoBlock->sec_info.sfileDesc);
     // printf("SEC_INFO: %d\n", infoBlock->sec_info.attrLength);
@@ -622,6 +649,20 @@ SHT_info* SHT_OpenSecondaryIndex(char* sfileName)
 
 int SHT_CloseSecondaryIndex(SHT_info* header_info)
 {
+    // Info* infoBlock;
+    //
+    // if (BF_ReadBlock(header_info->sfileDesc , 0 , (void **)&infoBlock) < 0) {
+	// 	BF_PrintError("Error getting block");
+	// 	return NULL;
+	// }
+    //
+    // infoBlock->info.ht_info.fileDesc = -1;
+    //
+	// if (BF_WriteBlock(header_info->sfileDesc , 0) < 0) {
+    //     BF_PrintError("Error writing block back");
+    //     return NULL;
+    // }
+
     if (BF_CloseFile(header_info->sfileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
