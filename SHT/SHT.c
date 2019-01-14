@@ -431,6 +431,21 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     //     return -1;
     // }
 
+    HT_info* prim_info;
+    bool openedPrimary = false;
+
+    if (FILEDESC == -1)
+    {
+        openedPrimary = true;
+
+        prim_info = HT_OpenIndex(primFileName);
+        if (prim_info == NULL) {
+            printf("Error: Not a Primary Hashing File\n");
+            return -1;
+        }
+    }
+
+
     Block* block;
     int    entries = MAX_PRIM_RECS;
 
@@ -441,7 +456,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     printf("Checkpoint Result: FILEDESC = %d\n", FILEDESC);
     getchar();
 
-    for (int i = 1 ; i <= buckets ; i++)
+    for (int i = 1 ; i <= prim_info->numBuckets ; i++)
     {
         int blockID = i;
 
@@ -501,7 +516,8 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
         } // while
     } // for
 
-    // HT_CloseIndex(prim_info);
+    if (openedPrimary)
+        HT_CloseIndex(prim_info);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
     // DispaySecondaryIndex("secondary.index");
