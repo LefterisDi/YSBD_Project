@@ -546,6 +546,11 @@ HT_info* HT_OpenIndex(char* fileName)
     HT_info* info;
     int      fileDesc;
 
+    if (FILEDESC != -1) {
+        printf("File is already opened\n");
+        return NULL;
+    }
+
     if ((fileDesc = BF_OpenFile(fileName)) < 0) {
 		BF_PrintError("Error opening file");
 		return NULL;
@@ -623,7 +628,14 @@ int HT_CloseIndex(HT_info* header_info)
 
     // int temp = header_info->fileDesc;
     // free(header_info->attrName);
+
+    if (FILEDESC == -1) {
+        printf("File is already closed\n");
+        return -1;
+    }
+
     FILEDESC = -1;
+    
     if (BF_CloseFile(header_info->fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
@@ -950,6 +962,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
             if (foundEntry)
             {
+                printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH FOUND ENTRY BLOCKID = %d\n", blockID);
 
                 {
                     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 1st FILE\n");
@@ -1166,7 +1179,10 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     // free(currBlock->rec);
                 }
                 else if (prevBlockID == currBlockID)
+                {
+                    printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH DELETED BLOCK = %d\033[0m\n", block->nextBlock);
                     block->nextBlock = -1;
+                }
 
                 if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
                     BF_PrintError("Error writing block back");
@@ -1213,6 +1229,9 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE\n");
                 }
 
+                printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH PREV  = %d\n", prevBlockID);
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH CURR  = %d\n", currBlockID);
+                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH BLOCK = %d\n", blockID);
                 // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
                 // DispayPrimaryIndex("primary.index");
                 // // getchar();

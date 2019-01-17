@@ -431,41 +431,71 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     //     return -1;
     // }
 
-    HT_info* prim_info;
+    // HT_info* prim_info;
+    // bool openedPrimary = false;
+    //
+    // if (FILEDESC == -1)
+    // {
+    //     openedPrimary = true;
+    //
+    //     prim_info = HT_OpenIndex(primFileName);
+    //     if (prim_info == NULL) {
+    //         printf("Error: Not a Primary Hashing File\n");
+    //         return -1;
+    //     }
+    // }
+
+
+    void*    blockptr;
+    Block    block;
+    HT_info* ht_info;
+    Info     info;
+    int      entries = MAX_PRIM_RECS;
+
+    SecondaryRecord secRec;
+    SHT_info        sec_info = infoBlock->info.sht_info;
+
+    sec_info.sfileDesc = fileDesc;
+
     bool openedPrimary = false;
 
     if (FILEDESC == -1)
     {
         openedPrimary = true;
 
-        prim_info = HT_OpenIndex(primFileName);
-        if (prim_info == NULL) {
-            printf("Error: Not a Primary Hashing File\n");
-            return -1;
+        ht_info = HT_OpenIndex(primFileName);
+
+        info.info.ht_info = *ht_info;
+    }
+    else
+    {
+        if (BF_ReadBlock(FILEDESC , 0 , &blockptr) < 0) {
+            BF_PrintError("Error getting block");
+            return NULL;
         }
+
+        info = *(Info *)blockptr;
     }
 
 
-    Block* block;
-    int    entries = MAX_PRIM_RECS;
+    // printf("Checkpoint Result: FILEDESC = %d\n", FILEDESC);
+    // getchar();
 
-    SecondaryRecord secRec;
-    SHT_info        sec_info = infoBlock->info.sht_info;
-
-    sec_info.sfileDesc = fileDesc;
-    printf("Checkpoint Result: FILEDESC = %d\n", FILEDESC);
-    getchar();
-
-    for (int i = 1 ; i <= prim_info->numBuckets ; i++)
+    for (int i = 1 ; i <= info.info.ht_info.numBuckets ; i++)
     {
         int blockID = i;
 
         while (blockID != -1)
         {
-            if (BF_ReadBlock(FILEDESC , blockID , (void **)&block) < 0) {
+            if (BF_ReadBlock(FILEDESC , blockID , &blockptr) < 0) {
                 BF_PrintError("Error getting block");
                 return -1;
             }
+
+            block = *(Block *)blockptr;
+
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH = %d\n", blockID);
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH NEXT ID 1 = %d\n", block.nextBlock);
 
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE BEFORE SYNCH\n");
         	// DispaySecondaryIndex("secondary.index");
@@ -478,10 +508,10 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
             for (int j = 0 ; j < entries ; j++)
             {
                 printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
-                printf("     ID: %d\n", block->rec[j].id);
-                printf("   Name: %s\n", block->rec[j].name);
-                printf("Surname: %s\n", block->rec[j].surname);
-                printf("Address: %s\n", block->rec[j].address);
+                printf("     ID: %d\n", block.rec[j].id);
+                printf("   Name: %s\n", block.rec[j].name);
+                printf("Surname: %s\n", block.rec[j].surname);
+                printf("Address: %s\n", block.rec[j].address);
 
                 // printf("\n!!!!!!!!!!!!!!!!!!!!!!!! RECORD FROM PRIMARY TO BE INSERTED AND SYNCHRONIZED\n");
                 // printf("     FD: %d\n", infoBlock->sec_info.sfileDesc);
@@ -491,10 +521,10 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 // printf("FileNam: %s\n", infoBlock->sec_info.fileName);
                 // getchar();
 
-                if (block->rec[j].name[0] == '\0')
-                    break;
+                if (block.rec[j].name[0] == '\0')
+                    continue;
 
-                secRec.record  = block->rec[j];
+                secRec.record  = block.rec[j];
 
                 printf("!!!!!!!!!!!!!!!!!!!!!!!! RECORD TO BE INSERTED AND SYNCHRONIZED\n");
                 printf("     ID: %d\n", secRec.record.id);
@@ -512,12 +542,13 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 SHT_SecondaryInsertEntry(sec_info , secRec);
             } // for
 
-            blockID = block->nextBlock;
+            blockID = block.nextBlock;
+            printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH NEXT ID 2 = %d\n", blockID);
         } // while
     } // for
 
     if (openedPrimary)
-        HT_CloseIndex(prim_info);
+        HT_CloseIndex(ht_info);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING SECONDARY INDEX FROM CREATE AFTER SYNCH\n");
     // DispaySecondaryIndex("secondary.index");
@@ -852,7 +883,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
     int    totalSearchedBlocks = 0;
     // int    currSearchedBlocks  = 0;
 	bool   foundEntry  		   = false;
-	unsigned int pkey  		   = 0;
+	unsigned int pkey;
 
 	// int secFileDesc = header_info_sht.sfileDesc;
 
@@ -887,10 +918,10 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 		//     return -1;
 		// }
 		//
-        // if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
-        //     BF_PrintError("Error getting block");
-        //     return -1;
-        // }
+        if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
+            BF_PrintError("Error getting block");
+            return -1;
+        }
 
         for (int i = 0 ; i < entries ; i++)
         {
@@ -901,10 +932,10 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 			// 	return -1;
 			// }
 
-			if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
-				BF_PrintError("Error getting block");
-				return -1;
-			}
+			// if (BF_ReadBlock(header_info_sht.sfileDesc , blockID , (void **)&sblock) < 0) {
+			// 	BF_PrintError("Error getting block");
+			// 	return -1;
+			// }
 
             if (sblock->rec[i].secHashKey[0] == '\0')
 			{
