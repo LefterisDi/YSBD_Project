@@ -376,7 +376,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
 
 	infoBlock->info.sht_info.sfileDesc  = -1;
 	infoBlock->info.sht_info.numBuckets = buckets;
-    infoBlock->info.sht_info.attrName   = attrName;
+    strcpy(infoBlock->info.sht_info.attrName , attrName);
 	infoBlock->info.sht_info.attrLength = attrLength;
     infoBlock->info.sht_info.fileName   = primFileName;
 
@@ -462,7 +462,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     if (FILEDESC == -1)
     {
         openedPrimary = true;
-
+        
         ht_info = HT_OpenIndex(primFileName);
 
         info.info.ht_info = *ht_info;
@@ -471,7 +471,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     {
         if (BF_ReadBlock(FILEDESC , 0 , &blockptr) < 0) {
             BF_PrintError("Error getting block");
-            return NULL;
+            return -1;
         }
 
         info = *(Info *)blockptr;
@@ -521,10 +521,10 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
                 // printf("FileNam: %s\n", infoBlock->sec_info.fileName);
                 // getchar();
 
-                if (block.rec[j].name[0] == '\0')
-                    continue;
+                if (block.rec[j].id == -1)
+                    break;
 
-                secRec.record  = block.rec[j];
+                secRec.record = block.rec[j];
 
                 printf("!!!!!!!!!!!!!!!!!!!!!!!! RECORD TO BE INSERTED AND SYNCHRONIZED\n");
                 printf("     ID: %d\n", secRec.record.id);
@@ -882,7 +882,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
     int    entries     		   = MAX_SEC_RECS;
     int    totalSearchedBlocks = 0;
     // int    currSearchedBlocks  = 0;
-	bool   foundEntry  		   = false;
+	int   foundEntry  		   = 0;
 	unsigned int pkey;
 
 	// int secFileDesc = header_info_sht.sfileDesc;
@@ -954,14 +954,35 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
 
             if (displayEntry)
             {
-				foundEntry = true;
+                Block* block;
 
-				// totalSearchedBlocks += currSearchedBlocks;
+                bool entryDeleted = false;
+                int primEntries   = MAX_PRIM_RECS;
+
+                if (BF_ReadBlock(header_info_ht.fileDesc , sblock->rec[i].blockId , (void **)&block) < 0) {
+                    BF_PrintError("Error getting block");
+                    return -1;
+                }
+
+                for (int j = 0; j < primEntries; j++)
+                {
+                    if (block->rec[j].id == -1)
+                        break;
+
+                    if (block->rec[j].id == sblock->rec[i].id)
+                    {
+                        foundEntry++;
+                        printf("     ID: %d\n",   block->rec[j].id);
+                        printf("   Name: %s\n",   block->rec[j].name);
+                        printf("Surname: %s\n\n", block->rec[j].surname);
+                        printf("Address: %s\n\n", block->rec[j].address);
+                        break;
+                    }
+                }
+
+                // totalSearchedBlocks += currSearchedBlocks;
 				// currSearchedBlocks = 0;
 
-                printf("     ID: %d\n", sblock->rec[i].blockId);
-                printf("   Name: %d\n", sblock->rec[i].id);
-                printf("Surname: %s\n\n", sblock->rec[i].secHashKey);
 				// sleep(1);
             }
         } // for

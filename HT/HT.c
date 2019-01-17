@@ -45,7 +45,7 @@ int HT_PrintStats(HT_info info)
             totalBlocks++;
             //
             // printf("\nINFO: %d\n", info.fileDesc);
-            // printf("INFO: %s\n", info.attrName);
+            // printf("INFO: %s\n", info.e);
             // printf("INFO: %c\n", info.attrType);
             // printf("INFO: %d\n", info.attrLength);
             // printf("INFO: %ld\n", info.numBuckets);
@@ -68,7 +68,7 @@ int HT_PrintStats(HT_info info)
 
             for (int j = 0 ; j < entries ; j++)
             {
-                if (block->rec[j].name[0] == '\0')
+                if (block->rec[j].id == -1)
                     break;
 
                 bucketEntries[i-1]++;
@@ -458,7 +458,7 @@ int HT_CreateIndex(char* fileName, char attrType, char* attrName, int attrLength
     infoBlock->info.ht_info.numBuckets = buckets;
     infoBlock->info.ht_info.attrLength = attrLength;
     infoBlock->info.ht_info.attrType   = attrType;
-    infoBlock->info.ht_info.attrName   = attrName;
+    strcpy(infoBlock->info.ht_info.attrName , attrName);
 
     // infoBlock->info.attrName   = (char *)malloc((attrLength + 1) * sizeof(char));
     //
@@ -635,7 +635,7 @@ int HT_CloseIndex(HT_info* header_info)
     }
 
     FILEDESC = -1;
-    
+
     if (BF_CloseFile(header_info->fileDesc) < 0) {
 		BF_PrintError("Error closing file");
 		return -1;
@@ -655,6 +655,9 @@ int HT_InsertEntry(HT_info header_info, Record record)
     int    entries = MAX_PRIM_RECS;
     int    blockID;
     unsigned int pkey;
+
+    int insBlockID = -1;
+    int pos = -1;
 
     // printf("REC = %d\n", record.id);
     // printf("INFO: ATTRTYPE = %c\n", header_info.attrType);
@@ -683,13 +686,15 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // printf("ENTRIES = %d\n",entries);
     // printf("REC ID = %d\n", record.id);
     // printf("BLOCKID = %d\n",blockID);
-    int  i;
-    bool entryExists = true;
+    // int  i;
+    // bool entryExists = true;
 
     // printf("ATTR TYPE FROM INSERT ENTRY = %c\n", header_info.attrType);
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 1\n");
-    while(1)
+    int prevBlockID = -1;
+
+    while(blockID != -1)
     {
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 2\n");
         if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
@@ -703,7 +708,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
         // DispayPrimaryIndex("primary.index");
         // // getchar();
 
-        for (i = 0 ; i < entries ; i++)
+        for (int i = 0 ; i < entries ; i++)
         {
             printf("\033[1;33m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY INSERTION\033[0m\n");
             printf("Result:      ID: %d\n", block->rec[i].id);
@@ -712,10 +717,15 @@ int HT_InsertEntry(HT_info header_info, Record record)
             printf("Result: Address: %s\n\n", block->rec[i].address);
             // getchar();
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 4\n");
-            if (block->rec[i].name[0] == '\0')
+            if (block->rec[i].id == -1)
             {
+                if (insBlockID == -1)
+                {
+                    insBlockID = blockID;
+                    pos = i;
+                }
                 // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 5\n");
-                entryExists = false;
+                // entryExists = false;
                 break;
             }
 
@@ -745,24 +755,25 @@ int HT_InsertEntry(HT_info header_info, Record record)
         } // for
 
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-        if (!entryExists)
-        {
-            // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
-            break;
-        }
+        // if (!entryExists)
+        // {
+        //     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
+        //     break;
+        // }
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 11\n");
 
-        if (block->nextBlock != -1)
-        {
+        // if (block->nextBlock != -1)
+        // {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 12\n");
+            prevBlockID = blockID;
             blockID = block->nextBlock;
             // printf("BLOCKID = %d\n",blockID);
-        }
-        else
-        {
+        // }
+        // else
+        // {
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 13\n");
-            break;
-        }
+            // break;
+        // }
     } // while
     // printf("BLOCKID = %d\n",blockID);
 
@@ -790,33 +801,35 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 15\n");
     // printf("I : %d\n" , i);
-    if (i == entries)
+    // if (i == entries)
+    if (insBlockID == -1)
     {
-        int old_blockID = blockID;
+        // int old_blockID = blockID;
         // Record* rec;
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 16\n");
+        pos = 0;
 
-        blockID = HTBlockInit(header_info.fileDesc);
+        insBlockID = HTBlockInit(header_info.fileDesc);
         // printf("D: %d\n", BF_GetBlockCounter(header_info.fileDesc) - 1);
         // sleep(1);
-        block->nextBlock = blockID;
+        block->nextBlock = insBlockID;
         // printf("BLOCKID = %d\n",blockID);
 
-    	if (BF_WriteBlock(header_info.fileDesc , old_blockID) < 0) {
+    	if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
             BF_PrintError("Error writing block back");
             return -1;
         }
     }
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 17\n");
-    if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+    if (BF_ReadBlock(header_info.fileDesc , insBlockID , (void **)&block) < 0) {
         // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 18\n");
         BF_PrintError("Error getting block");
         return -1;
     }
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 19\n");
 
-    int index = i % entries;
+    // int index = i % entries;
     //
     // block->rec[index] = (Record *)malloc(sizeof(Record));
     // if (block->rec[index] == NULL) {
@@ -826,10 +839,10 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 20\n");
 
-    block->rec[index].id = record.id;
-    strcpy(block->rec[index].name    , record.name);
-    strcpy(block->rec[index].surname , record.surname);
-    strcpy(block->rec[index].address , record.address);
+    block->rec[pos].id = record.id;
+    strcpy(block->rec[pos].name    , record.name);
+    strcpy(block->rec[pos].surname , record.surname);
+    strcpy(block->rec[pos].address , record.address);
 
     // printf("\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY INSERTION\033[0m\n");
     // printf("Result:      ID: %d\n", block->rec[index].id);
@@ -840,7 +853,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 21\n");
     // if (BF_WriteBlock(header_info.fileDesc , BF_GetBlockCounter(header_info.fileDesc) - 1) < 0) {
-    if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+    if (BF_WriteBlock(header_info.fileDesc , insBlockID) < 0) {
         BF_PrintError("Error writing block back");
         return -1;
     }
@@ -853,20 +866,20 @@ int HT_InsertEntry(HT_info header_info, Record record)
     // DispayPrimaryIndex("primary.index");
     // getchar();
 
-    if (BF_ReadBlock(header_info.fileDesc , blockID , (void **)&block) < 0) {
+    if (BF_ReadBlock(header_info.fileDesc , insBlockID , (void **)&block) < 0) {
         BF_PrintError("Error getting block");
         return -1;
     }
 
     printf("\n\033[1;35m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY INSERTION\033[0m\n");
-    printf("Result:      ID: %d\n", block->rec[index].id);
-    printf("Result:    Name: %s\n", block->rec[index].name);
-    printf("Result: Surname: %s\n", block->rec[index].surname);
-    printf("Result: Address: %s\n\n", block->rec[index].address);
+    printf("Result:      ID: %d\n", block->rec[pos].id);
+    printf("Result:    Name: %s\n", block->rec[pos].name);
+    printf("Result: Surname: %s\n", block->rec[pos].surname);
+    printf("Result: Address: %s\n\n", block->rec[pos].address);
     // getchar();
 
 
-    return blockID;
+    return insBlockID;
 
     // // block->nextBlock = HTBlockInit(header_info.fileDesc);
     // // blockID = block->nextBlock;
@@ -915,7 +928,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
     // DispayPrimaryIndex("primary.index");
     // // getchar();
 
-    for (int blockIndex = 0 ; blockID != -1 ; blockIndex++)
+    while (blockID != -1)
     {
         bool foundEntry = false;
 
@@ -940,8 +953,8 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             // getchar();
 
 
-            if (block->rec[i].name[0] == '\0')
-                return -1;
+            if (block->rec[i].id == -1)
+                break;
 
             printf("Record Test ID: %d\n" , block->rec[i].id);
 
@@ -986,7 +999,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         for (int i = 0 ; i < entries ; i++)
                         {
-                            if (tmp_block->rec[i].name[0] == '\0')
+                            if (tmp_block->rec[i].id == -1)
                             {
                                 leave = true;
                                 break;
@@ -1004,11 +1017,11 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 }
 
                     printf("Rec ID : %d\n",block->rec[i].id);
-                Block* currBlock   = block;
+                // Block* currBlock   = block;
                 // int    currBlockID = block->nextBlock;
-                int    currBlockID = blockID;
+                // int    currBlockID = blockID;
                 // int    prevBlockID = blockID;
-                int    entryIndex  = i + 1;
+                // int    entryIndex  = i + 1;
                 // int    currBlockID = blockID;
 
                 // free(block->rec[i]);
@@ -1019,7 +1032,27 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 printf("Address: %s\n\n", block->rec[i].address);
                 // getchar();
 
-                block->rec[i].name[0] = '\0';
+                block->rec[i].id = -1;
+
+                if (i < entries - 1)
+                {
+                    int j;
+                    for (j = i+1; j < entries; j++)
+                        if (block->rec[j].id == -1)
+                            break;
+
+                    block->rec[i] = block->rec[j-1];
+
+                    block->rec[j-1].id = -1;
+                }
+
+                if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+                    BF_PrintError("Error writing block back");
+                    return -1;
+                }
+
+
+
 
                 // if (block->nextBlock == -1 && blockIndex != 0)
                 // {
@@ -1030,63 +1063,63 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                  * We first check if there is only one block, which we
                  * shouldn't delete and then, we search for the last block.
                  */
-                if (currBlock->nextBlock != -1)
-                {
-                    prevBlockID = currBlockID;
-                    currBlockID = currBlock->nextBlock;
+                // if (currBlock->nextBlock != -1)
+                // {
+                //     prevBlockID = currBlockID;
+                //     currBlockID = currBlock->nextBlock;
+                //
+                //     while(1)
+                //     {
+                //         if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
+                //             BF_PrintError("Error getting block");
+                //             return -1;
+                //         }
+                //
+                //         if (currBlock->nextBlock != -1)
+                //         {
+                //             prevBlockID = currBlockID;
+                //             currBlockID = currBlock->nextBlock;
+                //         }
+                //         else
+                //         {
+                //             entryIndex = 0;
+                //             break;
+                //         } // if - else
+                //     } // while
+                // } // if
 
-                    while(1)
-                    {
-                        if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
-                            BF_PrintError("Error getting block");
-                            return -1;
-                        }
-
-                        if (currBlock->nextBlock != -1)
-                        {
-                            prevBlockID = currBlockID;
-                            currBlockID = currBlock->nextBlock;
-                        }
-                        else
-                        {
-                            entryIndex = 0;
-                            break;
-                        } // if - else
-                    } // while
-                } // if
-
-                int j;
-                printf("ENTRYINDEX    = %d\n", entryIndex);
-                printf("CURR BLOCK ID = %d\n", currBlockID);
-                for (j = entryIndex ; j < entries ; j++)
-                {
-                    printf("J = %d\n", j);
-                    if (currBlock->rec[j].name[0] == '\0')
-                        break;
-                    printf("CURR BLOCK[j] = %d\n", currBlock->rec[j].id);
-
-                }
-
-                if (j-1 < 0) {
-                        /* code */
-                    printf("CURRBLOCK = %d\n", j-1);
-                    sleep(2);
-                }
+                // int j;
+                // printf("ENTRYINDEX    = %d\n", entryIndex);
+                // printf("CURR BLOCK ID = %d\n", currBlockID);
+                // for (j = entryIndex ; j < entries ; j++)
+                // {
+                //     printf("J = %d\n", j);
+                //     if (currBlock->rec[j].id == -1)
+                //         break;
+                //     printf("CURR BLOCK[j] = %d\n", currBlock->rec[j].id);
+                //
+                // }
+                //
+                // if (j-1 < 0) {
+                //         /* code */
+                //     printf("CURRBLOCK = %d\n", j-1);
+                //     sleep(2);
+                // }
                 // if (currBlock == block)
                 // {
 
 
-                printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY DELETION 2\033[0m\n");
-                printf("Result CURRBLOCK 1:      ID: %d\n", currBlock->rec[j-1].id);
-                printf("Result CURRBLOCK 1:    Name: %s\n", currBlock->rec[j-1].name);
-                printf("Result CURRBLOCK 1: Surname: %s\n", currBlock->rec[j-1].surname);
-                printf("Result CURRBLOCK 1: Address: %s\n\n", currBlock->rec[j-1].address);
-                // getchar();
-
-
-                    block->rec[i] = currBlock->rec[j-1];
-
-
+                // printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY DELETION 2\033[0m\n");
+                // printf("Result CURRBLOCK 1:      ID: %d\n", currBlock->rec[j-1].id);
+                // printf("Result CURRBLOCK 1:    Name: %s\n", currBlock->rec[j-1].name);
+                // printf("Result CURRBLOCK 1: Surname: %s\n", currBlock->rec[j-1].surname);
+                // printf("Result CURRBLOCK 1: Address: %s\n\n", currBlock->rec[j-1].address);
+                // // getchar();
+                //
+                //
+                //     block->rec[i] = currBlock->rec[j-1];
+                //
+                //
                 printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY DELETION 3\033[0m\n");
                 printf("Result BLOCK 2:      ID: %d\n", block->rec[i].id);
                 printf("Result BLOCK 2:    Name: %s\n", block->rec[i].name);
@@ -1109,30 +1142,30 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                     //     return -1;
                     // }
 
-                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PRIMARY DELETEION MOVED RECORD\n");
-                    printf("     ID: %d\n", currBlock->rec[j-1].id);
-                    printf("   Name: %s\n", currBlock->rec[j-1].name);
-                    printf("Surname: %s\n", currBlock->rec[j-1].surname);
-                    printf("Address: %s\n\n", currBlock->rec[j-1].address);
+                    // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! PRIMARY DELETEION MOVED RECORD\n");
+                    // printf("     ID: %d\n", currBlock->rec[j-1].id);
+                    // printf("   Name: %s\n", currBlock->rec[j-1].name);
+                    // printf("Surname: %s\n", currBlock->rec[j-1].surname);
+                    // printf("Address: %s\n\n", currBlock->rec[j-1].address);
                     // getchar();
 
-                    currBlock->rec[j-1].name[0] = '\0';
+                    // currBlock->rec[j-1].id = -1;
 
-                    if (BF_WriteBlock(header_info.fileDesc , currBlockID) < 0) {
-                        BF_PrintError("Error writing block back");
-                        return -1;
-                    }
+                    // if (BF_WriteBlock(header_info.fileDesc , currBlockID) < 0) {
+                    //     BF_PrintError("Error writing block back");
+                    //     return -1;
+                    // }
 
-                    if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
-                        BF_PrintError("Error getting block");
-                        return -1;
-                    }
-
-                    printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY DELETION 4\033[0m\n");
-                    printf("Result CURRBLOCK 2:      ID: %d\n", currBlock->rec[j-1].id);
-                    printf("Result CURRBLOCK 2:    Name: %s\n", currBlock->rec[j-1].name);
-                    printf("Result CURRBLOCK 2: Surname: %s\n", currBlock->rec[j-1].surname);
-                    printf("Result CURRBLOCK 2: Address: %s\n\n", currBlock->rec[j-1].address);
+                    // if (BF_ReadBlock(header_info.fileDesc , currBlockID , (void **)&currBlock) < 0) {
+                    //     BF_PrintError("Error getting block");
+                    //     return -1;
+                    // }
+                    //
+                    // printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Result PRIMARY DELETION 4\033[0m\n");
+                    // printf("Result CURRBLOCK 2:      ID: %d\n", currBlock->rec[j-1].id);
+                    // printf("Result CURRBLOCK 2:    Name: %s\n", currBlock->rec[j-1].name);
+                    // printf("Result CURRBLOCK 2: Surname: %s\n", currBlock->rec[j-1].surname);
+                    // printf("Result CURRBLOCK 2: Address: %s\n\n", currBlock->rec[j-1].address);
                     // getchar();
 
 
@@ -1152,42 +1185,42 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                  * it is now empty and should be removed only if it is not
                  * the first block.
                  */
-                 printf("BLOCKINDEX = %d\n", blockIndex);
-                 printf("BLOCKID    = %d\n", blockID);
-                 printf("PREVBLOCK  = %d\n", prevBlockID);
-                if (j == 1 && prevBlockID != currBlockID)
-                {
-                    Block* tmpBlock;
-
-                    if (BF_ReadBlock(header_info.fileDesc , prevBlockID , (void **)&tmpBlock) < 0) {
-                        BF_PrintError("Error getting block");
-                        return -1;
-                    }
-
-                    tmpBlock->nextBlock = -1;
-
-                    if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
-                        BF_PrintError("Error writing block back");
-                        return -1;
-                    }
-
-                    printf("PREVBLOCK = %d\n", prevBlockID);
-                    deletes++;
-                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DELETES    = %d\n", deletes);
-                    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DELETED ID = %d\n", currBlockID);
-
-                    // free(currBlock->rec);
-                }
-                else if (prevBlockID == currBlockID)
-                {
-                    printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH DELETED BLOCK = %d\033[0m\n", block->nextBlock);
-                    block->nextBlock = -1;
-                }
-
-                if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
-                    BF_PrintError("Error writing block back");
-                    return -1;
-                }
+                //  printf("BLOCKINDEX = %d\n", blockIndex);
+                //  printf("BLOCKID    = %d\n", blockID);
+                //  printf("PREVBLOCK  = %d\n", prevBlockID);
+                // if (j == 1 && prevBlockID != currBlockID)
+                // {
+                //     Block* tmpBlock;
+                //
+                //     if (BF_ReadBlock(header_info.fileDesc , prevBlockID , (void **)&tmpBlock) < 0) {
+                //         BF_PrintError("Error getting block");
+                //         return -1;
+                //     }
+                //
+                //     tmpBlock->nextBlock = -1;
+                //
+                //     if (BF_WriteBlock(header_info.fileDesc , prevBlockID) < 0) {
+                //         BF_PrintError("Error writing block back");
+                //         return -1;
+                //     }
+                //
+                //     printf("PREVBLOCK = %d\n", prevBlockID);
+                //     deletes++;
+                //     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DELETES    = %d\n", deletes);
+                //     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DELETED ID = %d\n", currBlockID);
+                //
+                //     // free(currBlock->rec);
+                // }
+                // else if (prevBlockID == currBlockID)
+                // {
+                //     printf("\n\033[1;34m!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH DELETED BLOCK = %d\033[0m\n", block->nextBlock);
+                //     block->nextBlock = -1;
+                // }
+                //
+                // if (BF_WriteBlock(header_info.fileDesc , blockID) < 0) {
+                //     BF_PrintError("Error writing block back");
+                //     return -1;
+                // }
 
                 {
                     printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! INSERTING TO 2nd FILE\n");
@@ -1212,7 +1245,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
 
                         for (int i = 0 ; i < entries ; i++)
                         {
-                            if (tmp_block->rec[i].name[0] == '\0')
+                            if (tmp_block->rec[i].id == -1)
                             {
                                 leave = true;
                                 break;
@@ -1230,7 +1263,7 @@ int HT_DeleteEntry(HT_info header_info, void* value)
                 }
 
                 printf("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH PREV  = %d\n", prevBlockID);
-                printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH CURR  = %d\n", currBlockID);
+                // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH CURR  = %d\n", currBlockID);
                 printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BLOCKID SYNCH BLOCK = %d\n", blockID);
                 // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
                 // DispayPrimaryIndex("primary.index");
@@ -1241,10 +1274,10 @@ int HT_DeleteEntry(HT_info header_info, void* value)
             } // if
         } // for
 
-        prevBlockID = blockID;
+        // prevBlockID = blockID;
 
         blockID = block->nextBlock;
-    } // for
+    } // while
 
     // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BEFORE DISPLAYING PRIMARY INDEX FROM DELETE AFTER DELETION\n");
     // DispayPrimaryIndex("primary.index");
@@ -1326,8 +1359,8 @@ int HT_GetAllEntries(HT_info header_info, void* value)
 
 
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 9\n");
-            if (block->rec[i].name[0] == '\0')
-                return -1;
+            if (block->rec[i].id == -1)
+                break;
             // printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECKPOINT 10\n");
 
             switch (header_info.attrType)
