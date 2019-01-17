@@ -462,7 +462,7 @@ int SHT_CreateSecondaryIndex(char* sfileName , char* attrName , int attrLength ,
     if (FILEDESC == -1)
     {
         openedPrimary = true;
-        
+
         ht_info = HT_OpenIndex(primFileName);
 
         info.info.ht_info = *ht_info;
