@@ -8,15 +8,15 @@ SOURCE	    = ./AuxFuncs/auxFuncs.c ./HT/test.c
 PRIM_SOURCE = ./HT/HT.c
 SEC_SOURCE  = ./SHT/SHT.c
 
-HEADER      = ./AuxFuncs/auxFuncs.h
-PRIM_HEADER = ./HT/HT.h ./HT/HT_structs.h
-SEC_HEADER  = ./SHT/SHT.h ./SHT/SHT_structs.h
+HEADER      = ./AuxFuncs/auxFuncs.h ./structs.h
+PRIM_HEADER = ./HT/HT.h
+SEC_HEADER  = ./SHT/SHT.h
 
-OUT  	 	= index
-OUT2  	 	= test
-CC	 	= gcc -Wall
-FLAGS    	= -c
-DEBUG	 	= -g3
+OUT         = index
+OUT2        = test
+CC          = gcc -Wall
+FLAGS       = -c
+DEBUG       = -g3
 
 # ------------------------------------------------- #
 

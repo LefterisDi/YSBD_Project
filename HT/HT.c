@@ -11,7 +11,7 @@
 #include "../AuxFuncs/auxFuncs.h"
 
 int deletes = 0;
-extern int FILEDESC = -1;
+int FILEDESC = -1;
 
 int HT_PrintStats(HT_info info)
 {
@@ -676,7 +676,7 @@ int HT_InsertEntry(HT_info header_info, Record record)
 
         default:
             printf("PRINTING FROM DEFAULT\n");
-            sleep(1);
+            // sleep(1);
         return -1;
     }
 

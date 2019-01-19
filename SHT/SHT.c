@@ -878,7 +878,7 @@ int SHT_SecondaryInsertEntry(SHT_info header_info, SecondaryRecord secRec)
 int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht, void* value)
 {
     SecondaryBlock* sblock;
-    Block*          block;
+    // Block*          block;
     int    entries     		   = MAX_SEC_RECS;
     int    totalSearchedBlocks = 0;
     // int    currSearchedBlocks  = 0;
@@ -956,7 +956,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
             {
                 Block* block;
 
-                bool entryDeleted = false;
+                // bool entryDeleted = false;
                 int primEntries   = MAX_PRIM_RECS;
 
                 if (BF_ReadBlock(header_info_ht.fileDesc , sblock->rec[i].blockId , (void **)&block) < 0) {
