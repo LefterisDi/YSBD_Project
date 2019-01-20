@@ -25,7 +25,7 @@ typedef struct {
 typedef struct {
     int      fileDesc;    /* File ID at block level                                         */
     char     attrType;    /* Type of field that is the Key for the current file: 'c' or 'i' */
-    char     attrName[10];/* Name of field that is the Key for the current file             */
+    char*    attrName;    /* Name of field that is the Key for the current file             */
     int      attrLength;  /* Size of field that is the Key for the current file             */
     long int numBuckets;  /* Number of "buckets" of the hashing file                        */
 } HT_info;
@@ -53,7 +53,7 @@ typedef struct {
 
 typedef struct sec_info {
     int      sfileDesc;  /* File ID at block level                             */
-    char     attrName[40];   /* Name of field that is the Key for the current file */
+    char*    attrName;   /* Name of field that is the Key for the current file */
     int      attrLength; /* Size of field that is the Key for the current file */
     long int numBuckets; /* Number of "buckets" of the hashing file            */
     char*    fileName;   /* Name of the primary index                          */
