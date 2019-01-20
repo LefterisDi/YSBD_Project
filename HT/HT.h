@@ -3,7 +3,6 @@
 #ifndef __HT__
 #define __HT__
 
-// #include "HT_structs.h"
 #include "../structs.h"
 
 int HT_CreateIndex( char* fileName,   /* File name                */

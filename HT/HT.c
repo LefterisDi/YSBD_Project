@@ -724,7 +724,7 @@ int HT_GetAllEntries(HT_info header_info, void* value)
                 printf("     ID: %d\n", block->rec[i].id);
                 printf("   Name: %s\n", block->rec[i].name);
                 printf("Surname: %s\n", block->rec[i].surname);
-                printf("Address: %s\n", block->rec[i].address);
+                printf("Address: %s\n\n", block->rec[i].address);
 
                 return numOfBlocks;
             }

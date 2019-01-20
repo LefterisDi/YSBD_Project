@@ -67,13 +67,6 @@ union info_types {
 typedef struct {
     bool             hash_type;        /* This flag indicates the hashing that was used for a file */
     union info_types info;
-    // HT_info  info;
-    // SHT_info sec_info;
 } Info;
-
-// typedef struct {
-//     bool hashFlag;        /* This flag indicates the hashing that was used for a file */
-//     SHT_info* info;
-// } SecInfo;
 
 #endif // __STRUCTS__

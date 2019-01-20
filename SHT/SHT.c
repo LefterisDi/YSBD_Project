@@ -687,7 +687,7 @@ int SHT_SecondaryGetAllEntries(SHT_info header_info_sht, HT_info header_info_ht,
                         foundEntry++;
                         printf("     ID: %d\n",   block->rec[j].id);
                         printf("   Name: %s\n",   block->rec[j].name);
-                        printf("Surname: %s\n\n", block->rec[j].surname);
+                        printf("Surname: %s\n", block->rec[j].surname);
                         printf("Address: %s\n\n", block->rec[j].address);
                         break;
                     }
